@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/05/16 17:26:09 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/05/17 15:05:44 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@
 typedef struct		s_room
 {
 	char 			*name;
-	int				index;
-	int				x;
-	int				y;
+	size_t			index;
+	unsigned int	x;
+	unsigned int	y;
 	struct s_room	*next;
 }					t_room;
 
