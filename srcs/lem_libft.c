@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:45:39 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/06/07 13:39:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/07 16:41:00 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,32 +69,6 @@ size_t			lem_endspace(char *line, size_t i)
 {
 	(void)line;
 	return (i);
-}
-
-int				lem_atozu(const char *src, size_t *result, size_t *index)
-{
-	size_t	limit;
-	size_t	tmp;
-
-	limit = -1;
-	*result = 1;
-	while ((limit /= 10))
-		*result *= 10;
-	tmp = -1;
-	limit = *result / 10;
-	*result = 0;
-	*index = (src[*index] == '+') ? *index + 1 : *index;
-	while (src[*index] == '0')
-		*index = *index + 1;
-	while ('0' <= src[*index] && src[*index] <= '9' && *result < limit)
-		*result = *result * 10 + src[(*index)++] - '0';
-	if ('0' <= src[*index] && src[*index] <= '9')
-	{
-		*result = *result * 10 + src[(*index)++] - '0';
-		if (*result < 10 || ('0' <= src[*index] && src[*index] <= '9'))
-			return (-1);
-	}
-	return (0);
 }
 
 int				lem_atoll(const char *src, long long *result, size_t *index)
