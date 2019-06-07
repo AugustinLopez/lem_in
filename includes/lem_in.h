@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/05/17 15:05:44 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/06/07 13:42:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <libft.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define PARSE_COMMENT 1
 # define PARSE_COMMAND 2
@@ -35,8 +36,8 @@ typedef struct		s_room
 {
 	char 			*name;
 	size_t			index;
-	unsigned int	x;
-	unsigned int	y;
+	long long		x;
+	long long		y;
 	struct s_room	*next;
 }					t_room;
 
@@ -44,10 +45,12 @@ typedef struct 		s_lemin
 {
 	size_t 			nbr_ant;
 	int				flag;
-	t_list			*file;
+	t_list			*fileline;
+	t_list			*tmp;
 	size_t			nb_lines;
 	size_t			nb_command;
 	t_room			*roomlist;
+	t_room			*curroom;
 	long			**link;
 	void			*roomarray; // once roomlist is finished, we can index them
 								// so we don't have to go through the full list
@@ -56,5 +59,8 @@ typedef struct 		s_lemin
 
 char				*lem_strtrim(char const *s);
 int					lem_atozu(const char *src, size_t *result, size_t *index);
+size_t				lem_whitespace(char *line, size_t i);
+size_t				lem_endspace(char *line, size_t i);
+int					lem_atoll(const char *src, long long *result, size_t *index);
 
 #endif
