@@ -39,6 +39,7 @@ int				main(void)
 {
 	t_lemin	lem;
 	int		ret;
+	//t_rb_node *tree;
 
 	ft_bzero(&lem, sizeof(lem));
 	if ((ret = reader_ant(&lem)) || lem.nbr_ant == 0)
@@ -57,6 +58,8 @@ int				main(void)
 		ft_lstdel(&(lem.fileline), *ft_lstfree);
 		return (ret);
 	}
+	lem.nbr_room = lem_index_tree(lem.tree);
+	
 	if ((ret = reader_tube(&lem)))
 	{
 		ft_dprintf(STDERR_FILENO, "Error when setting tube\n");
@@ -65,6 +68,13 @@ int				main(void)
 		return (ret);
 	}
 	ft_gnl(-1, 0, 0);
+	/*tree = lem.tree;
+	ft_printf("%d %s\n", tree->flag, tree->name);
+	tree = tree->left;
+	ft_printf("%d %s\n", tree->flag, tree->name);
+	tree = tree->left;
+	ft_printf("%d %s\n", tree->flag, tree->name);*/
+	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/05/31 15:31:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/10 18:31:25 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 ** Tree one requires an additional malloc for the name. No need for 2nd tree.
 */
 
-t_rb_node		*lem_rb_create(char *name, unsigned int x, unsigned int y,
+/*t_rb_node		*lem_rb_create(char *name, unsigned int x, unsigned int y,
 					uint8_t flag)
 {
 	t_rb_node	*tmp;
@@ -45,7 +45,7 @@ t_rb_node		*lem_rb_create(char *name, unsigned int x, unsigned int y,
 	tmp->right = 0;
 	tmp->parent = 0;
 	return (tmp);
-}
+}*/
 
 void			lem_free_tree(t_rb_node **root)
 {
@@ -71,17 +71,18 @@ static void		lem_index(t_rb_node *root, size_t *index)
 		lem_index(root->right, index);
 }
 
-void			lem_index_tree(t_rb_node *root)
+size_t			lem_index_tree(t_rb_node *root)
 {
 	size_t	index;
 
 	if (!root)
-		return ;
+		return (0);
 	index = 0;
 	if (root->left)
-		lem_index(root->left, index);
+		lem_index(root->left, &index);
 	root->index = index;
 	index += 1;
 	if (root->right)
-		lem_index(root->right, index);
+		lem_index(root->right, &index);
+	return (index);
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/05/31 14:56:35 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/10 18:30:12 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # include <stdint.h>
 # include <libft.h>
+# include <stdlib.h>
 
 /*
 ** The 1st bit of our flag is the color.
@@ -32,24 +33,31 @@
 # define LEM_RIGHT 1
 
 # define RB_RED 1
-# define RB_START 2
+# define RB_START 3
 # define RB_END 4
+
+typedef struct			s_tree_data
+{
+	char				*line;
+	size_t				fin;
+	long long			x;
+	long long			y;
+	int					command;
+}						t_tree_data;
 
 typedef struct			s_rb_node
 {
-	struct s_rbtree		*left;
-	struct s_rbtree		*right;
-	struct s_rbtree		*parent;
-	unsigned int		x;
-	unsigned int		y;
+	struct s_rb_node	*left;
+	struct s_rb_node	*right;
+	struct s_rb_node	*parent;
+	long long			x;
+	long long			y;
 	uint8_t				flag;
 	size_t				index;
 	char				*name;
 }						t_rb_node;
 
-t_rb_node				*lem_rb_create(char *name, unsigned int x,
-							unsigned int y, uint8_t flag);
 int						rb_insert(t_rb_node **root, t_rb_node *node);
 void					lem_free_tree(t_rb_node **node);
-void					lem_index_tree(t_rb_node *node);
+size_t					lem_index_tree(t_rb_node *node);
 #endif

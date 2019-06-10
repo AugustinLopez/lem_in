@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/06/10 11:13:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/10 18:55:02 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <rb_tree.h>
 
 # define PARSE_COMMENT 1
 # define PARSE_COMMAND 2
@@ -44,17 +45,21 @@ typedef struct		s_room
 typedef struct 		s_lemin
 {
 	size_t 			nbr_ant;
+	size_t			nbr_room;
 	int				flag;
 	t_list			*fileline;
 	t_list			*tmp;
 	size_t			nb_lines;
 	size_t			nb_command;
-	t_room			*roomlist;
-	t_room			*curroom;
 	long			**link;
 	void			*roomarray; // once roomlist is finished, we can index them
 								// so we don't have to go through the full list
 								// each time we want to retrieve an element.
+								// We use a spare matrix (easier/faster to parse)
+								// If we want bonus, might implement a list
+	t_rb_node		*start;
+	t_rb_node		*end;
+	t_rb_node		*tree;
 }					t_lemin;
 
 char				*lem_strtrim(char const *s);
