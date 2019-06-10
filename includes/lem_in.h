@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/06/07 16:30:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/10 11:13:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define PARSE_FATAL_ERROR 6
 # define PARSE_ANT 7
 
-# define LEM_ANT 1
+//# define LEM_ANT 1
 # define LEM_ROOM 2
 # define LEM_END 4
 # define LEM_START 8

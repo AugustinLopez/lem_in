@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:45:39 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/06/07 16:41:00 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/10 11:08:54 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,38 +69,4 @@ size_t			lem_endspace(char *line, size_t i)
 {
 	(void)line;
 	return (i);
-}
-
-int				lem_atoll(const char *src, long long *result, size_t *index)
-{
-	long long	limit;
-	long long	tmp;
-	char		minus;
-
-	limit = LLONG_MAX;
-	tmp = LLONG_MAX;
-	minus = 0;
-	*result = 1;
-	while ((limit /= 10))
-		*result *= 10;
-	minus = (src[*index] == '-');
-	limit = !minus ? *result / 10 : -(*result / 10);
-	*result = 0;
-	*index = (src[*index] == '+' || src[*index] == '-') ? *index + 1 : *index;
-	while (src[*index] == '0')
-		*index = *index + 1;
-	if (!minus)
-		while ('0' <= src[*index] && src[*index] <= '9' && *result < limit)
-			*result = *result * 10 + src[(*index)++] - '0';
-	else if (minus)
-		while ('0' <= src[*index] && src[*index] <= '9' && *result > limit)
-			*result = *result * 10 - src[(*index)++] + '0';
-	if ('0' <= src[*index] && src[*index] <= '9')
-	{
-		*result = *result * 10 + (1 - 2 * minus) * (src[(*index)++] - '0');
-		if ((!minus && *result < 10) || (minus && *result > -10)
-				|| ('0' <= src[*index] && src[*index] <= '9'))
-			return (-1);
-	}
-	return (0);
 }
