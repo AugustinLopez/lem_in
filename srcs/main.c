@@ -46,8 +46,8 @@ int				main(void)
 	{
 		ft_dprintf(STDERR_FILENO, "Error when setting number of ants\n");
 		ft_gnl(-1, 0, 0);
-		if (lem.fileline)
-			ft_lstdel(&(lem.fileline), *ft_lstfree);
+		lem_free_tree(&(lem.tree));
+		ft_lstdel(&(lem.fileline), *ft_lstfree);
 		return (ret);
 	}
 	ft_dprintf(STDOUT_FILENO, "Number of ants: %d\n", lem.nbr_ant);
@@ -55,25 +55,20 @@ int				main(void)
 	{
 		ft_dprintf(STDERR_FILENO, "Error when setting rooms\n");
 		ft_gnl(-1, 0, 0);
+		lem_free_tree(&(lem.tree));
 		ft_lstdel(&(lem.fileline), *ft_lstfree);
 		return (ret);
 	}
-	lem.nbr_room = lem_index_tree(lem.tree);
-	
 	if ((ret = reader_tube(&lem)))
 	{
 		ft_dprintf(STDERR_FILENO, "Error when setting tube\n");
 		ft_gnl(-1, 0, 0);
+		lem_free_tree(&(lem.tree));
 		ft_lstdel(&(lem.fileline), *ft_lstfree);
 		return (ret);
 	}
+	ft_printf("%zu %zu\n", ft_lstsize((lem.end)->link), ft_lstsize((lem.start)->link));
 	ft_gnl(-1, 0, 0);
-	/*tree = lem.tree;
-	ft_printf("%d %s\n", tree->flag, tree->name);
-	tree = tree->left;
-	ft_printf("%d %s\n", tree->flag, tree->name);
-	tree = tree->left;
-	ft_printf("%d %s\n", tree->flag, tree->name);*/
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
 	return (ret);

@@ -1,30 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader_tube.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
+/*   Updated: 2019/06/11 15:35:56 by aulopez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <lem_in.h>
 
 int	is_tube(t_lemin *lem, char *line)
 {
 	size_t	i;
-	size_t	name_1[2];
-	size_t	name_2[2];
+	size_t	j;
+	t_rb_node	*tmp;
+	t_rb_node	*tmp2;
+	t_list		*node;
 
 	(void)lem;
-	i = lem_whitespace(line, 0);
-	name_1[0] = i;
-	while (line[i] && line[i] != '-' && line[i] != ' ')
+	i = 0;
+	while (line[i] && line[i] != '-')
 		i++;
-	name_1[1] = i;
-	if (line[i++] != '-')
+	j = i;
+	if (line[j++] != '-' || !line[j] || line[j] == '\n')
 		return (0);
-	if (!line[i] || line[i] == '\n')
+	while (line[j] && line[j] != '\n')
+		j++;
+	if (line[j] != '\n')
 		return (0);
-	name_2[0] = i;
-	while (line[i] && line[i] != '-' && line[i] != ' ' && line[i] != '\n')
-		i++;
-	name_2[1] = i;
-	i = lem_endspace(line, i);
-	if (line[i] && line[i] != '\n')
+	line[i] = 0;
+	tmp = lem_find_node(lem->tree, line);
+	line[i] = '-';
+	line[j] = 0;
+	tmp2 = lem_find_node(lem->tree, line + i + 1);
+	line[j] = '\n';
+	if (tmp && tmp2)
+	{
+		//I need to check existing link to avoid adding the same link 2 time
+		if (!(node = ft_lstnew(0, 0)))
+			return (-1);
+		node->pv = tmp2;
+		if (!tmp->link)
+			tmp->link = node;
+		else
+			ft_lstadd(&(tmp->link), node);
+		if (!(node = ft_lstnew(0, 0)))
+			return (-1);
+		node->pv = tmp;
+		if (!tmp2->link)
+			tmp2->link = node;
+		else
+			ft_lstadd(&(tmp2->link), node);
+
+	}
+	else
 		return (0);
-	//link_matrice(lem, name_1, name_2);
-	ft_printf("%.*s - %.*s\n", name_1[1] - name_1[0], line + name_1[0], name_2[1] - name_2[0], line + name_2[0]);
+	tmp2 = tmp2->link->pv;
+	tmp = tmp->link->pv;
+	if (tmp2->link->next || tmp->link->next)
+		ft_printf("Y:");
+	else
+		ft_printf("N:");
+	ft_printf("%s-%s\n", tmp2->name, tmp->name);
 	return (1);
 }
 
@@ -42,12 +82,10 @@ int	is_tube(t_lemin *lem, char *line)
 int				reader_tube(t_lemin *lem)
 {
 	int		ret;
-	int		i;
 	char	*line;
 
 	if (is_tube(lem, (char *)(lem->tmp->pv)) == 0)
 		return (-1);
-	i = 0;
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
 	{
 		if (!is_comment(line))
@@ -57,11 +95,13 @@ int				reader_tube(t_lemin *lem)
 				free(line);
 				return (-1);
 			}
-			i = push_in_file(lem, line);
+			if (push_in_file(lem, line) == -1)
+			{
+				free(line);
+				return (-2);
+			}
 		}
 		free(line);
-		if (i == -1)
-			return (-1);
 	}
 	return (0);
 }

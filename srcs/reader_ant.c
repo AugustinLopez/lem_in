@@ -26,13 +26,33 @@
 ** for each valid character treated: use it for additional error check.
 */
 
+/*
+** IS_ANT:
+** 1- No leading nor trailing whitespace accepted.
+** 2- The first character must be a digit greater than 0.
+** 3- Following characters must be digits between 0 and 9.
+** 4- Last character must be a line feed.
+** 5- The number must be containable in a size_t.
+** Reasoning:
+** 1- Whitespace are not part of a number and are regular ascii character.
+** 2- We cannot treat a negative number of ants.
+** Leading '+' and '0' are a nonstandard decimal notation. Thousands separator
+** (' ', '.', ',', ...) are nonstandard either.
+** 5- Best compromise for a positive value.
+*/
+
+/*
+** READER_ANT:
+** The first information must the number of ant (beside possible comments).
+** It cannot be the last information.
+** We save input in a list if not a comment. We return malloc failure.
+*/
+
 static inline int	lem_atozu(const char *src, size_t *result, size_t *index)
 {
 	size_t	limit;
-	size_t	tmp;
 
 	limit = -1;
-	tmp = limit;
 	*result = 1;
 	while ((limit /= 10))
 		*result *= 10;
@@ -51,21 +71,6 @@ static inline int	lem_atozu(const char *src, size_t *result, size_t *index)
 	return (0);
 }
 
-/*
-** IS_ANT:
-** 1- No whitespace accepted.
-** 2- The first character must be a digit greater than 0.
-** 3- Following characters must be digits between 0 and 9.
-** 4- Last character must be a line feed.
-** 5- The number must be containable in a size_t.
-** Reasoning:
-** 1- Whitespace are not part of a number.
-** 2- We cannot treat a negative number of ants (making the '+' useless too).
-** Leading '+' and '0' are a nonstandard decimal notation. Thousands separator
-** (' ', '.', ',', ...) are nonstandard either.
-** 5- Best compromise for a positive value.
-*/
-
 static inline int	is_ant(t_lemin *lem, char *line)
 {
 	size_t	i;
@@ -77,13 +82,6 @@ static inline int	is_ant(t_lemin *lem, char *line)
 		return (0);
 	return (1);
 }
-
-/*
-** READER_ANT:
-** The first information must the number of ant (beside possible comments).
-** It cannot be the last information.
-** We save input in a list if not a comment. We return malloc failure.
-*/
 
 int					reader_ant(t_lemin *lem)
 {

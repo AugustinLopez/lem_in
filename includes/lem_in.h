@@ -33,15 +33,6 @@
 # define LEM_START 8
 # define LEM_COMMAND 16
 
-typedef struct		s_room
-{
-	char 			*name;
-	size_t			index;
-	long long		x;
-	long long		y;
-	struct s_room	*next;
-}					t_room;
-
 typedef struct 		s_lemin
 {
 	size_t 			nbr_ant;

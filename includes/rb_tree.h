@@ -53,6 +53,7 @@ typedef struct			s_rb_node
 	long long			x;
 	long long			y;
 	uint8_t				flag;
+	t_list				*link;
 	size_t				index;
 	char				*name;
 }						t_rb_node;
@@ -60,4 +61,5 @@ typedef struct			s_rb_node
 int						rb_insert(t_rb_node **root, t_rb_node *node);
 void					lem_free_tree(t_rb_node **node);
 size_t					lem_index_tree(t_rb_node *node);
+t_rb_node				*lem_find_node(t_rb_node *root, const char *name);
 #endif
