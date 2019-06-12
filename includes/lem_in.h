@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/06/12 10:08:54 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:51:40 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct 		s_lemin
 	size_t			nbr_room;
 	int				flag;
 	t_list			*fileline;
-	t_list			*tmp;
+	t_list			*curline;
 	size_t			nb_lines;
 	size_t			nb_command;
 	long			**link;
@@ -53,11 +53,10 @@ typedef struct 		s_lemin
 	t_rb_node		*tree;
 }					t_lemin;
 
-//char				*lem_strtrim(char const *s);
-int					lem_atoll(const char *src, long long *result, size_t *index);
 int					reader_ant(t_lemin *lem);
 int					reader_room(t_lemin *lem);
 int					reader_tube(t_lemin *lem);
-int					push_in_file(t_lemin *lem, char *line);
+int					save_line(t_lemin *lem, char *line);
+int					lem_feed_tree(t_lemin *lem, t_tree_data *room);
 int					is_comment(char *line);
 #endif

@@ -5,78 +5,133 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 10:07:15 by aulopez          ###   ########.fr       */
+/*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
+/*   Updated: 2019/06/12 10:52:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <rb_tree.h>
+#include <lem_in.h>
 
-void			lem_free_tree(t_rb_node **root)
+static inline void	balance_black_uncle_right(t_rb_node **node, int am_i_left)
 {
-	t_list	*tmp;
+	t_rb_node	*tmp;
 
-	if (!root || !*root)
+	if (am_i_left)
+	{
+		(*node)->right = (*node)->parent;
+		(*node)->parent = (*node)->parent->parent;
+		(*node)->parent->right = *node;
+		(*node)->right->parent = *node;
+		(*node)->right->left = 0;
+	}
+	*node = am_i_left ? *node : (*node)->parent;
+	(*node)->flag &= ~RB_RED;
+	(*node)->parent->flag |= RB_RED;
+	if ((tmp = (*node)->left))
+		tmp->parent = (*node)->parent;
+	(*node)->left = (*node)->parent;
+	(*node)->left->right = tmp;
+	(*node)->parent = (*node)->left->parent;
+	(*node)->left->parent = *node;
+	if (!((*node)->parent))
 		return ;
-	if ((*root)->left)
-		lem_free_tree(&((*root)->left));
-	if ((*root)->right)
-		lem_free_tree(&((*root)->right));
-	if ((*root)->name)
-		free((*root)->name);
-	if ((tmp = (*root)->link))
+	if ((*node)->parent->left == (*node)->left)
+		(*node)->parent->left = *node;
+	else
+		(*node)->parent->right = *node;
+}
+
+static inline void	balance_black_uncle_left(t_rb_node **node, int am_i_left)
+{
+	t_rb_node *tmp;
+
+	if (!am_i_left)
 	{
-		while (tmp)
-		{
-			(*root)->link = (*root)->link->next;
-			free(tmp);
-			tmp = (*root)->link;
-		}
+		(*node)->left = (*node)->parent;
+		(*node)->parent = (*node)->parent->parent;
+		(*node)->parent->left = *node;
+		(*node)->left->parent = *node;
+		(*node)->left->right = 0;
 	}
-	free(*root);
-	*root = 0;
+	*node = !am_i_left ? *node : (*node)->parent;
+	(*node)->flag &= ~RB_RED;
+	(*node)->parent->flag |= RB_RED;
+	if ((tmp = (*node)->right))
+		tmp->parent = (*node)->parent;
+	(*node)->right = (*node)->parent;
+	(*node)->right->left = tmp;
+	(*node)->parent = (*node)->right->parent;
+	(*node)->right->parent = *node;
+	if (!((*node)->parent))
+		return ;
+	if ((*node)->parent->left == (*node)->right)
+		(*node)->parent->left = *node;
+	else
+		(*node)->parent->right = *node;
 }
 
-static void		lem_index(t_rb_node *root, size_t *index)
+static inline void	rb_balance(t_rb_node **node, int am_i_left)
 {
-	if (root->left)
-		lem_index(root->left, index);
-	root->index = *index;
-	*index += 1;
-	if (root->right)
-		lem_index(root->right, index);
+	t_rb_node	*uncle;
+	t_rb_node	*parent;
+	int			is_parent_left;
+
+	parent = (*node)->parent;
+	if (!parent)
+		(*node)->flag &= ~RB_RED;
+	if (!parent || !(parent->flag & RB_RED))
+		return ;
+	is_parent_left = parent->parent && parent->parent->left == parent ? 1 : 0;
+	uncle = is_parent_left ? parent->parent->right : parent->parent->left;
+	if (uncle && uncle->flag & RB_RED)
+	{
+		parent->flag &= ~RB_RED;
+		uncle->flag &= ~RB_RED;
+		parent->parent->flag |= RB_RED;
+		parent = parent->parent;
+		is_parent_left = (parent->parent && parent->parent->left == parent)
+			? 1 : 0;
+		rb_balance(&parent, is_parent_left);
+	}
+	else if (is_parent_left)
+		balance_black_uncle_left(node, am_i_left);
+	else
+		balance_black_uncle_right(node, am_i_left);
 }
 
-size_t			lem_index_tree(t_rb_node *root)
+static inline int	launch_recursive(t_rb_node **root, t_rb_node **node)
 {
-	size_t	index;
+	int	val;
 
-	if (!root)
+	if (!*root)
+	{
+		(*root) = *node;
 		return (0);
-	index = 0;
-	if (root->left)
-		lem_index(root->left, &index);
-	root->index = index;
-	index += 1;
-	if (root->right)
-		lem_index(root->right, &index);
-	return (index);
+	}
+	else if (!(val = ft_strcmp((*root)->name, (*node)->name)))
+		return (-1);
+	else if (val > 0 && (*root)->left)
+		return (launch_recursive(&((*root)->left), node));
+	else if (val < 0 && (*root)->right)
+		return (launch_recursive(&((*root)->right), node));
+	else if (val > 0)
+		(*root)->left = *node;
+	else
+		(*root)->right = *node;
+	(*node)->parent = (*root);
+	return (0);
 }
 
-t_rb_node		*lem_find_node(t_rb_node *root, const char *name)
+int					rb_insert(t_rb_node **root, t_rb_node *node)
 {
-	int			val;
-	t_rb_node	*node;
-
-	node = root;
-	while (1)
-	{
-		if (!node)
-			return (NULL);
-		val = ft_strcmp(node->name, name);
-		if (val == 0)
-			return (node);
-		node = val > 0 ? node->left : node->right;
-	}
-	return (NULL);
+	if (!root || !node)
+		return (-1);
+	if (launch_recursive(root, &node) == -1)
+		return (-1);
+	rb_balance(&node, node->parent && node->parent->left == node ? 1 : 0);
+	while (node->parent != NULL)
+		node = node->parent;
+	*root = node;
+	(*root)->flag &= ~RB_RED;
+	return (0);
 }

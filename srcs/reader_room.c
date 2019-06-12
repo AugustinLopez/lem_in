@@ -6,49 +6,83 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 10:10:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:54:39 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lem_in.h>
 #include <rb_tree.h>
 
-static inline t_rb_node	*lem_rb_create(t_lemin *lem, t_tree_data *data)
-{
-	t_rb_node	*tmp;
+/*
+** LEM_ATOLL:
+** We use limits to get the max value of a signed long long.
+** We built a limit akin to 10 (LOG(LLONG_MAX) - 1). (No problem as long as
+** LOG(LLONG_MAX) == LOG(ABS(LLONG_MIN)) is true for the integer part).
+** Thus we know when an over/underflow might happens.
+** return -1 in case of over/underflow.
+** return 0 at the 1st character that is not a digit, including '\0'. Exception
+** for the minus sign: must be the 1st character.
+** return 0 if the 1st character (or 2nd after minus) is '0': no leading '0'.
+**
+** Each characters is treated one by one, starting from the beginning.
+** *result contains the final calculated value. *index is increased by one
+** for each valid character treated: use it for additional error check.
+*/
 
-	if (!(tmp = (t_rb_node *)malloc(sizeof(*tmp))))
-		return (NULL);
-	ft_bzero(tmp, sizeof(*tmp));
-	if (!(tmp->name = ft_strsub(data->line, 0, data->fin)))
+static inline int	lem_atoll_minus(const char *src, long long *result,
+						size_t *index)
+{
+	long long	limit;
+
+	limit = LLONG_MAX;
+	*result = 1;
+	while ((limit /= 10))
+		*result *= 10;
+	limit = -(*result / 10);
+	*index = *index + 1;
+	*result = 0;
+	if (src[*index] == '0')
 	{
-		free(tmp);
-		return (NULL);
+		*index = *index + 1;
+		return (0);
 	}
-	tmp->x = data->x;
-	tmp->y = data->y;
-	tmp->flag = RB_RED;
-	if (!lem->end && (data->command & LEM_END))
-		lem->end = tmp;
-	else if (!lem->start && (data->command & LEM_START))
-		lem->start = tmp;
-	return (tmp);
+	while ('0' <= src[*index] && src[*index] <= '9' && *result > limit)
+		*result = *result * 10 - src[(*index)++] + '0';
+	if ('0' <= src[*index] && src[*index] <= '9')
+	{
+		*result = *result * 10 - (src[(*index)++] - '0');
+		if ((*result > -10) || ('0' <= src[*index] && src[*index] <= '9'))
+			return (-1);
+	}
+	return (0);
 }
 
-static inline int		feed_tree(t_lemin *lem, t_tree_data *room)
+int					lem_atoll(const char *src, long long *result, size_t *index)
 {
-	t_rb_node	*tmp;
+	long long	limit;
 
-	if (!(tmp = lem_rb_create(lem, room)))
-		return (-2);
-	if (rb_insert(&(lem->tree), tmp) == -1)
+	if (src[*index] == '-')
+		return (lem_atoll_minus(src, result, index));
+	limit = LLONG_MAX;
+	*result = 1;
+	while ((limit /= 10))
+		*result *= 10;
+	limit = *result / 10;
+	*result = 0;
+	if (src[*index] == '0')
 	{
-		free(tmp->name);
-		free(tmp);
-		return (-2);
+		*index = *index + 1;
+		return (0);
 	}
-	ft_printf("%s %lld %lld\n", tmp->name, tmp->x, tmp->y);
-	return (1);
+	while ('0' <= src[*index] && src[*index] <= '9' && *result < limit)
+		*result = *result * 10 + src[(*index)++] - '0';
+	if ('0' <= src[*index] && src[*index] <= '9')
+	{
+		*result = *result * 10 + (src[(*index)++] - '0');
+		if ((*result < 10) || ('0' <= src[*index] && src[*index] <= '9'))
+			return (-1);
+	}
+	return (0);
 }
 
 /*
@@ -81,7 +115,7 @@ static inline int		feed_tree(t_lemin *lem, t_tree_data *room)
 ** separator are nonstandard either.
 */
 
-static inline int		is_room(t_lemin *lem, char *line, int *command)
+static inline int	is_room(t_lemin *lem, char *line, int *command)
 {
 	size_t		i;
 	t_tree_data	room;
@@ -102,7 +136,7 @@ static inline int		is_room(t_lemin *lem, char *line, int *command)
 			|| line[i] != '\n')
 		return (0);
 	*command &= ~LEM_COMMAND;
-	return (feed_tree(lem, &room));
+	return (lem_feed_tree(lem, &room));
 }
 
 /*
@@ -115,7 +149,7 @@ static inline int		is_room(t_lemin *lem, char *line, int *command)
 ** comment and ignored prior to this point.
 */
 
-static inline int		is_command(char *line, int *command)
+static inline int	is_command(char *line, int *command)
 {
 	if (line[0] == '#' && (!ft_strlcmp(line + 1, "#end\n")))
 	{
@@ -143,7 +177,7 @@ static inline int		is_command(char *line, int *command)
 ** we return an error.
 */
 
-int						reader_room(t_lemin *lem)
+int					reader_room(t_lemin *lem)
 {
 	int		ret;
 	char	*line;
@@ -158,7 +192,7 @@ int						reader_room(t_lemin *lem)
 				ret = is_room(lem, line, &command);
 			if (ret == 0 && command != (LEM_START + LEM_END))
 				ret = -1;
-			else if (push_in_file(lem, line) == -1)
+			else if (save_line(lem, line) == -1)
 				ret = -2;
 		}
 		free(line);

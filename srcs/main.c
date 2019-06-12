@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 10:09:16 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:00:43 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@ int					is_comment(char *line)
 	return (0);
 }
 
-int					push_in_file(t_lemin *lem, char *line)
+int					save_line(t_lemin *lem, char *line)
 {
 	if (!lem->fileline)
 	{
 		if (!(lem->fileline = ft_lstnew(0, 0)))
 			return (-1);
-		lem->tmp = lem->fileline;
+		lem->curline = lem->fileline;
 		if (!(lem->fileline->pv = ft_strdup(line)))
 			return (-1);
 	}
 	else
 	{
-		if (!(lem->tmp->next = ft_lstnew(0, 0)))
+		if (!(lem->curline->next = ft_lstnew(0, 0)))
 			return (-1);
-		lem->tmp = lem->tmp->next;
-		if (!(lem->tmp->pv = ft_strdup(line)))
+		lem->curline = lem->curline->next;
+		if (!(lem->curline->pv = ft_strdup(line)))
 			return (-1);
 	}
 	return (0);
@@ -59,8 +59,17 @@ int					main(void)
 		ft_dprintf(STDERR_FILENO, "ERROR_ROOM\n");
 	else if ((ret = reader_tube(&lem)))
 		ft_dprintf(STDERR_FILENO, "ERROR_TUBE\n");
+	if (!ret)
+	{
+		lem.curline = lem.fileline;
+		while (lem.curline)
+		{
+			ft_printf("%s", (lem.curline)->pv);
+			lem.curline = (lem.curline)->next;
+		}
+	}
 	ft_gnl(-1, 0, 0);
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
-	return (ret);
+	return (ret * -1);
 }

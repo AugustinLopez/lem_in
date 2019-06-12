@@ -6,65 +6,92 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 10:07:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:03:37 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lem_in.h>
 
-int	is_tube(t_lemin *lem, char *line)
+static inline int	check_duplicate(t_rb_node *left, void *right)
+{
+	t_list	*tmp;
+
+	if (!(tmp = left->link))
+		return (0);
+	if (left == right)
+		return (1);
+	while (tmp)
+	{
+		if (tmp->pv == right)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+static inline int	create_link(t_rb_node *left, t_rb_node *right)
+{
+	t_list	*node;
+
+	if (!(node = ft_lstnew(0, 0)))
+		return (-2);
+	node->pv = right;
+	if (!(left->link))
+	{
+		left->link = node;
+		left->flag = 0;
+	}
+	else
+		ft_lstadd(&(left->link), node);
+	if (!(node = ft_lstnew(0, 0)))
+		return (-2);
+	node->pv = left;
+	if (!(right->link))
+	{
+		right->link = node;
+		right->flag = 0;
+	}
+	else
+		ft_lstadd(&(right->link), node);
+	left->flag += 1;
+	right->flag += 1;
+	return (1);
+}
+
+static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
+						size_t j)
+{
+	t_rb_node	*left;
+	t_rb_node	*right;
+
+	line[i] = 0;
+	line[j] = 0;
+	left = lem_find_node(lem->tree, line);
+	right = lem_find_node(lem->tree, line + i + 1);
+	line[i] = '-';
+	line[j] = '\n';
+	if (left && right && check_duplicate(left, right) == 0)
+		return (create_link(left, right));
+	else
+		return (0);
+}
+
+static inline int	is_tube(t_lemin *lem, char *line)
 {
 	size_t		i;
 	size_t		j;
-	t_rb_node	*tmp;
-	t_rb_node	*tmp2;
-	t_list		*node;
 
-	(void)lem;
 	i = 0;
 	while (line[i] && line[i] != '-')
 		i++;
 	j = i;
 	if (line[j++] != '-' || !line[j] || line[j] == '\n')
-		return (0);
+		return (-1);
 	while (line[j] && line[j] != '\n')
 		j++;
 	if (line[j] != '\n')
-		return (0);
-	line[i] = 0;
-	tmp = lem_find_node(lem->tree, line);
-	line[i] = '-';
-	line[j] = 0;
-	tmp2 = lem_find_node(lem->tree, line + i + 1);
-	line[j] = '\n';
-	if (tmp && tmp2)
-	{
-		//I need to check existing link to avoid adding the same link 2 time
-		if (!(node = ft_lstnew(0, 0)))
-			return (-1);
-		node->pv = tmp2;
-		if (!tmp->link)
-			tmp->link = node;
-		else
-			ft_lstadd(&(tmp->link), node);
-		if (!(node = ft_lstnew(0, 0)))
-			return (-1);
-		node->pv = tmp;
-		if (!tmp2->link)
-			tmp2->link = node;
-		else
-			ft_lstadd(&(tmp2->link), node);
-	}
-	else
-		return (0);
-	tmp2 = tmp2->link->pv;
-	tmp = tmp->link->pv;
-	if (tmp2->link->next || tmp->link->next)
-		ft_printf("Y:");
-	else
-		ft_printf("N:");
-	ft_printf("%s-%s\n", tmp2->name, tmp->name);
-	return (1);
+		return (-1);
+	return (proceed_with_tube(lem, line, i, j));
 }
 
 /*
@@ -78,23 +105,23 @@ int	is_tube(t_lemin *lem, char *line)
 ** - No whitespace accepted.
 */
 
-int				reader_tube(t_lemin *lem)
+int					reader_tube(t_lemin *lem)
 {
 	int		ret;
 	char	*line;
 
-	if (is_tube(lem, (char *)(lem->tmp->pv)) == 0)
+	if (is_tube(lem, (char *)(lem->curline->pv)) == 0)
 		return (-1);
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
 	{
 		if (!is_comment(line))
 		{
-			if (!is_tube(lem, line))
+			if ((ret = is_tube(lem, line)) < 0)
 			{
 				free(line);
-				return (-1);
+				return (ret);
 			}
-			if (push_in_file(lem, line) == -1)
+			if (save_line(lem, line) == -1)
 			{
 				free(line);
 				return (-2);

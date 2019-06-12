@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/10 18:30:12 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 11:30:31 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdint.h>
 # include <libft.h>
 # include <stdlib.h>
+# include <rb_tree.h>
 
 /*
 ** The 1st bit of our flag is the color.
@@ -52,14 +53,12 @@ typedef struct			s_rb_node
 	struct s_rb_node	*parent;
 	long long			x;
 	long long			y;
-	uint8_t				flag;
+	size_t				flag;
 	t_list				*link;
-	size_t				index;
 	char				*name;
 }						t_rb_node;
 
 int						rb_insert(t_rb_node **root, t_rb_node *node);
 void					lem_free_tree(t_rb_node **node);
-size_t					lem_index_tree(t_rb_node *node);
 t_rb_node				*lem_find_node(t_rb_node *root, const char *name);
 #endif

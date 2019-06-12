@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:26:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 10:00:35 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:48:18 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,8 @@ int					reader_ant(t_lemin *lem)
 				free(line);
 				return (-1);
 			}
-			ret = push_in_file(lem, line);
+			ret = save_line(lem, line);
 			free(line);
-			if (ret == 0)
-				ft_dprintf(STDOUT_FILENO, "%d\n", lem->nbr_ant);
 			return (ret);
 		}
 		free(line);
