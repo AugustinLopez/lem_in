@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/11 15:35:56 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:07:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_tube(t_lemin *lem, char *line)
 {
-	size_t	i;
-	size_t	j;
+	size_t		i;
+	size_t		j;
 	t_rb_node	*tmp;
 	t_rb_node	*tmp2;
 	t_list		*node;
@@ -54,7 +54,6 @@ int	is_tube(t_lemin *lem, char *line)
 			tmp2->link = node;
 		else
 			ft_lstadd(&(tmp2->link), node);
-
 	}
 	else
 		return (0);

@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/06/10 15:08:21 by aulopez          ###   ########.fr        #
+#    Updated: 2019/06/12 09:57:47 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC=main \
 	reader_ant \
 	reader_room \
 	reader_tube \
-	rbtree \
+	rb_tree \
 	rb_balance \
 	lem_libft
 INCLUDES=	$(PATH_HDR)libft.h \

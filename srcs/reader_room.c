@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/11 15:28:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:10:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static inline int		feed_tree(t_lemin *lem, t_tree_data *room)
 ** separator are nonstandard either.
 */
 
-static inline int	is_room(t_lemin *lem, char *line, int *command)
+static inline int		is_room(t_lemin *lem, char *line, int *command)
 {
 	size_t		i;
 	t_tree_data	room;
@@ -115,7 +115,7 @@ static inline int	is_room(t_lemin *lem, char *line, int *command)
 ** comment and ignored prior to this point.
 */
 
-static inline int	is_command(char *line, int *command)
+static inline int		is_command(char *line, int *command)
 {
 	if (line[0] == '#' && (!ft_strlcmp(line + 1, "#end\n")))
 	{
@@ -143,7 +143,7 @@ static inline int	is_command(char *line, int *command)
 ** we return an error.
 */
 
-int					reader_room(t_lemin *lem)
+int						reader_room(t_lemin *lem)
 {
 	int		ret;
 	char	*line;

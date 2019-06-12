@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/10 18:04:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:16:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,11 @@ static int		launch_recursive(t_rb_node **root, t_rb_node **node)
 	return (0);
 }
 
-void			balance_black_uncle(t_rb_node **node, int am_i_left, int is_parent_left)
+void			balance_black_uncle_right(t_rb_node **node, int am_i_left)
 {
-	t_rb_node *tmp;
+	t_rb_node	*tmp;
 
-	if (is_parent_left && !am_i_left)
-	{
-		(*node)->left = (*node)->parent;
-		(*node)->parent = (*node)->parent->parent;
-		(*node)->parent->left = *node;
-		(*node)->left->parent = *node;
-		(*node)->left->right = 0;
-		(*node) = (*node)->left;
-	}
-	else if (!is_parent_left && am_i_left)
+	if (am_i_left)
 	{
 		(*node)->right = (*node)->parent;
 		(*node)->parent = (*node)->parent->parent;
@@ -60,37 +51,49 @@ void			balance_black_uncle(t_rb_node **node, int am_i_left, int is_parent_left)
 	*node = (*node)->parent;
 	(*node)->flag &= ~RB_RED;
 	(*node)->parent->flag |= RB_RED;
-	if (is_parent_left)
+	if ((tmp = (*node)->left))
+		tmp->parent = (*node)->parent;
+	(*node)->left = (*node)->parent;
+	(*node)->left->right = tmp;
+	(*node)->parent = (*node)->left->parent;
+	(*node)->left->parent = *node;
+	if ((*node)->parent)
 	{
-		if ((tmp = (*node)->right))
-			tmp->parent = (*node)->parent;
-		(*node)->right = (*node)->parent;
-		(*node)->right->left = tmp;
-		(*node)->parent = (*node)->right->parent;
-		(*node)->right->parent = *node;
-		if ((*node)->parent)
-		{
-			if ((*node)->parent->left == (*node)->right)
-				(*node)->parent->left = *node;
-			else
-				(*node)->parent->right = *node;
-		}
+		if ((*node)->parent->left == (*node)->left)
+			(*node)->parent->left = *node;
+		else
+			(*node)->parent->right = *node;
 	}
-	else
+}
+
+void			balance_black_uncle_left(t_rb_node **node, int am_i_left)
+{
+	t_rb_node *tmp;
+
+	if (!am_i_left)
 	{
-		if ((tmp = (*node)->left))
-			tmp->parent = (*node)->parent;
 		(*node)->left = (*node)->parent;
-		(*node)->left->right = tmp;
-		(*node)->parent = (*node)->left->parent;
+		(*node)->parent = (*node)->parent->parent;
+		(*node)->parent->left = *node;
 		(*node)->left->parent = *node;
-		if ((*node)->parent)
-		{
-			if ((*node)->parent->left == (*node)->left)
-				(*node)->parent->left = *node;
-			else
-				(*node)->parent->right = *node;
-		}
+		(*node)->left->right = 0;
+		(*node) = (*node)->left;
+	}
+	*node = (*node)->parent;
+	(*node)->flag &= ~RB_RED;
+	(*node)->parent->flag |= RB_RED;
+	if ((tmp = (*node)->right))
+		tmp->parent = (*node)->parent;
+	(*node)->right = (*node)->parent;
+	(*node)->right->left = tmp;
+	(*node)->parent = (*node)->right->parent;
+	(*node)->right->parent = *node;
+	if ((*node)->parent)
+	{
+		if ((*node)->parent->left == (*node)->right)
+			(*node)->parent->left = *node;
+		else
+			(*node)->parent->right = *node;
 	}
 }
 
@@ -117,8 +120,10 @@ void			rb_balance(t_rb_node **node, int am_i_left)
 			? 1 : 0;
 		rb_balance(&parent, is_parent_left);
 	}
+	else if (is_parent_left)
+		balance_black_uncle_left(node, am_i_left);
 	else
-		balance_black_uncle(node, am_i_left, is_parent_left);
+		balance_black_uncle_right(node, am_i_left);
 }
 
 int				rb_insert(t_rb_node **root, t_rb_node *node)

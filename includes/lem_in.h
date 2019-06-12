@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/06/10 18:55:02 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/06/12 10:08:54 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ typedef struct 		s_lemin
 	t_rb_node		*tree;
 }					t_lemin;
 
-char				*lem_strtrim(char const *s);
-size_t				lem_whitespace(char *line, size_t i);
-size_t				lem_endspace(char *line, size_t i);
+//char				*lem_strtrim(char const *s);
 int					lem_atoll(const char *src, long long *result, size_t *index);
 int					reader_ant(t_lemin *lem);
 int					reader_room(t_lemin *lem);
