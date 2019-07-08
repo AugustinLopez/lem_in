@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 11:47:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 12:12:09 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,19 @@ static inline t_rb_node	*lem_rb_create(t_lemin *lem, t_tree_data *data)
 int						lem_feed_tree(t_lemin *lem, t_tree_data *room)
 {
 	t_rb_node	*tmp;
+	t_rb_node	*same;
 
 	if (!(tmp = lem_rb_create(lem, room)))
-		return (-2);
+		return (-1);
 	if (rb_insert(&(lem->tree), tmp) == -1)
 	{
+		same = lem_find_node(lem->tree, tmp->name);
 		free(tmp->name);
 		free(tmp);
-		return (-2);
+		if (same && room->x == same->x && room->y == same->y)
+			return (0);
+		else
+			return (-1);
 	}
-	return (1);
+	return (0);
 }

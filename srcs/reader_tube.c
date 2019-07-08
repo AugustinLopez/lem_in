@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 12:03:37 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 12:23:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static inline int	create_link(t_rb_node *left, t_rb_node *right)
 	t_list	*node;
 
 	if (!(node = ft_lstnew(0, 0)))
-		return (-2);
+		return (-1);
 	node->pv = right;
 	if (!(left->link))
 	{
@@ -44,7 +44,7 @@ static inline int	create_link(t_rb_node *left, t_rb_node *right)
 	else
 		ft_lstadd(&(left->link), node);
 	if (!(node = ft_lstnew(0, 0)))
-		return (-2);
+		return (-1);
 	node->pv = left;
 	if (!(right->link))
 	{
@@ -55,7 +55,7 @@ static inline int	create_link(t_rb_node *left, t_rb_node *right)
 		ft_lstadd(&(right->link), node);
 	left->flag += 1;
 	right->flag += 1;
-	return (1);
+	return (0);
 }
 
 static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
@@ -63,6 +63,7 @@ static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
 {
 	t_rb_node	*left;
 	t_rb_node	*right;
+	int			ret;
 
 	line[i] = 0;
 	line[j] = 0;
@@ -70,10 +71,11 @@ static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
 	right = lem_find_node(lem->tree, line + i + 1);
 	line[i] = '-';
 	line[j] = '\n';
-	if (left && right && check_duplicate(left, right) == 0)
+	ret = 0;
+	if (left && right && (ret = check_duplicate(left, right)) == 0)
 		return (create_link(left, right));
 	else
-		return (0);
+		return (ret);
 }
 
 static inline int	is_tube(t_lemin *lem, char *line)
@@ -114,6 +116,10 @@ int					reader_tube(t_lemin *lem)
 		return (-1);
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
 	{
+		
+		if ((ret = is_tube(lem, line)))
+			ret = is_comment(line);
+		if (ret <= 0)
 		if (!is_comment(line))
 		{
 			if ((ret = is_tube(lem, line)) < 0)
