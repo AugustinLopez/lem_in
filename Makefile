@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/05/16 15:12:56 by bcarlier         ###   ########.fr        #
+#    Updated: 2019/06/12 10:48:57 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,11 @@ LIBFT=$(PATH_LIB)libft.a
 # --- 1.Source/Header ----------------------------------------------------------
 
 SRC=main \
-	lem_libft
+	reader_ant \
+	reader_room \
+	reader_tube \
+	rb_tree \
+	rb_function
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h
 
