@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 17:57:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 21:35:31 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int					save_line(t_lemin *lem, char *line)
 		if (!(lem->curline->pv = ft_strdup(line)))
 			return (-1);
 	}
+	ft_printf("%s", line);
 	return (0);
 }
 
@@ -57,14 +58,6 @@ int					reader(t_lemin *lem)
 		ret = 2;
 	else if ((ret = reader_tube(lem)))
 		ret = 3;
-	if ((lem->curline = lem->fileline))
-	{
-		while (lem->curline)
-		{
-			ft_printf("%s", lem->curline->pv);
-			lem->curline = lem->curline->next;
-		}
-	}
 	if (ret)
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 	ft_gnl(-1, 0, 0);

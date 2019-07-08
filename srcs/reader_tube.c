@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 17:57:04 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 21:24:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int					reader_tube(t_lemin *lem)
 	int		ret;
 	char	*line;
 
-	if (is_tube(lem, (char *)(lem->curline->pv)) == 0)
+	if (is_tube(lem, (char *)(lem->curline->pv)) == -1)
 	{
 		if (lem->fileline == lem->curline)
 		{

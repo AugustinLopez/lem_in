@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/08 17:04:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 20:39:59 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct 		s_lemin
 	t_list			*fileline;
 	t_list			*curline;
 	t_list			*dijkstra;
+	t_list			*path;
 	t_rb_node		*start;
 	t_rb_node		*end;
 	t_rb_node		*tree;

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 12:15:50 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 21:21:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int					reader_room(t_lemin *lem)
 			ret = is_room(lem, line, &command);
 		if (ret <= 0)
 		{
+			ret = ret == 0 ? save_line(lem, line) : -1;
 			free(line);
 			return (ret);
 		}

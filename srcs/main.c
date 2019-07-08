@@ -6,12 +6,17 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 17:43:30 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 21:58:52 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lem_in.h>
 #include <rb_tree.h>
+
+/*__attribute__((destructor)) void loop(void)
+{
+	for(;;);
+}*/
 
 void				debug(t_lemin *lem)
 {
@@ -25,19 +30,27 @@ void				debug(t_lemin *lem)
 
 void				print_path(t_lemin *lem)
 {
-	t_list		*tmp;
+	t_list		*road;
+	t_list		*km;
 	t_rb_node	*node;
 
-	tmp = lem->dijkstra;
+	road = lem->path;
+	ft_printf("\nNbr path:%d", ft_lstsize(lem->path));
 	ft_printf("\n");
-	while (tmp)
+	while (road)
 	{
-		node = get_node(tmp);
-		if (tmp->next)
-			ft_printf("%s<-", node->name);
-		else
-			ft_printf("%s", node->name);
-		tmp = tmp->next;
+		km = road->pv;
+		while (km)
+		{
+			node = get_node(km);
+			if (km->next)
+				ft_printf("%s<-", node->name);
+			else
+				ft_printf("%s", node->name);
+			km = km->next;
+		}
+		ft_printf("\n");
+		road = road->next;
 	}
 	ft_printf("\n");
 }
@@ -92,6 +105,23 @@ void				solve_one_path(t_lemin *lem)
 	}
 }
 
+void				lstoflst(void *pv, size_t zu)
+{
+	t_list	*cur;
+	t_list	*tmp;
+
+	cur = (t_list *)pv;
+	tmp = cur;
+	while (cur)
+	{
+		tmp = tmp->next;
+		free(cur);
+		cur = tmp;
+	}
+	pv = 0;
+	(void)zu;
+}
+
 int					main(void)
 {
 	t_lemin	lem;
@@ -101,9 +131,15 @@ int					main(void)
 	ret = reader(&lem);
 	if (!ret)
 		ret = dijkstra(&lem);
+	//Need to eliminate bad path here
+	//Need to do one pass of dijkstra like, and one with priority given to path with less link
 	if (!ret)
+	{
+		print_path(&lem);
 		solve_one_path(&lem);
+	}
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
+	ft_lstdel(&(lem.path), *lstoflst);
 	return (ret);
 }
