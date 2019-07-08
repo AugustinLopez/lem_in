@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/08 15:20:54 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 17:04:14 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct 		s_lemin
 	size_t			nbr_room;
 	t_list			*fileline;
 	t_list			*curline;
+	t_list			*dijkstra;
 	t_rb_node		*start;
 	t_rb_node		*end;
 	t_rb_node		*tree;
@@ -60,5 +61,5 @@ int					save_line(t_lemin *lem, char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room);
 int					is_comment(char *line);
 t_rb_node			*get_node(t_list *ptr);
-
+int					dijkstra(t_lemin *lem);
 #endif

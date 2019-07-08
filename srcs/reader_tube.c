@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 14:35:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 17:57:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,22 @@ int					reader_tube(t_lemin *lem)
 	char	*line;
 
 	if (is_tube(lem, (char *)(lem->curline->pv)) == 0)
+	{
+		if (lem->fileline == lem->curline)
+		{
+			free(lem->fileline->pv);
+			ft_memdel((void **)&(lem->fileline));
+		}
+		else
+		{
+			lem->curline = lem->fileline;
+			while (lem->curline->next->next)
+				lem->curline = lem->curline->next;
+			free(lem->fileline->next->pv);
+			ft_memdel((void **)&(lem->fileline->next));
+		}
 		return (-1);
+	}
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
 	{
 		if (!(ret = is_comment(line)))
@@ -110,7 +125,7 @@ int					reader_tube(t_lemin *lem)
 		if (ret < 0 || save_line(lem, line) == -1)
 		{
 			free(line);
-			return (-1);
+			return (0);
 		}
 		free(line);
 	}

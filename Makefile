@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/08 15:56:22 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/08 16:54:25 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC=main \
 	reader_tube \
 	reader_master \
 	rb_tree \
-	rb_function
+	rb_function \
+	dijkstra
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h
 
