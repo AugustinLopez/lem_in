@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 12:12:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/08 14:50:23 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,9 @@ int						lem_feed_tree(t_lemin *lem, t_tree_data *room)
 			return (-1);
 	}
 	return (0);
+}
+
+t_rb_node			*get_node(t_list *ptr)
+{
+	return ((t_rb_node *)(ptr->pv));
 }
