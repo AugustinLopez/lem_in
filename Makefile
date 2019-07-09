@@ -6,14 +6,14 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/09 12:39:05 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/09 16:26:06 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=lem_in
 LIBFT=$(PATH_LIB)libft.a
 
-FLAGS=-Wall -Wextra -Werror -g3
+FLAGS=-Wall -Wextra -Werror
 LIB_RULE=
 CC_O=gcc $(FLAGS) -c -I$(PATH_HDR)
 CC_C=gcc $(FLAGS) -o $(NAME) $(OBJ) -I$(PATH_HDR) -L$(PATH_LIB) -lft
@@ -28,7 +28,9 @@ SRC=main \
 	reader_master \
 	rb_tree \
 	rb_function \
-	dijkstra
+	dijkstra \
+	lst \
+	remove_bad_paths
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h
@@ -71,18 +73,18 @@ re: fclean all
 
 O3: FLAGS += -O3 -fno-builtin
 O3: LIB_RULE = O3
-O3: re;
+O3: all;
 O2: FLAGS += -O2
 O2: LIB_RULE = O2
-O2: re;
+O2: all;
 Os: FLAGS += -Os
 Os: LIB_RULE = Os
-Os: re;
-g3: FLAGS = -g3 
+Os: all;
+g3: FLAGS = -g3 -fsanitize=address
 g3: LIB_RULE = g3
-g3: re;
+g3: all;
 pedantic: FLAGS += -pedantic
 pedantic: LIB_RULE = pedantic
-pedantic: re;
+pedantic: all;
 
 .PHONY: all clean fclean re O3 O2 Os g3 pedantic

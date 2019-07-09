@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/09 12:43:43 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/09 17:36:11 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void				print_me(t_lemin *lem)
 			ft_printf("L%zu-%s ", tmp->zu, get_node(tmp)->name);
 			tmp = tmp->next;
 		}
-		ft_printf("\n");
 	}
 }
 
@@ -104,120 +103,201 @@ void				solve_one_path(t_lemin *lem)
 			tmp = tmp->next;
 		}
 		print_me(lem);
+		if (tmp != begin)
+			ft_printf("\n");
 	}
 }
 
-void				lstoflst(void *pv, size_t zu)
+
+
+
+
+
+
+
+int					handle_single_path(t_list *road, size_t n, size_t tot)
 {
-	t_list	*cur;
-	t_list	*tmp;
+	t_list	*km;
+	int		check;
 
-	cur = (t_list *)pv;
-	tmp = cur;
-	while (cur)
+	check = 0;
+	if (n >= tot && road->pv)
 	{
-		tmp = tmp->next;
-		free(cur);
-		cur = tmp;
+		road->zu = 0;
+		check = 1;
 	}
-	pv = 0;
-	(void)zu;
+	km = road->pv;
+	while (km->next && !(km->next->zu))
+		km = km->next;
+	while (km->next)
+	{
+		km->zu = km->next->zu;
+		km = km->next;
+	}
+	if (check)
+		km->zu = 0;
+	if (road->pv)
+		km->zu = n;
+	return (check);
 }
 
-t_list				*lstfind(t_list *begin, t_list *elem)
+void				print_thing(t_list *road)
+{
+	t_list	*km;
+
+	km = road->pv;
+	while (km->next && !(km->zu))
+		km = km->next;
+	while (km->next)
+	{
+		if (!(km->zu))
+			break ;
+		ft_printf("L%zu-%s ", km->zu, get_node(km)->name);
+		km = km->next;
+	}
+}
+
+int					only_zero(t_list *begin)
 {
 	t_list	*tmp;
 
 	tmp = begin->next;
-	while (tmp->next)
-	{
-		if (get_node(tmp) == get_node(elem))
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-void				eliminate(t_list **begin, t_list *one, t_list *two)
-{
-	t_list	*elim;
-	t_list	*tmp;
-
-	elim = two->zu < one->zu ? one : two;
-	if (elim == *begin)
-		*begin = (*begin)->next;
-	else
-	{
-		tmp = *begin;
-		while (tmp->next != elim)
-			tmp = tmp->next;
-		tmp->next = tmp->next->next;
-	}
-	elim->next = 0;
-	ft_lstdelone(&elim, *lstoflst);
-}
-
-int					check_for_elimination(t_list *road, t_list *km, t_lemin *lem)
-{
-	t_list	*prev;
-	char	first;
-	t_list	*tmp;
-	t_list	*ret;
-
-	first = (road == lem->path);
-	prev = lem->path;
-	if (!first)
-		while (prev->next != road)
-			prev = prev->next;
-	if (first)
-		tmp = prev->next;
-	else
-		tmp = prev->next->next;
 	while (tmp)
 	{
-		if ((ret = lstfind(tmp->pv, km)))
-		{
-			if (!first)
-				eliminate(&(lem->path), tmp, prev->next);
-			else
-				eliminate(&(lem->path), tmp, lem->path);
-			return (first);
-		}
+		if (tmp->zu)
+			return (0);
 		tmp = tmp->next;
 	}
-	return (0);
+	return (1);
 }
 
-int					remove_bad_paths(t_lemin *lem)
+void				finish_path(t_lemin *lem, t_list *min, size_t iter)
 {
-	t_list		*road;
-	t_list		*km;
-	int			ret;
+	size_t	nbr;
+	t_list	*road;
+	t_list	dummy;
+	int		a;
 
-	road = lem->path;
-	if (ft_lstsize(road) == 1)
-		return (0);
-	ret = 0;
-	while (road)
+	dummy.zu = 0;
+	nbr = ft_lstsize(lem->path);
+	while (nbr)
 	{
-		km = road->pv;
-		while (km)
+		road = lem->path;
+		a = 0;
+		while (road)
 		{
-			if (get_node(km)->nbr_link > 2)
-				if ((ret = check_for_elimination(road, km, lem)))
-					break ;
-			km = km->next;
-		}
-		if (ret)
-		{
-			ret = 0;
-			road = lem->path;
-		}
-		else
+			if (only_zero(road->pv))
+			{
+				lstremove(&(lem->path), &dummy, road);
+				--nbr;
+				break ;
+			}
+			a = 1;
+			if (road == min && iter < lem->nbr_ant)
+			{
+				if (handle_single_path(road, ++iter, lem->nbr_ant))
+					min = 0;
+			}
+			else
+				handle_single_path(road, 0, 0);
+			print_thing(road);
 			road = road->next;
+		}
+		if (a)
+			ft_printf("\n");
 	}
-	return (0);
 }
+
+void				handle_all_path(t_lemin *lem)
+{
+	size_t	nbr;
+	size_t	max;
+	t_list	*min;
+	size_t	iter;
+	int		ret;
+	t_list	*tmp;
+
+	nbr = ft_lstsize(lem->path);
+	max = lstlongest(lem->path);
+	min = lstshortest(lem->path);
+	iter = 0;
+	ret = 0;
+	while (max)
+	{
+		tmp = lem->path;
+		while (tmp)
+		{
+			if (tmp->zu)
+				ret = handle_single_path(tmp, ++iter, nbr * lem->nbr_ant / tmp->zu);
+			else
+				ret = handle_single_path(tmp, 0, 0);
+			if (ret)
+			{
+				--nbr;
+				max = lstlongest(lem->path);
+			}
+			print_thing(tmp);
+			tmp = tmp->next;
+		}
+		ft_printf("\n");
+	}
+//	finish_path(lem, min, iter);
+}
+/*
+void				solve_paths(t_lemin *lem)
+{
+	t_list	*tmp;
+	t_list	*begin;
+	size_t	nbr;
+	size_t	max;
+	size_t	iter;
+
+	nbr = ft_lstsize(lem->path);
+	max = lstlongest(lem->path);
+	ft_printf("%d %d\n", nbr, max);
+	begin  = lem->path->pv;
+	tmp = begin;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->zu = 1;
+	iter = 0;
+	while (begin->zu <= lem->nbr_ant)
+	{
+		tmp = begin;
+		while (!(tmp->next->zu))
+			tmp = tmp->next;
+		while (tmp)
+		{
+			if (tmp->next)
+			{
+				tmp->zu = tmp->next->zu;
+				if (tmp->next->zu > lem->nbr_ant)
+					break ;
+			}
+			else if (tmp->zu <= lem->nbr_ant)
+				tmp->zu += 1;
+			tmp = tmp->next;
+			if (lem->path->zu && iter >= lem->nbr_ant)
+			{
+				lem->path->zu = 0;
+				tmp = begin;
+				while (tmp->next)
+					tmp = tmp->next;
+				tmp->zu = lem->nbr_ant + 1;
+				tmp = begin;
+				while (!(tmp->next->zu))
+					tmp = tmp->next;
+			}
+		}
+		iter += 1;
+		print_me(lem);
+		if (tmp != begin)
+			ft_printf("\n");
+	}
+}*/
+
+
+
 
 int					main(void)
 {
@@ -235,7 +315,7 @@ int					main(void)
 		print_path(&lem);
 		remove_bad_paths(&lem);
 		print_path(&lem);
-		solve_one_path(&lem);
+		handle_all_path(&lem);
 	}
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);

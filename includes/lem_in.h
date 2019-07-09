@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/08 20:39:59 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/09 16:32:40 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,10 @@ int					lem_feed_tree(t_lemin *lem, t_tree_data *room);
 int					is_comment(char *line);
 t_rb_node			*get_node(t_list *ptr);
 int					dijkstra(t_lemin *lem);
+void				lstremove(t_list **begin, t_list *one, t_list *two);
+t_list				*lstfind(t_list *begin, t_list *elem);
+void				lstoflst(void *pv, size_t zu);
+int					remove_bad_paths(t_lemin *lem);
+size_t				lstlongest(t_list *begin);
+t_list				*lstshortest(t_list *begin);
 #endif
