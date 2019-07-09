@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 21:56:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/09 09:42:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static inline int	link_loop(t_list *lst, t_lemin *lem, t_fifo *fifo)
 				return (-1);
 			lem->end->prev = 0;
 			//ret for now until bad path are removed
-			return (1);
+			//return (1);
 		}
 		lst = lst->next;
 	}
@@ -111,8 +111,8 @@ static inline int	iteratif_dijkstra(t_lemin *lem, t_fifo *fifo)
 		free(fifo->first);
 		fifo->first = fifo->tmp;
 	}
-	if (ret == 1) //remove later
-		return (free_fifo(fifo, 0));
+	//if (ret == 1) //remove later
+	//	return (free_fifo(fifo, 0));
 	if (lem->path && !ret)
 		return (free_fifo(fifo, 0));
 	ft_dprintf(STDERR_FILENO, "ERROR\n");
