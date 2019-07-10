@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/09 09:42:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/10 18:23:59 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static inline int	path_found(t_rb_node *node, t_lemin *lem)
 		}
 		tmp->pv = node;
 		node = node->prev;
+		//if (node == lem->end)
+		//	break ;
 	}
 	if (!(lem->path))
 	{
@@ -71,7 +73,22 @@ static inline int	path_found(t_rb_node *node, t_lemin *lem)
 static inline int	link_loop(t_list *lst, t_lemin *lem, t_fifo *fifo)
 {
 	t_rb_node	*node;
+	t_list		*tmp;
 
+	tmp = lst;
+	while (tmp)
+	{
+		if ((node = get_node(tmp)) == lem->end)
+		{
+			lem->end->prev = get_node(fifo->first);
+			if (path_found(node, lem) == -1)
+				return (-1);
+			lem->end->prev = 0;
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	tmp = fifo->first;
 	while (lst)
 	{
 		node = get_node(lst);
@@ -80,20 +97,12 @@ static inline int	link_loop(t_list *lst, t_lemin *lem, t_fifo *fifo)
 			lst = lst->next;
 			continue ;
 		}
-		node->prev = get_node(fifo->first);
+		node->prev = get_node(tmp);
 		if (!(fifo->tmp = ft_lstnew(0, 0)))
 			return (-1);
 		fifo->tmp->pv = node;
 		fifo->last->next = fifo->tmp;
 		fifo->last = fifo->tmp;
-		if (node == lem->end)
-		{
-			if (path_found(node, lem) == -1)
-				return (-1);
-			lem->end->prev = 0;
-			//ret for now until bad path are removed
-			//return (1);
-		}
 		lst = lst->next;
 	}
 	return (0);
@@ -102,27 +111,33 @@ static inline int	link_loop(t_list *lst, t_lemin *lem, t_fifo *fifo)
 static inline int	iteratif_dijkstra(t_lemin *lem, t_fifo *fifo)
 {
 	int		ret;
+	t_list	*tmp;
 
 	while (fifo->first)
 	{
+		ft_printf("%s\n", get_node(fifo->first)->name);
 		if ((ret = link_loop(get_node(fifo->first)->link, lem, fifo)))
 			break ;
 		fifo->tmp = fifo->first->next;
 		free(fifo->first);
 		fifo->first = fifo->tmp;
 	}
-	//if (ret == 1) //remove later
-	//	return (free_fifo(fifo, 0));
 	if (lem->path && !ret)
 		return (free_fifo(fifo, 0));
 	ft_dprintf(STDERR_FILENO, "ERROR\n");
 	return (free_fifo(fifo, -1));
 }
 
+/*
+** We use a FIFO stack for the modified Dijkstra algorithm.
+** We keep track of the weight and the length: this is to avoid a situation
+** where if two node A and B have the same length and can only pass through
+** X carrefour, A monopolize the X carrefour simply because it is treated first
+*/
+
 int					dijkstra(t_lemin *lem)
 {
 	t_fifo		fifo;
-	t_rb_node	*node;
 
 	ft_bzero(&fifo, sizeof(fifo));
 	if (!lem->start->nbr_link || !lem->end->nbr_link
@@ -131,8 +146,8 @@ int					dijkstra(t_lemin *lem)
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (-1);
 	}
+	lem->start->weight = 1;
 	(fifo.first)->pv = lem->start;
-	node = lem->start;
 	fifo.last = fifo.first;
 	return (iteratif_dijkstra(lem, &fifo));
 }

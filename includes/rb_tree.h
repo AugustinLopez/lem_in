@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 21:12:44 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/10 15:59:02 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ typedef struct			s_tree_data
 	int					command;
 }						t_tree_data;
 
+//length: longueur actuel du chemin
+//weight: nombre de carrefour emprunte. Necessaire pour eviter un "monopole"
+//en fonction de l'algo,on pourrait privilegier length before weight ou l'inverse
+
 typedef struct			s_rb_node
 {
 	struct s_rb_node	*left;
@@ -56,6 +60,8 @@ typedef struct			s_rb_node
 	long long			y;
 	int					flag; //flag and nbr_link could be combined
 	size_t				nbr_link;
+	size_t				length;
+	size_t				weight;
 	t_list				*link; //don't forget to free link !!
 	char				*name;
 }						t_rb_node;
