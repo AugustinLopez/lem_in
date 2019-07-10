@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/09 16:26:06 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/10 10:20:34 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRC=main \
 	rb_function \
 	dijkstra \
 	lst \
-	remove_bad_paths
+	remove_bad_paths \
+	single_path
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h
