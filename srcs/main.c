@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/10 16:55:22 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/11 14:39:08 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ size_t				lstlongest_bis(t_list *begin, size_t *nbr)
 	*nbr = 0;
 	while (tmp)
 	{
-		if (n < tmp->zu - 1)
+		if (tmp->zu && n < tmp->zu - 1)
 		{
 			n = tmp->zu - 1;
 			*nbr = 1;
 		}
-		else if (n == tmp->zu - 1)
+		else if (tmp->zu && n == tmp->zu - 1)
 			++(*nbr);
 		tmp = tmp->next;
 	}
@@ -56,7 +56,7 @@ size_t				lst2ndlongest(t_list *begin, size_t nbr)
 	n = 0;
 	while (tmp)
 	{
-		if (n < tmp->zu - 1 && tmp->zu - 1 < nbr)
+		if (tmp->zu && n < tmp->zu - 1 && tmp->zu - 1 < nbr)
 			n = tmp->zu - 1;
 		tmp = tmp->next;
 	}
@@ -77,20 +77,11 @@ int					solve(t_lemin *lem)
 	nbr_path = ft_lstsize(lem->path);
 	max_length = lstlongest_bis(lem->path, &nbr_max);
 	second = lst2ndlongest(lem->path, max_length);
-	while (ant)
-	{
-		ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_max);
-	ft_printf("%d - %d\n", ant / nbr_path * max_length, ant / (nbr_path - nbr_max) * second);
-		if (ant / nbr_path * max_length <= ant / (nbr_path - nbr_max) * second)
-			ant -= (nbr_path > ant) ? ant : nbr_path;
-		else
-		{
-			ft_printf("hi");
-			max_length = lstlongest_bis(lem->path, &nbr_max);
-			second = lst2ndlongest(lem->path, max_length);
-		}
-	}
-	ft_printf("%d - %d\n", ant / nbr_path * max_length, ant / (nbr_path - nbr_max) * second);
+	ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_max);
+	ft_printf("Max:%d VS %d Left\n", max_length, ant / (nbr_path - nbr_max) + second);
+	ant -= nbr_path;
+	ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_max);
+	ft_printf("Max:%d VS %d Left\n", max_length, ant / (nbr_path - nbr_max) + second);
 	return (0);
 }
 
@@ -109,7 +100,7 @@ int					main(void)
 		print_path(&lem);
 		remove_bad_paths(&lem);
 		print_path(&lem);
-	//	solve(&lem);
+		solve(&lem);
 		solve_one_path(&lem);
 	}
 	lem_free_tree(&(lem.tree));

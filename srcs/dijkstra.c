@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/10 18:23:59 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/11 13:39:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ static inline int	link_loop(t_list *lst, t_lemin *lem, t_fifo *fifo)
 static inline int	iteratif_dijkstra(t_lemin *lem, t_fifo *fifo)
 {
 	int		ret;
-	t_list	*tmp;
 
 	while (fifo->first)
 	{
