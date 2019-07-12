@@ -6,11 +6,11 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/11 13:56:46 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/12 11:33:26 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=lem_in
+NAME=lem-in
 LIBFT=$(PATH_LIB)libft.a
 
 FLAGS=-Wall -Wextra -Werror -g3 -fsanitize=address
