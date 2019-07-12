@@ -6,14 +6,14 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/12 11:33:26 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/12 17:31:32 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=lem-in
 LIBFT=$(PATH_LIB)libft.a
 
-FLAGS=-Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS=#-Wall -Wextra -Werror
 LIB_RULE=
 CC_O=gcc $(FLAGS) -c -I$(PATH_HDR)
 CC_C=gcc $(FLAGS) -o $(NAME) $(OBJ) -I$(PATH_HDR) -L$(PATH_LIB) -lft
@@ -31,7 +31,7 @@ SRC=main \
 	dijkstra \
 	lst \
 	remove_bad_paths \
-	single_path
+	print_result
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h

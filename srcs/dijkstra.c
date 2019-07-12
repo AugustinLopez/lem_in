@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/11 13:39:21 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/12 16:57:18 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static inline int	path_found(t_rb_node *node, t_lemin *lem)
 		{
 			if (!(start = ft_lstnew(0, 0)))
 				return (-1);
-			lem->dijkstra = start;
 			tmp = start;
 		}
 		else
@@ -49,8 +48,6 @@ static inline int	path_found(t_rb_node *node, t_lemin *lem)
 		}
 		tmp->pv = node;
 		node = node->prev;
-		//if (node == lem->end)
-		//	break ;
 	}
 	if (!(lem->path))
 	{
@@ -114,7 +111,6 @@ static inline int	iteratif_dijkstra(t_lemin *lem, t_fifo *fifo)
 
 	while (fifo->first)
 	{
-		ft_printf("%s\n", get_node(fifo->first)->name);
 		if ((ret = link_loop(get_node(fifo->first)->link, lem, fifo)))
 			break ;
 		fifo->tmp = fifo->first->next;
@@ -126,13 +122,6 @@ static inline int	iteratif_dijkstra(t_lemin *lem, t_fifo *fifo)
 	ft_dprintf(STDERR_FILENO, "ERROR\n");
 	return (free_fifo(fifo, -1));
 }
-
-/*
-** We use a FIFO stack for the modified Dijkstra algorithm.
-** We keep track of the weight and the length: this is to avoid a situation
-** where if two node A and B have the same length and can only pass through
-** X carrefour, A monopolize the X carrefour simply because it is treated first
-*/
 
 int					dijkstra(t_lemin *lem)
 {

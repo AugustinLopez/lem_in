@@ -6,13 +6,13 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/10 10:18:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/12 15:57:30 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lem_in.h>
 #include <rb_tree.h>
-
+/*
 void				debug(t_lemin *lem)
 {
 	ft_printf("\nStart is: %s %lld %lld\n",
@@ -48,8 +48,8 @@ void				print_path(t_lemin *lem)
 		road = road->next;
 	}
 	ft_printf("\n");
-}
-
+}*/
+/*
 void				print_me(t_lemin *lem)
 {
 	t_list	*tmp;
@@ -101,4 +101,4 @@ void				solve_one_path(t_lemin *lem)
 		if (tmp != begin)
 			ft_printf("\n");
 	}
-}
+}*/

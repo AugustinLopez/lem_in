@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/06/12 10:52:45 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/12 18:15:50 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ static inline void	balance_black_uncle_right(t_rb_node **node, int am_i_left)
 
 	if (am_i_left)
 	{
+		tmp = (*node)->right;
+		if (tmp)
+			tmp->parent = (*node)->parent;
 		(*node)->right = (*node)->parent;
 		(*node)->parent = (*node)->parent->parent;
 		(*node)->parent->right = *node;
 		(*node)->right->parent = *node;
-		(*node)->right->left = 0;
+		(*node)->right->left = tmp;
 	}
 	*node = am_i_left ? *node : (*node)->parent;
 	(*node)->flag &= ~RB_RED;
@@ -47,11 +50,14 @@ static inline void	balance_black_uncle_left(t_rb_node **node, int am_i_left)
 
 	if (!am_i_left)
 	{
+		tmp = (*node)->left;
+		if (tmp)
+			tmp->parent = (*node)->parent;
 		(*node)->left = (*node)->parent;
 		(*node)->parent = (*node)->parent->parent;
 		(*node)->parent->left = *node;
 		(*node)->left->parent = *node;
-		(*node)->left->right = 0;
+		(*node)->left->right = tmp;
 	}
 	*node = !am_i_left ? *node : (*node)->parent;
 	(*node)->flag &= ~RB_RED;
@@ -121,6 +127,7 @@ static inline int	launch_recursive(t_rb_node **root, t_rb_node **node)
 	(*node)->parent = (*root);
 	return (0);
 }
+
 
 int					rb_insert(t_rb_node **root, t_rb_node *node)
 {

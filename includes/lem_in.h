@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/10 18:10:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/12 16:57:09 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct		s_fifo
 	t_list			*first;
 	t_list			*last;
 	t_list			*tmp;
-	t_list			*save;
 	size_t			n;
 }					t_fifo;
 
@@ -70,6 +69,7 @@ int					remove_bad_paths(t_lemin *lem);
 //size_t				lstlongest(t_list *begin);
 //t_list				*lstshortest(t_list *begin);
 void				solve_one_path(t_lemin *lem);
+int				solve(t_lemin *lem);
 void				debug(t_lemin *lem);
 void				print_path(t_lemin *lem);
 #endif
