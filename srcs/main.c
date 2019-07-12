@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/11 14:39:08 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/12 10:02:07 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,26 @@ int					solve(t_lemin *lem)
 	nbr_path = ft_lstsize(lem->path);
 	max_length = lstlongest_bis(lem->path, &nbr_max);
 	second = lst2ndlongest(lem->path, max_length);
-	ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_max);
-	ft_printf("Max:%d VS %d Left\n", max_length, ant / (nbr_path - nbr_max) + second);
-	ant -= nbr_path;
-	ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_max);
-	ft_printf("Max:%d VS %d Left\n", max_length, ant / (nbr_path - nbr_max) + second);
+	ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_path);
+	while (nbr_path > nbr_max)
+	{
+		if (max_length <= ant / (nbr_path - nbr_max) + second)
+		{
+			ant -= nbr_path;
+			ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_path);
+		}
+		else
+		{
+			nbr_path -= nbr_max;
+			max_length = lstlongest_bis(lem->path, &nbr_max);
+			second = lst2ndlongest(lem->path, max_length);
+		}
+	}
+	while (ant)
+	{
+		ant -= ant > nbr_path ? nbr_path : ant;
+		ft_printf("N:%d A:%d Max:%d Nbr:%d\n", nbr_path, ant, max_length, nbr_max);
+	}
 	return (0);
 }
 
