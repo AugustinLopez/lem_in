@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/12 16:57:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/14 23:21:08 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@ typedef struct		s_fifo
 	t_list			*tmp;
 	size_t			n;
 }					t_fifo;
+
+typedef struct		s_pathprint
+{
+	t_list			*road;
+	size_t			*length;
+	size_t			*number;
+	size_t			sum_number;
+	size_t			path;
+	size_t			max_index;
+	size_t			index;
+	size_t			ant;
+}					t_pathprint;
 
 typedef struct 		s_lemin
 {
