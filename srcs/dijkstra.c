@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/12 16:57:18 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/15 14:18:14 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int					dijkstra(t_lemin *lem)
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (-1);
 	}
-	lem->start->weight = 1;
 	(fifo.first)->pv = lem->start;
 	fifo.last = fifo.first;
 	return (iteratif_dijkstra(lem, &fifo));

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/12 18:03:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/15 15:41:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,16 @@ int					main(void)
 
 	ft_bzero(&lem, sizeof(lem));
 	ret = reader(&lem);
-	// This part is the algorithm
 	if (!ret)
+		ret = edmundkarp(&lem);
+	// This part is the algorithm
+	/*if (!ret)
 		ret = dijkstra(&lem);
 	if (!ret)
 		remove_bad_paths(&lem);
 	// end of the algorithm part
 	if (!ret)
-		solve(&lem);
+		solve(&lem);*/
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
 	ft_lstdel(&(lem.path), *lstoflst);
