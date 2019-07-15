@@ -13,7 +13,7 @@
 NAME=lem-in
 LIBFT=$(PATH_LIB)libft.a
 
-FLAGS=-g3 -fsanitize=address# -Wall -Wextra -Werror
+FLAGS=-g3# -Wall -Wextra -Werror
 LIB_RULE=
 CC_O=gcc $(FLAGS) -c -I$(PATH_HDR)
 CC_C=gcc $(FLAGS) -o $(NAME) $(OBJ) -I$(PATH_HDR) -L$(PATH_LIB) -lft

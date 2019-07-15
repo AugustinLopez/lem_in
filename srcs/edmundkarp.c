@@ -99,29 +99,58 @@ int			link_loop2(t_lemin *lem, t_fifo *fifo)
 	t_rb_node	*node;
 	t_list		*link;
 	t_list		*tmp;
+	int			ret;
 
+	//ft_printf("%s->", get_node(fifo->cur)->name);
 	if (check_for_end(lem, fifo))
 		return (1);
 	link = get_node(fifo->cur)->link;
 	while (link)
 	{
+		ret = 0;
 		node = get_node(link);
-		if (link->zu > fifo->n || node->visited == fifo->n)
+	//	ft_printf("|%s|", node->name);
+		if (link->zu > fifo->n) //link already populated by solving path
 		{
 			link = link->next;
 			continue ;
 		}
-		if (node->visited < fifo->n)
+	/*	if (node->visited == fifo->n) //to be removed
+		{
+			link = link->next;
+			continue ;
+		}*/
+		if (fifo->cur->zu == 1) //traffic jam case
+		{
+			//ft_printf("\\%d\\",get_reverse_path(get_node(fifo->cur), link)->zu );
+			if (get_reverse_path(get_node(fifo->cur), link)->zu != fifo->max)
+			{
+				link = link->next;
+				continue ;
+			}
+		}
+		else if (get_reverse_path(get_node(fifo->cur), link)->zu == fifo->n) //can't go back to same path in the same loop.
+		{
+			link = link->next;
+			continue ;
+		}
+		if (node->visited < fifo->n) //node not occupied by solution or previous pass by current loop
 			node->visited = fifo->n;
+		else if (get_reverse_path(get_node(fifo->cur), link)->zu < fifo->n) //traffic jam
+			ret = 1;
 		if (link->zu < fifo->n)
+		{
 			link->zu = fifo->n;
-		if (!(tmp = ft_lstnew(0, 0)))
-			return (-1);
-		tmp->pv = node;
-		fifo->last->next = tmp;
-		fifo->last = fifo->last->next;
+			if (!(tmp = ft_lstnew(0, 0)))
+				return (-1);
+			tmp->pv = node;
+			tmp->zu = ret;
+			fifo->last->next = tmp;
+			fifo->last = fifo->last->next;
+		}
 		link = link->next;
 	}
+	//ft_printf("\n");
 	return (0);
 }
 
@@ -162,6 +191,7 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 				tmp = tmp->next;
 				rev = get_reverse_path(node, tmp);
 			}
+			//ft_printf("|%s:%s| %d:%d ", get_node(tmp)->name, get_node(rev)->name, tmp->zu, rev->zu);
 			rev->zu = fifo->max;
 			if (rev->zu == tmp->zu)
 			{
