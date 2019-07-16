@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/15 22:01:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/15 23:32:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 	t_list		*tmp;
 	t_list		*mem;
 	t_list		*rev;
+	t_list		*case1;
 	t_rb_node	*node;
 	t_rb_node	*end;
 	size_t		x;
@@ -191,6 +192,20 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 				tmp = tmp->next;
 				rev = get_reverse_path(node, tmp);
 			}
+	/*		if (tmp->zu != fifo->max)
+			{
+				case1 = tmp;
+				while (tmp)
+				{
+					if (tmp->zu == fifo->max)
+					{
+						case1 = tmp;
+						break ;
+					}
+					tmp = tmp->next;
+				}
+				tmp = case1;
+			}*/
 			//ft_printf("|%s:%s| %d:%d ", get_node(tmp)->name, get_node(rev)->name, tmp->zu, rev->zu);
 			rev->zu = fifo->max;
 			if (rev->zu == tmp->zu)
