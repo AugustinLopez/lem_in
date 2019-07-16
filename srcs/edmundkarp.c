@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/15 23:32:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 12:26:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_list		*get_reverse_path(t_rb_node *node, t_list *path)
 	return (0);
 }
 
-int			already_visited_this_loop(t_fifo *fifo, t_rb_node *node)
+/*int			already_visited_this_loop(t_fifo *fifo, t_rb_node *node)
 {
 	t_list	*start;
 
@@ -54,7 +54,7 @@ int			already_visited_this_loop(t_fifo *fifo, t_rb_node *node)
 		start = start->next;
 	}
 	return (0);
-}
+}*/
 
 int			check_for_end(t_lemin *lem, t_fifo *fifo)
 {
@@ -110,16 +110,36 @@ int			link_loop2(t_lemin *lem, t_fifo *fifo)
 		ret = 0;
 		node = get_node(link);
 	//	ft_printf("|%s|", node->name);
-		if (link->zu > fifo->n) //link already populated by solving path
+		if (link->zu > fifo->n) //link already "solved"
 		{
 			link = link->next;
 			continue ;
 		}
-	/*	if (node->visited == fifo->n) //to be removed
+		if (node->visited == fifo->n) //cannot visit same node twice UNLESS node has been "solved"
 		{
 			link = link->next;
 			continue ;
-		}*/
+		}
+		if (get_node(link)->visited == fifo->max)
+		{
+			if (get_reverse_path(get_node(fifo->cur), link)->zu != fifo->max) //Must reverse a solved path
+				ret = 1;
+			if (ret == 1) //we check if we already reversed a solved path on the target node.
+			{
+				tmp = get_node(link)->link;
+				while (tmp)
+				{
+					if (tmp->zu == fifo->n)
+						break;
+					tmp = tmp->next;
+				}
+				if (tmp)
+				{
+					link = link->next;
+					continue ;
+				}
+			}
+		}
 		if (fifo->cur->zu == 1) //traffic jam case
 		{
 			//ft_printf("\\%d\\",get_reverse_path(get_node(fifo->cur), link)->zu );
@@ -136,8 +156,6 @@ int			link_loop2(t_lemin *lem, t_fifo *fifo)
 		}
 		if (node->visited < fifo->n) //node not occupied by solution or previous pass by current loop
 			node->visited = fifo->n;
-		else if (get_reverse_path(get_node(fifo->cur), link)->zu < fifo->n) //traffic jam
-			ret = 1;
 		if (link->zu < fifo->n)
 		{
 			link->zu = fifo->n;
@@ -185,6 +203,16 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 		ft_printf("%d: %s<-", j, node->name);
 		while (node != lem->start)
 		{
+			if (ft_strcmp(node->name, "Vit6") == 0)
+			{
+				case1 = node->link;
+				ft_printf("\n");
+				while (case1)
+				{
+					ft_printf("%s-%s |%d %d|\n", node->name, get_node(case1)->name, case1->zu, get_reverse_path(node, case1)->zu);
+					case1 = case1->next;
+				}
+			}
 			tmp = node == end ? tmp : node->link;
 			rev = get_reverse_path(node, tmp);
 			while (rev->zu != x)
@@ -192,20 +220,24 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 				tmp = tmp->next;
 				rev = get_reverse_path(node, tmp);
 			}
-	/*		if (tmp->zu != fifo->max)
+			if (tmp->zu == fifo->max)
 			{
 				case1 = tmp;
 				while (tmp)
 				{
 					if (tmp->zu == fifo->max)
 					{
-						case1 = tmp;
-						break ;
+						ft_printf(" B ");
+						if (get_reverse_path(node, tmp)->zu == fifo->n)
+						{
+							ft_printf("|%d %d|", tmp->zu, get_reverse_path(node, tmp)->zu);
+							case1 = tmp;
+						}
 					}
 					tmp = tmp->next;
 				}
 				tmp = case1;
-			}*/
+			}
 			//ft_printf("|%s:%s| %d:%d ", get_node(tmp)->name, get_node(rev)->name, tmp->zu, rev->zu);
 			rev->zu = fifo->max;
 			if (rev->zu == tmp->zu)
@@ -243,7 +275,8 @@ int			iteratif_edmundkarp(t_lemin *lem, t_fifo *fifo)
 		explore_n(lem, fifo);
 		return (0);
 	}
-	ft_dprintf(STDERR_FILENO, "ERROR\n");
+	ft_dprintf(STDERR_FILENO, "No more found. Apparently\n");
+	//ft_dprintf(STDERR_FILENO, "ERROR\n");
 	return (-1);
 	
 }
