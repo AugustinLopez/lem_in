@@ -6,12 +6,12 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/15 15:41:28 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 15:14:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <lem_in.h>
-#include <rb_tree.h>
+#include "lem_in.h"
+#include "rb_tree.h"
 
 void				debug(t_lemin *lem)
 {
@@ -56,7 +56,7 @@ int					main(void)
 	int		ret;
 
 	ft_bzero(&lem, sizeof(lem));
-	ret = reader(&lem);
+	ret = parser(&lem);
 	if (!ret)
 		ret = edmundkarp(&lem);
 	// This part is the algorithm

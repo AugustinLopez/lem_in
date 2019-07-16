@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader_tube.c                                      :+:      :+:    :+:   */
+/*   parser_tube.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 21:24:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:51:32 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
 		return (0);
 }
 
-static inline int	is_tube(t_lemin *lem, char *line)
+int					is_tube(t_lemin *lem, char *line)
 {
 	size_t		i;
 	size_t		j;
@@ -96,28 +96,11 @@ static inline int	is_tube(t_lemin *lem, char *line)
 	return (proceed_with_tube(lem, line, i, j));
 }
 
-int					reader_tube(t_lemin *lem)
+int					parser_tube(t_lemin *lem)
 {
 	int		ret;
 	char	*line;
 
-	if (is_tube(lem, (char *)(lem->curline->pv)) == -1)
-	{
-		if (lem->fileline == lem->curline)
-		{
-			free(lem->fileline->pv);
-			ft_memdel((void **)&(lem->fileline));
-		}
-		else
-		{
-			lem->curline = lem->fileline;
-			while (lem->curline->next->next)
-				lem->curline = lem->curline->next;
-			free(lem->fileline->next->pv);
-			ft_memdel((void **)&(lem->fileline->next));
-		}
-		return (-1);
-	}
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
 	{
 		if (!(ret = is_comment(line)))

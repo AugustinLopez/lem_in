@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rb_tree.c                                          :+:      :+:    :+:   */
+/*   rb_balance.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/12 18:15:50 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:37:29 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <lem_in.h>
+#include "libft.h"
+#include "rb_tree.h"
+
+static inline void	simplify_to_right(t_rb_node **node)
+{
+	t_rb_node	*tmp;
+
+	tmp = (*node)->right;
+	if (tmp)
+		tmp->parent = (*node)->parent;
+	(*node)->right = (*node)->parent;
+	(*node)->parent = (*node)->parent->parent;
+	(*node)->parent->right = *node;
+	(*node)->right->parent = *node;
+	(*node)->right->left = tmp;
+}
 
 static inline void	balance_black_uncle_right(t_rb_node **node, int am_i_left)
 {
 	t_rb_node	*tmp;
 
 	if (am_i_left)
-	{
-		tmp = (*node)->right;
-		if (tmp)
-			tmp->parent = (*node)->parent;
-		(*node)->right = (*node)->parent;
-		(*node)->parent = (*node)->parent->parent;
-		(*node)->parent->right = *node;
-		(*node)->right->parent = *node;
-		(*node)->right->left = tmp;
-	}
+		simplify_to_right(node);
 	*node = am_i_left ? *node : (*node)->parent;
 	(*node)->flag &= ~RB_RED;
 	(*node)->parent->flag |= RB_RED;
@@ -44,21 +50,26 @@ static inline void	balance_black_uncle_right(t_rb_node **node, int am_i_left)
 		(*node)->parent->right = *node;
 }
 
+static inline void	simplify_to_left(t_rb_node **node)
+{
+	t_rb_node	*tmp;
+
+	tmp = (*node)->left;
+	if (tmp)
+		tmp->parent = (*node)->parent;
+	(*node)->left = (*node)->parent;
+	(*node)->parent = (*node)->parent->parent;
+	(*node)->parent->left = *node;
+	(*node)->left->parent = *node;
+	(*node)->left->right = tmp;
+}
+
 static inline void	balance_black_uncle_left(t_rb_node **node, int am_i_left)
 {
-	t_rb_node *tmp;
+	t_rb_node	*tmp;
 
 	if (!am_i_left)
-	{
-		tmp = (*node)->left;
-		if (tmp)
-			tmp->parent = (*node)->parent;
-		(*node)->left = (*node)->parent;
-		(*node)->parent = (*node)->parent->parent;
-		(*node)->parent->left = *node;
-		(*node)->left->parent = *node;
-		(*node)->left->right = tmp;
-	}
+		simplify_to_left(node);
 	*node = !am_i_left ? *node : (*node)->parent;
 	(*node)->flag &= ~RB_RED;
 	(*node)->parent->flag |= RB_RED;
@@ -76,7 +87,7 @@ static inline void	balance_black_uncle_left(t_rb_node **node, int am_i_left)
 		(*node)->parent->right = *node;
 }
 
-static inline void	rb_balance(t_rb_node **node, int am_i_left)
+void				rb_balance(t_rb_node **node, int am_i_left)
 {
 	t_rb_node	*uncle;
 	t_rb_node	*parent;
@@ -103,42 +114,4 @@ static inline void	rb_balance(t_rb_node **node, int am_i_left)
 		balance_black_uncle_left(node, am_i_left);
 	else
 		balance_black_uncle_right(node, am_i_left);
-}
-
-static inline int	launch_recursive(t_rb_node **root, t_rb_node **node)
-{
-	int	val;
-
-	if (!*root)
-	{
-		(*root) = *node;
-		return (0);
-	}
-	else if (!(val = ft_strcmp((*root)->name, (*node)->name)))
-		return (-1);
-	else if (val > 0 && (*root)->left)
-		return (launch_recursive(&((*root)->left), node));
-	else if (val < 0 && (*root)->right)
-		return (launch_recursive(&((*root)->right), node));
-	else if (val > 0)
-		(*root)->left = *node;
-	else
-		(*root)->right = *node;
-	(*node)->parent = (*root);
-	return (0);
-}
-
-
-int					rb_insert(t_rb_node **root, t_rb_node *node)
-{
-	if (!root || !node)
-		return (-1);
-	if (launch_recursive(root, &node) == -1)
-		return (-1);
-	rb_balance(&node, node->parent && node->parent->left == node ? 1 : 0);
-	while (node->parent != NULL)
-		node = node->parent;
-	*root = node;
-	(*root)->flag &= ~RB_RED;
-	return (0);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader_master.c                                    :+:      :+:    :+:   */
+/*   parser_master.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/11 13:46:12 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:54:49 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,37 @@ int					save_line(t_lemin *lem, char *line)
 	return (0);
 }
 
-int					reader(t_lemin *lem)
+static inline int	parser_first_tube(t_lemin *lem)
+{
+	if (is_tube(lem, (char *)(lem->curline->pv)) == -1)
+	{
+		if (lem->fileline == lem->curline)
+		{
+			free(lem->fileline->pv);
+			ft_memdel((void **)&(lem->fileline));
+		}
+		else
+		{
+			lem->curline = lem->fileline;
+			while (lem->curline->next->next)
+				lem->curline = lem->curline->next;
+			free(lem->fileline->next->pv);
+			ft_memdel((void **)&(lem->fileline->next));
+		}
+		return (-1);
+	}
+	return (0);
+}
+
+int					parser(t_lemin *lem)
 {
 	int		ret;
 
-	if ((ret = reader_ant(lem)) || lem->nbr_ant == 0)
+	if (parser_ant(lem) == -1 || lem->nbr_ant == 0)
 		ret = 1;
-	else if ((ret = reader_room(lem)))
+	else if (parser_room(lem) == -1)
 		ret = 2;
-	else if ((ret = reader_tube(lem)))
+	else if (parser_first_tube(lem) == -1 || parser_tube(lem) == -1)
 		ret = 3;
 	lem->curline = lem->fileline;
 	while (lem->curline)

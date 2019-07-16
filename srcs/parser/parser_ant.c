@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader_ant.c                                       :+:      :+:    :+:   */
+/*   parser_ant.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:26:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/08 11:57:15 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:44:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static inline int	is_ant(t_lemin *lem, char *line)
 	return (1);
 }
 
-int					reader_ant(t_lemin *lem)
+int					parser_ant(t_lemin *lem)
 {
 	int		ret;
 	char	*line;

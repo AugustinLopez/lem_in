@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/15 14:16:44 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:37:47 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct			s_rb_node
 	char				*name;
 }						t_rb_node;
 
+void					rb_balance(t_rb_node **node, int am_i_left);
 int						rb_insert(t_rb_node **root, t_rb_node *node);
 void					lem_free_tree(t_rb_node **node);
 t_rb_node				*lem_find_node(t_rb_node *root, const char *name);

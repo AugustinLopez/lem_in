@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/15 15:37:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:50:37 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,12 @@ typedef struct 		s_lemin
 	t_rb_node		*tree;
 }					t_lemin;
 
-int					reader_ant(t_lemin *lem);
-int					reader_room(t_lemin *lem);
-int					reader_tube(t_lemin *lem);
-int					reader(t_lemin *lem);
+int					parser_ant(t_lemin *lem);
+int					parser_room(t_lemin *lem);
+int					parser_tube(t_lemin *lem);
+int					parser(t_lemin *lem);
+int					is_tube(t_lemin *lem, char *line);
+
 int					save_line(t_lemin *lem, char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room);
 int					is_comment(char *line);
@@ -82,8 +84,6 @@ void				lstremove(t_list **begin, t_list *one, t_list *two);
 t_list				*lstfind(t_list *begin, t_list *elem);
 void				lstoflst(void *pv, size_t zu);
 int					remove_bad_paths(t_lemin *lem);
-//size_t				lstlongest(t_list *begin);
-//t_list				*lstshortest(t_list *begin);
 void				solve_one_path(t_lemin *lem);
 int				solve(t_lemin *lem);
 void				debug(t_lemin *lem);

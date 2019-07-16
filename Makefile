@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/16 10:40:27 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/16 15:18:02 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,16 +22,14 @@ OBJ=$(SRC:%=$(PATH_OBJ)%.o)
 # --- 1.Source/Header ----------------------------------------------------------
 
 SRC=main \
-	reader_ant \
-	reader_room \
-	reader_tube \
-	reader_master \
-	rb_tree \
+	parser_ant \
+	parser_room \
+	parser_tube \
+	parser_master \
+	rb_insert \
+	rb_balance \
 	rb_function \
-	dijkstra \
 	lst \
-	remove_bad_paths \
-	print_result_bis \
 	edmundkarp
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
@@ -42,7 +40,7 @@ INCLUDES=	$(PATH_HDR)libft.h \
 PATH_HDR=./includes/
 PATH_OBJ=./srcs/obj/
 PATH_SRC1=./srcs/
-PATH_SRC2=./srcs/reader/
+PATH_SRC2=./srcs/parser/
 PATH_SRC3=./srcs/tree/
 PATH_LIB=./libft/
 

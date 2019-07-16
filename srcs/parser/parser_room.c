@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader_room.c                                      :+:      :+:    :+:   */
+/*   parser_room.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/12 17:28:27 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:45:20 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static inline int	is_command(char *line, int *command)
 	return (0);
 }
 
-int					reader_room(t_lemin *lem)
+int					parser_room(t_lemin *lem)
 {
 	int		ret;
 	char	*line;
