@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/17 15:31:02 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 16:05:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ void		feed_solver(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 	mem = lem->end->link;
 	sol->path = ft_lstnew(0, 0);
 	i = 0;
-	while (++i < fifo->n + 1)
 	while (++j < fifo->n + 1)
 	{
 		i = 0;
@@ -248,7 +247,6 @@ void		feed_solver(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 			i++;
 		}
 	}
-
 }
 
 int			iteratif_edmundkarp(t_lemin *lem, t_fifo *fifo)
