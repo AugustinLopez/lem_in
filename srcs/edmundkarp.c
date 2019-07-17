@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/17 14:46:03 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 15:31:02 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int			check_for_end(t_lemin *lem, t_fifo *fifo)
 	t_rb_node	*node;
 	t_list		*tmp;
 	t_list		*link;
-
 
 	tmp = get_node(fifo->first)->link;
 	while (tmp)
@@ -189,7 +188,7 @@ void		find_new_paths(t_lemin *lem, t_fifo *fifo)
 	{
 		i = 0;
 		node = lem->end;
-		ft_printf("%d: %s<-", j, node->name);
+	//	ft_printf("%d: %s<-", j, node->name);
 		while (get_reverse_path(node, mem)->zu != fifo->max)
 			mem = mem->next;
 		path = mem;
@@ -204,20 +203,63 @@ void		find_new_paths(t_lemin *lem, t_fifo *fifo)
 				rev = get_reverse_path(node, path);
 			}
 			node = get_node(path);
-			if (!(node == lem->start))
-				ft_printf("%s<-", node->name);
+	//		if (!(node == lem->start))
+	//			ft_printf("%s<-", node->name);
 			i++;
 		}
-		ft_printf("%s : %d\n", lem->start->name, i);
+//		ft_printf("%s : %d\n", lem->start->name, i);
+		ft_printf("%d - %d\n", j, i);
 	}
 	ft_printf("\n");
 }
 
+void		feed_solver(t_solver *sol, t_lemin *lem, t_fifo *fifo)
+{
+	t_list		*path;
+	t_list		*mem;
+	t_rb_node	*node;
+	t_list		*rev;
+	size_t		j;
+	size_t		i;
+
+	j = 0;
+	mem = lem->end->link;
+	sol->path = ft_lstnew(0, 0);
+	i = 0;
+	while (++i < fifo->n + 1)
+	while (++j < fifo->n + 1)
+	{
+		i = 0;
+		node = lem->end;
+		while (get_reverse_path(node, mem)->zu != fifo->max)
+			mem = mem->next;
+		path = mem;
+		mem = mem->next;
+		while (node != lem->start)
+		{
+			path = node == lem->end ? path : node->link;
+			rev = get_reverse_path(node, path);
+			while (rev->zu != fifo->max)
+			{
+				path = path->next;
+				rev = get_reverse_path(node, path);
+			}
+			node = get_node(path);
+			i++;
+		}
+	}
+
+}
+
 int			iteratif_edmundkarp(t_lemin *lem, t_fifo *fifo)
 {
-	int		ret;
-	t_list	*tmp;
+	int			ret;
+	t_list		*tmp;
+	t_solver	old;
+	t_solver	new;
 
+	ft_bzero(&old, sizeof(old));
+	ft_bzero(&new, sizeof(new));
 	while (fifo->first)
 	{
 		if ((ret = link_loop(lem, fifo)))
@@ -230,11 +272,24 @@ int			iteratif_edmundkarp(t_lemin *lem, t_fifo *fifo)
 	{
 		solve_new_path(lem, fifo);
 		find_new_paths(lem, fifo);
+		if (old.max == 0)
+			feed_solver(&old, lem, fifo);
+		else
+			feed_solver(&new, lem, fifo);
 		return (0);
 	}
-	ft_dprintf(STDERR_FILENO, "No more found. Apparently\n");
-	return (-1);
+	if (fifo->n == 1)
+		return (-1);
+	ft_printf("No more path\n");
+	return (1);
 	
+}
+
+size_t		zu_min(size_t a, size_t b)
+{
+	if (a > b)
+		return (b);
+	return (a);
 }
 
 int			edmundkarp(t_lemin *lem)
@@ -248,12 +303,15 @@ int			edmundkarp(t_lemin *lem)
 		return (-1);
 	}
 	ft_bzero(&fifo, sizeof(fifo));
-	fifo.max = lem->start->nbr_link < lem->end->nbr_link
-		? lem->start->nbr_link + 1 : lem->end->nbr_link + 1;
+	fifo.max = zu_min(lem->start->nbr_link, lem->end->nbr_link) + 1;
+	fifo.max = zu_min(fifo.max, lem->nbr_ant) + 1;
 	fifo.n = 0;
+	ret = 0;
 	while (++(fifo.n) < fifo.max)
 	{
-		if (!(fifo.first = ft_lstnew(0, 0)))
+		if (ret == 1)
+			break ;
+		else if (ret == -1 || !(fifo.first = ft_lstnew(0, 0)))
 		{
 			ft_dprintf(STDERR_FILENO, "ERROR\n");
 			return (-1);
