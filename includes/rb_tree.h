@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/17 12:13:12 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 13:36:15 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ typedef struct			s_rb_node
 	struct s_rb_node	*parent;
 	long long			x;
 	long long			y;
-	int					flag; //flag and nbr_link could be combined
 	size_t				nbr_link;
 	size_t				visited;
 	t_list				*link;
 	char				*name;
+	uint8_t				flag;
 }						t_rb_node;
 
 void					rb_balance(t_rb_node **node, int am_i_left);

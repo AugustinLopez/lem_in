@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/17 11:31:29 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/17 13:29:42 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ PATH_HDR=./includes/
 PATH_OBJ=./srcs/obj/
 PATH_SRC1=./srcs/
 PATH_SRC2=./srcs/parser/
-PATH_SRC3=./srcs/tree/
+PATH_SRC3=./srcs/rb_tree/
 PATH_LIB=./libft/
 
 # --- 3.Rules ------------------------------------------------------------------
