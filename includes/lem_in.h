@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/17 12:14:26 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 15:31:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,14 @@ typedef struct		s_fifo
 	size_t			n;
 	size_t			max;
 }					t_fifo;
+
+typedef struct		s_solver
+{
+	t_list			*path;
+	t_list			*cur;
+	size_t			max;
+	size_t			step;
+}					t_solver;
 
 /*
 ** LEM_IN:
