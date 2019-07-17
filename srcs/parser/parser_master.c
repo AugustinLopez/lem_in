@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 14:54:49 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 12:29:12 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static inline int	parser_first_tube(t_lemin *lem)
 		}
 		return (-1);
 	}
+	++(lem->nbr_tube);
 	return (0);
 }
 
@@ -73,6 +74,7 @@ int					parser(t_lemin *lem)
 {
 	int		ret;
 
+	ret = 0;
 	if (parser_ant(lem) == -1 || lem->nbr_ant == 0)
 		ret = 1;
 	else if (parser_room(lem) == -1)

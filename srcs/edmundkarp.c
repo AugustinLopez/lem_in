@@ -6,14 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 12:26:28 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 12:27:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-static inline int	free_fifo2(t_fifo *fifo, int ret)
+static inline int	free_fifo(t_fifo *fifo, int ret)
 {
 	t_list	*tmp;
 
@@ -42,20 +42,6 @@ t_list		*get_reverse_path(t_rb_node *node, t_list *path)
 	return (0);
 }
 
-/*int			already_visited_this_loop(t_fifo *fifo, t_rb_node *node)
-{
-	t_list	*start;
-
-	start = fifo->first;
-	while (start != fifo->cur)
-	{
-		if (get_node(start) == node)
-			return (1);
-		start = start->next;
-	}
-	return (0);
-}*/
-
 int			check_for_end(t_lemin *lem, t_fifo *fifo)
 {
 	t_rb_node	*node;
@@ -63,7 +49,7 @@ int			check_for_end(t_lemin *lem, t_fifo *fifo)
 	t_list		*link;
 
 
-	tmp = get_node(fifo->cur)->link;
+	tmp = get_node(fifo->first)->link;
 	while (tmp)
 	{
 		if ((node = get_node(tmp)) == lem->end)
@@ -80,20 +66,6 @@ int			check_for_end(t_lemin *lem, t_fifo *fifo)
 	return (0);
 }
 
-int			already_checked_this_loop(t_fifo *fifo, t_rb_node *node)
-{
-	t_list	*start;
-
-	start = fifo->first;
-	while (start != fifo->cur)
-	{
-		if (get_node(start) == node)
-			return (1);
-		start = start->next;
-	}
-	return (0);
-}
-
 int			link_loop2(t_lemin *lem, t_fifo *fifo)
 {
 	t_rb_node	*node;
@@ -104,7 +76,7 @@ int			link_loop2(t_lemin *lem, t_fifo *fifo)
 	//ft_printf("%s->", get_node(fifo->cur)->name);
 	if (check_for_end(lem, fifo))
 		return (1);
-	link = get_node(fifo->cur)->link;
+	link = get_node(fifo->first)->link;
 	while (link)
 	{
 		ret = 0;
@@ -122,7 +94,7 @@ int			link_loop2(t_lemin *lem, t_fifo *fifo)
 		}
 		if (get_node(link)->visited == fifo->max)
 		{
-			if (get_reverse_path(get_node(fifo->cur), link)->zu != fifo->max) //Must reverse a solved path
+			if (get_reverse_path(get_node(fifo->first), link)->zu != fifo->max) //Must reverse a solved path
 				ret = 1;
 			if (ret == 1) //we check if we already reversed a solved path on the target node.
 			{
@@ -140,16 +112,16 @@ int			link_loop2(t_lemin *lem, t_fifo *fifo)
 				}
 			}
 		}
-		if (fifo->cur->zu == 1) //traffic jam case
+		if (fifo->first->zu == 1) //traffic jam case
 		{
 			//ft_printf("\\%d\\",get_reverse_path(get_node(fifo->cur), link)->zu );
-			if (get_reverse_path(get_node(fifo->cur), link)->zu != fifo->max)
+			if (get_reverse_path(get_node(fifo->first), link)->zu != fifo->max)
 			{
 				link = link->next;
 				continue ;
 			}
 		}
-		else if (get_reverse_path(get_node(fifo->cur), link)->zu == fifo->n) //can't go back to same path in the same loop.
+		else if (get_reverse_path(get_node(fifo->first), link)->zu == fifo->n) //can't go back to same path in the same loop.
 		{
 			link = link->next;
 			continue ;
@@ -200,7 +172,8 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 		tmp = mem;
 		mem = mem->next;
 		node = end;
-		ft_printf("%d: %s<-", j, node->name);
+		//ft_printf("%d: %s<-", j, node->name);
+		ft_printf("Num:%d: ", j);
 		while (node != lem->start)
 		{
 			if (ft_strcmp(node->name, "Vit6") == 0)
@@ -226,14 +199,8 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 				while (tmp)
 				{
 					if (tmp->zu == fifo->max)
-					{
-						ft_printf(" B ");
 						if (get_reverse_path(node, tmp)->zu == fifo->n)
-						{
-							ft_printf("|%d %d|", tmp->zu, get_reverse_path(node, tmp)->zu);
 							case1 = tmp;
-						}
-					}
 					tmp = tmp->next;
 				}
 				tmp = case1;
@@ -248,10 +215,11 @@ void		explore_n(t_lemin *lem, t_fifo *fifo)
 			node = get_node(tmp);
 			node->visited = fifo->max;
 			i++;
-			if (!(node == lem->start))
-				ft_printf("%s<-", node->name);
+		//	if (!(node == lem->start))
+		//		ft_printf("%s<-", node->name);
 		}
-		ft_printf("%s : %d\n", lem->start->name, i);
+		//ft_printf("%s : %d\n", lem->start->name, i);
+		ft_printf("%d\n", i);
 		if (j == 0)
 			mem = end->link;
 		++j;
@@ -264,11 +232,13 @@ int			iteratif_edmundkarp(t_lemin *lem, t_fifo *fifo)
 	int		ret;
 	t_list	*tmp;
 
-	while (fifo->cur)
+	while (fifo->first)
 	{
 		if ((ret = link_loop2(lem, fifo)))
 			break ;
-		fifo->cur = fifo->cur->next;
+		tmp = fifo->first;
+		fifo->first = fifo->first->next;
+		free(tmp);
 	}
 	if (ret == 1)
 	{
@@ -294,6 +264,7 @@ int			edmundkarp(t_lemin *lem)
 	ft_bzero(&fifo, sizeof(fifo));
 	fifo.max = lem->start->nbr_link < lem->end->nbr_link
 		? lem->start->nbr_link + 1 : lem->end->nbr_link + 1;
+	fifo.n = 0;
 	while (++(fifo.n) < fifo.max)
 	{
 		if (!(fifo.first = ft_lstnew(0, 0)))
@@ -303,9 +274,8 @@ int			edmundkarp(t_lemin *lem)
 		}
 		(fifo.first)->pv = lem->start;
 		fifo.last = fifo.first;
-		fifo.cur = fifo.first;
 		ret = iteratif_edmundkarp(lem, &fifo);
-		free_fifo2(&fifo, ret);
+		free_fifo(&fifo, ret);
 	}
 	return (ret);
 }

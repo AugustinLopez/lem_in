@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 14:51:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 11:39:52 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
 {
 	t_rb_node	*left;
 	t_rb_node	*right;
+	int			ret;
 
 	line[i] = 0;
 	line[j] = 0;
@@ -73,7 +74,11 @@ static inline int	proceed_with_tube(t_lemin *lem, char *line, size_t i,
 	if (!(left && right))
 		return (-1);
 	else if (check_duplicate(left, right) == 0)
-		return (create_link(left, right));
+	{
+		if ((ret = create_link(left, right)) != -1)
+			++(lem->nbr_tube);
+		return (ret);
+	}
 	else
 		return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 14:45:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/17 12:07:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,13 @@ int					lem_atoll(const char *src, long long *result, size_t *index)
 	return (0);
 }
 
-static inline int	is_room(t_lemin *lem, char *line, int *command)
+static inline int	is_room(t_lemin *lem, char *line, uint8_t *command)
 {
 	size_t		i;
 	t_tree_data	room;
 
 	room.fin = 0;
 	room.line = line;
-	room.command = *command;
 	while (line[room.fin] && line[room.fin] != ' ')
 		room.fin++;
 	if (ft_strchr("#L ", line[0]) || room.fin == 0 || line[room.fin] != ' ')
@@ -90,12 +89,13 @@ static inline int	is_room(t_lemin *lem, char *line, int *command)
 			|| line[i] != '\n')
 		return (0);
 	*command &= ~LEM_COMMAND;
-	if (lem_feed_tree(lem, &room) == -1)
+	if (lem_feed_tree(lem, &room, *command) == -1)
 		return (0);
+	++(lem->nbr_room);
 	return (1);
 }
 
-static inline int	is_command(char *line, int *command)
+static inline int	is_command(char *line, uint8_t *command)
 {
 	if (line[0] == '#' && (!ft_strlcmp(line + 1, "#end\n")))
 	{
@@ -118,7 +118,7 @@ int					parser_room(t_lemin *lem)
 {
 	int		ret;
 	char	*line;
-	int		command;
+	uint8_t	command;
 
 	command = 0;
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
