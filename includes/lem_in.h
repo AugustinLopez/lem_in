@@ -65,6 +65,7 @@ typedef struct		s_solver
 	t_list			*cur;
 	size_t			max;
 	size_t			step;
+	size_t			num;
 }					t_solver;
 
 /*
