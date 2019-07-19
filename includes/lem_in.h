@@ -105,6 +105,8 @@ int					lem_feed_tree(t_lemin *lem, t_tree_data *room, uint8_t command);
 */
 
 t_rb_node			*get_node(t_list *ptr);
-int				edmundkarp(t_lemin *lem);
-
+int					edmundkarp(t_lemin *lem);
+int					pathfinder(t_lemin *lem, t_fifo *fifo);
+void				pathsolver(t_lemin *lem, t_fifo *fifo);
+t_list				*get_reverse_path(t_rb_node *node, t_list *path);
 #endif

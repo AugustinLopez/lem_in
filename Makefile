@@ -29,7 +29,8 @@ SRC=main \
 	rb_insert \
 	rb_balance \
 	rb_function \
-	edmundkarp
+	edmundkarp \
+	ek_pathfinder
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h
@@ -87,7 +88,7 @@ O2: re;
 Os: FLAGS += -Os
 Os: LIB_RULE = Os
 Os: re;
-g3: FLAGS = -g3 -fsanitize=address
+g3: FLAGS = -g3
 g3: LIB_RULE = g3
 g3: re;
 pedantic: FLAGS += -pedantic
