@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/17 16:05:38 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/19 22:08:29 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,14 +207,14 @@ int			exploration(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver *new)
 		}
 		t_list	*tmp;
 
-		ft_printf("%zu\n", step_count(lem->nbr_ant, old));
-		/*tmp = old->path;
+		ft_printf("%zu %zu\n", step_count(lem->nbr_ant, old), old->num);
+		tmp = old->path;
 		while (tmp)
 		{
 			ft_printf("%zu ", tmp->zu);
 			tmp = tmp->next;
 		}
-		ft_printf("\n");*/
+		ft_printf("\n");
 		ft_bzero(new, sizeof(*new));
 	}
 	return (free_fifo(fifo, ret));
@@ -232,8 +232,8 @@ int			initialize_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver 
 	ft_bzero(new, sizeof(*new));
 	a = lem->start->nbr_link;
 	b = lem->end->nbr_link;
-	fifo->max = a < b ? a : b;
-	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
+	fifo->max = a < b ? b : a;
+//	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
 	fifo->n = 0;
 	return (0);
 }
