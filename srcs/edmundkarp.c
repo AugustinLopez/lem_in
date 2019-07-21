@@ -103,6 +103,27 @@ int			loop_pathlist(t_lemin *lem, t_fifo *fifo, t_list **road, t_list **km)
 	return (0);
 }
 
+void		print_list(t_solver *sol)
+{
+	t_list	*road;
+	t_list	*km;
+	size_t	i;
+
+	road = sol->path;
+/*	while (tmp)
+	{*/
+		km = road->pv;
+		ft_printf("%zu: ", road->zu);
+		while (km)
+		{
+			ft_printf("%s-", get_node(km)->name);
+			km = km->next;
+		}
+		ft_printf("\n");
+	/*	tmp = tmp->next;
+	}*/
+}
+
 int			feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 {
 	t_list		*path;
@@ -126,6 +147,7 @@ int			feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 		sol->path->pv = tmp;
 		if (sol->max < sol->path->zu)
 			sol->max = sol->path->zu;
+		//print_list(sol);
 	}
 	sol->num = fifo->n;
 	return (0);
@@ -159,7 +181,7 @@ size_t		step_count(size_t ant, t_solver *sol)
 	return (sol->step);
 }
 
-int			modified_dijkstra(t_lemin *lem, t_fifo *fifo, t_solver *sol)
+int			bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
 {
 	int			ret;
 	t_list		*tmp;
@@ -191,10 +213,10 @@ int			exploration(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver *new)
 	fifo->last = fifo->first;
 	ret = 0;
 	if (old->max == 0)
-		ret = modified_dijkstra(lem, fifo, old);
+		ret = bfs_algorithm(lem, fifo, old);
 	else
 	{
-		if ((ret = modified_dijkstra(lem, fifo, new)))
+		if ((ret = bfs_algorithm(lem, fifo, new)))
 			return (free_fifo(fifo, ret));
 		ret = 1;
 		if (step_count(lem->nbr_ant, new) > step_count(lem->nbr_ant, old))
@@ -233,7 +255,7 @@ int			initialize_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver 
 	a = lem->start->nbr_link;
 	b = lem->end->nbr_link;
 	fifo->max = a < b ? b : a;
-//	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
+	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
 	fifo->n = 0;
 	return (0);
 }
