@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/19 22:08:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/22 10:09:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,16 +227,7 @@ int			exploration(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver *new)
 			ft_memcpy(old, new, sizeof(*new));
 			ret = 0;
 		}
-		t_list	*tmp;
-
-		ft_printf("%zu %zu\n", step_count(lem->nbr_ant, old), old->num);
-		tmp = old->path;
-		while (tmp)
-		{
-			ft_printf("%zu ", tmp->zu);
-			tmp = tmp->next;
-		}
-		ft_printf("\n");
+	//	print_result(lem);
 		ft_bzero(new, sizeof(*new));
 	}
 	return (free_fifo(fifo, ret));
@@ -267,7 +258,7 @@ int			edmundkarp(t_lemin *lem)
 	t_solver	old;
 	t_solver	new;
 
-	if ((ret = initialize_edmundkarp(lem, &fifo, &old, &new)))
+	if ((ret = initialize_edmundkarp(lem, &fifo, lem->sol, &new)))
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (free_fifo(&fifo, ret));
@@ -281,8 +272,7 @@ int			edmundkarp(t_lemin *lem)
 			ft_dprintf(STDERR_FILENO, "ERROR\n");
 			return (free_fifo(&fifo, ret));
 		}
-		ret = exploration(lem, &fifo, &old, &new);
+		ret = exploration(lem, &fifo, lem->sol, &new);
 	}
-	ft_lstdel(&(old.path), *lstoflst);
 	return (free_fifo(&fifo, ret));
 }
