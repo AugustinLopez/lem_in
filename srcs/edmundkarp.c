@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/22 10:09:45 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/22 13:45:13 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ int			feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 		sol->path->pv = tmp;
 		if (sol->max < sol->path->zu)
 			sol->max = sol->path->zu;
-		//print_list(sol);
 	}
 	sol->num = fifo->n;
 	return (0);

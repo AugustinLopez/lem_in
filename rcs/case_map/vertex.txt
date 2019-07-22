@@ -1,0 +1,31 @@
+10
+##start
+start 0 0
+##end
+end 1 1
+A 2 2
+B 3 3
+C 4 4
+D 5 5
+E 6 6
+F 7 7
+G 8 8
+H 9 9
+I 10 10
+start-A
+start-B
+start-C
+G-end
+H-end
+I-end
+B-E
+E-H
+B-C
+E-A
+H-F
+H-D
+H-G
+A-D
+D-G
+C-F
+F-I

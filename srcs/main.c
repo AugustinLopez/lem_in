@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/22 12:33:00 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/22 14:17:56 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 	return (0);
 }
 
-int		print_fifo(t_fifo *ant)
+int		print_fifo(t_fifo *ant, int ac)
 {
 	t_list	*cur;
 	t_list	*prev;
@@ -178,9 +178,9 @@ int		print_fifo(t_fifo *ant)
 	cur = ant->first;
 	while (cur)
 	{
-		if (first && first--)
+		if (ac < 2 && first && first--)
 			ft_printf("L%zu-%s", cur->zu, get_node(cur->pv)->name);
-		else
+		else if (ac < 2)
 			ft_printf(" L%zu-%s", cur->zu, get_node(cur->pv)->name);
 		tmp = ((t_list *)(cur->pv))->next;
 		if (!(tmp))
@@ -206,11 +206,12 @@ int		print_fifo(t_fifo *ant)
 			cur = cur->next;
 		}
 	}
-	ft_printf("\n");
+	if (ac < 2)
+		ft_printf("\n");
 	return (ret);
 }
 
-void	printer(t_lemin *lem)
+size_t	printer(t_lemin *lem, int ac)
 {
 	t_fifo	ant;
 	size_t	step;
@@ -232,12 +233,12 @@ void	printer(t_lemin *lem)
 			feed_ant(tmp, &ant, step);
 			tmp = tmp->next;
 		}
-		ret = print_fifo(&ant);
+		ret = print_fifo(&ant, ac);
 		++res;
 	}
-	while (print_fifo(&ant))
+	while (print_fifo(&ant, ac))
 		++res;
-//	ft_printf("%zu\n", res + 1);
+	return (res + 1);
 }
 
 int		main(int ac, char **av)
@@ -245,20 +246,23 @@ int		main(int ac, char **av)
 	t_lemin		lem;
 	t_solver	path;
 	int			ret;
+	size_t		res;
 
 	ft_bzero(&lem, sizeof(lem));
 	ft_bzero(&path, sizeof(path));
 	lem.sol = &path;
+	res = 0;
 	if (!(ret = parser(&lem)))
 		if ((ret = edmundkarp(&lem) >= 0))
 			if (!(ret = sort_road(&lem)))
-				printer(&lem);
+				res = printer(&lem, ac);
 	ft_lstdel(&((lem.sol)->path), *lstoflst);
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
-	if (ac == 2)
+	if (ac > 1)
 	{
-		ft_printf("Ant's number:  %zu\n", lem.nbr_ant);
+		ft_printf("Step's number: %zu\n", res);
+		ft_printf("Ant's number : %zu\n", lem.nbr_ant);
 		ft_printf("Room's number: %zu\n", lem.nbr_room);
 		ft_printf("Tube's number: %zu\n", lem.nbr_tube);
 	}
