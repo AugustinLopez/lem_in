@@ -6,13 +6,12 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/22 14:17:56 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/27 19:35:39 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
-
 
 void	basic_sort(t_list **array, size_t size)
 {
@@ -248,6 +247,7 @@ int		main(int ac, char **av)
 	int			ret;
 	size_t		res;
 
+	(void)av;
 	ft_bzero(&lem, sizeof(lem));
 	ft_bzero(&path, sizeof(path));
 	lem.sol = &path;

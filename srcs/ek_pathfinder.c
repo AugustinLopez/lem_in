@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/22 14:11:00 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/27 22:22:23 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static inline int	check_for_end(t_lemin *lem, t_fifo *fifo)
 {
 	t_rb_node	*node;
 	t_list		*tmp;
-	t_list		*link;
 
 	tmp = get_node(fifo->first)->link;
 	while (tmp)
@@ -40,12 +39,12 @@ static inline int	check_for_end(t_lemin *lem, t_fifo *fifo)
 ** 1st: link solved or already visited
 ** 2nd: node already visited (not solved)
 ** 3rd: cannot reverse a link already visited (not solved)
-** 4th: going to a solved node but without reversing a path.
+** 4th: Special case from 5th.
+** 5th: going to a solved node but without reversing a path.
 ** - we launch a loop to verify if the need has already been visited during
 ** this iteration.
 ** - If not already visited, special case: the next iteration through from this
 ** solved node will have to reverse a solved path (ret == 1)
-** 5th: Special case from 4th.
 */
 
 static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
@@ -72,25 +71,51 @@ static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
 		}
 		return (1);
 	}
-	if (fifo->first->zu == 1 && rev->zu != fifo->max)
-		return (-1);
+	if (rev->zu == fifo->max)
+	{
+		node->visited = fifo->n;
+		get_node(rev)->visited = fifo->n;
+		return (2);
+	}
 	return (0);
 }
 
-static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
-						int ret)
+static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link, int ret)
 {
 	t_list	*tmp;
+	t_list	*iter;
+	size_t	a;
 
 	if (node->visited < fifo->n)
 		node->visited = fifo->n;
+	node->flag = get_node(fifo->first)->flag;
+	node->flag += (ret == 0) ? 1 : -1;
+	a = node->flag;
 	link->zu = fifo->n;
 	if (!(tmp = ft_lstnew(0, 0)))
 		return (-1);
 	tmp->pv = node;
-	tmp->zu = ret;
-	fifo->last->next = tmp;
-	fifo->last = fifo->last->next;
+	tmp->zu = (ret == 1) ? 1 : 0;
+	iter = fifo->first;
+	while (iter->next && get_node(iter->next)->flag <= node->flag)
+		iter = iter->next;
+	if (iter->next)
+	{
+		tmp->next = iter->next;
+		iter->next = tmp;
+	}
+	else
+	{
+		fifo->last->next = tmp;
+		fifo->last = fifo->last->next;
+	}
+/*	iter = fifo->first;
+	while (iter)
+	{
+		ft_printf("%s:%d-", get_node(iter)->name, get_node(iter)->flag);
+		iter = iter->next;
+	}
+	ft_printf("\n");*/
 	return (0);
 }
 

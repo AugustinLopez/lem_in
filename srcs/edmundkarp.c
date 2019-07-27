@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/22 13:45:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/27 20:05:20 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void		print_list(t_solver *sol)
 {
 	t_list	*road;
 	t_list	*km;
-	size_t	i;
 
 	road = sol->path;
 /*	while (tmp)
@@ -199,6 +198,7 @@ int			bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
 		ret = feed_pathlist(sol, lem, fifo);
 		return (ret);
 	}
+	ft_printf("%d\n", fifo->n);
 	if (fifo->n == 1)
 		return (-1);
 	return (1);
@@ -243,6 +243,7 @@ int			initialize_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver 
 	ft_bzero(old, sizeof(*old));
 	ft_bzero(new, sizeof(*new));
 	a = lem->start->nbr_link;
+	lem->start->flag = 0;
 	b = lem->end->nbr_link;
 	fifo->max = a < b ? b : a;
 	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
@@ -254,7 +255,6 @@ int			edmundkarp(t_lemin *lem)
 {
 	t_fifo		fifo;
 	int			ret;
-	t_solver	old;
 	t_solver	new;
 
 	if ((ret = initialize_edmundkarp(lem, &fifo, lem->sol, &new)))

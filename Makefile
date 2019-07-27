@@ -6,14 +6,14 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/07/17 13:29:42 by aulopez          ###   ########.fr        #
+#    Updated: 2019/07/27 19:33:30 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=lem-in
 LIBFT=$(PATH_LIB)libft.a
 
-FLAGS=-g3# -Wall -Wextra -Werror
+FLAGS=-g3 -fsanitize=address -Wall -Wextra -Werror
 LIB_RULE=
 CC_O=gcc $(FLAGS) -c -I$(PATH_HDR)
 CC_C=gcc $(FLAGS) -o $(NAME) $(OBJ) -I$(PATH_HDR) -L$(PATH_LIB) -lft
