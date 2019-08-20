@@ -6,18 +6,25 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/27 19:35:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 11:26:49 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-void	basic_sort(t_list **array, size_t size)
+void	basic_sort(t_list **array, t_list *origin, size_t size)
 {
 	t_list	*tmp;
 	size_t	i;
 
+	i = 0;
+	tmp = origin;
+	while (tmp)
+	{
+		array[i++] = tmp;
+		tmp = tmp->next;
+	}
 	i = 0;
 	while (i < size - 1)
 	{
@@ -37,7 +44,6 @@ void	basic_sort(t_list **array, size_t size)
 int		sort_road(t_lemin *lem)
 {
 	t_list	**array;
-	t_list	*tmp;
 	size_t	i;
 
 	if (!(array = ft_memalloc(sizeof(*array) * lem->sol->num)))
@@ -45,14 +51,7 @@ int		sort_road(t_lemin *lem)
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (-1);
 	}
-	tmp = lem->sol->path;
-	i = 0;
-	while (tmp)
-	{
-		array[i++] = tmp;
-		tmp = tmp->next;
-	}
-	basic_sort(array, lem->sol->num);
+	basic_sort(array, lem->sol->path, lem->sol->num);
 	lem->sol->path = array[0];
 	i = 0;
 	while (i < lem->sol->num - 1)
@@ -70,7 +69,8 @@ void	print_length(t_lemin *lem)
 	t_list	*tmp;
 	t_list	*tmp2;
 
-	ft_printf("%zu %zu %zu\n", step_count(lem->nbr_ant, lem->sol), lem->sol->num, lem->sol->max);
+	ft_printf("%zu %zu %zu\n", step_count(lem->nbr_ant, lem->sol),
+		lem->sol->num, lem->sol->max);
 	tmp = lem->sol->path;
 	while (tmp)
 	{
@@ -81,60 +81,11 @@ void	print_length(t_lemin *lem)
 			ft_printf("%s->", get_node(tmp2)->name);
 			tmp2 = tmp2->next;
 		}
-
-	ft_printf("\n");
+		ft_printf("\n");
 		tmp = tmp->next;
 	}
 	ft_printf("\n");
 }
-/*
-void	feed_ant(t_list *start, size_t ant)
-{
-	t_list	*km;
-	size_t	prev;
-	size_t	tmp;
-
-	if (ant == 0)
-		start->zu = 0;
-	km = start->pv;
-	if (ant && km->zu == 0)
-	{
-		km->zu = ant;
-		return ;
-	}
-	prev = km->zu;
-	km = km->next;
-	while (km)
-	{
-		tmp = km->zu;
-		km->zu = prev;
-		prev = tmp;
-		km = km->next;
-	}
-	km = start->pv;
-	km->zu = ant;
-}
-
-void	print_ant(t_list *start)
-{
-	t_list	*km;
-	t_list	*road;
-
-	road = start;
-	while (road)
-	{
-		km = road->pv;
-		while (km)
-		{
-			if (km->zu)
-				ft_printf("L%zu-%s ", km->zu, get_node(km)->name);
-			km = km->next;
-		}
-		road = road->next;
-	}
-	ft_printf("\n");
-}
-*/
 
 int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 {
@@ -163,6 +114,30 @@ int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 	return (0);
 }
 
+int		print_fifo_loop(t_fifo *ant, t_list *tmp, t_list **prev, t_list **cur)
+{
+	if (!(tmp))
+	{
+		if (*prev)
+		{
+			(*prev)->next = (*cur)->next;
+			free(*cur);
+			*cur = (*prev)->next;
+		}
+		else
+		{
+			ant->first = ant->first->next;
+			free(*cur);
+			*cur = ant->first;
+		}
+		return (0);
+	}
+	(*cur)->pv = tmp;
+	*prev = *cur;
+	*cur = (*cur)->next;
+	return (1);
+}
+
 int		print_fifo(t_fifo *ant, int ac)
 {
 	t_list	*cur;
@@ -182,28 +157,7 @@ int		print_fifo(t_fifo *ant, int ac)
 		else if (ac < 2)
 			ft_printf(" L%zu-%s", cur->zu, get_node(cur->pv)->name);
 		tmp = ((t_list *)(cur->pv))->next;
-		if (!(tmp))
-		{
-			if (prev)
-			{
-				prev->next = cur->next;
-				free(cur);
-				cur = prev->next;
-			}
-			else
-			{
-				ant->first = ant->first->next;
-				free(cur);
-				cur = ant->first;
-			}
-		}
-		else
-		{
-			ret = 1;
-			cur->pv = tmp;
-			prev = cur;
-			cur = cur->next;
-		}
+		ret = print_fifo_loop(ant, tmp, &prev, &cur) ? 1 : ret;
 	}
 	if (ac < 2)
 		ft_printf("\n");
@@ -215,7 +169,6 @@ size_t	printer(t_lemin *lem, int ac)
 	t_fifo	ant;
 	size_t	step;
 	t_list	*tmp;
-	int		ret;
 	size_t	res;
 
 	ant.n = 1;
@@ -232,7 +185,7 @@ size_t	printer(t_lemin *lem, int ac)
 			feed_ant(tmp, &ant, step);
 			tmp = tmp->next;
 		}
-		ret = print_fifo(&ant, ac);
+		(void)print_fifo(&ant, ac);
 		++res;
 	}
 	while (print_fifo(&ant, ac))

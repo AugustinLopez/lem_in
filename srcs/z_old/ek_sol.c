@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:06:10 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/07/27 22:22:23 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
 {
 	t_list	*tmp;
 
-	if (link->zu >= fifo->n
-		|| node->visited == fifo->n
-		|| rev->zu == fifo->n
-		|| (fifo->first->zu == 1 && rev->zu != fifo->max))
+	if (link->zu >= fifo->n)
+		return (-1);
+	if (node->visited == fifo->n)
+		return (-1);
+	if (rev->zu == fifo->n)
+		return (-1);
+	if (fifo->first->zu == 1 && rev->zu != fifo->max)
 		return (-1);
 	if (node->visited == fifo->max && rev->zu != fifo->max)
 	{
@@ -77,16 +80,17 @@ static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
 	return (0);
 }
 
-static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
-						int ret)
+static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link, int ret)
 {
 	t_list	*tmp;
 	t_list	*iter;
+	size_t	a;
 
 	if (node->visited < fifo->n)
 		node->visited = fifo->n;
 	node->flag = get_node(fifo->first)->flag;
 	node->flag += (ret == 0) ? 1 : -1;
+	a = node->flag;
 	link->zu = fifo->n;
 	if (!(tmp = ft_lstnew(0, 0)))
 		return (-1);
@@ -99,10 +103,19 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 	{
 		tmp->next = iter->next;
 		iter->next = tmp;
-		return (0);
 	}
-	fifo->last->next = tmp;
-	fifo->last = fifo->last->next;
+	else
+	{
+		fifo->last->next = tmp;
+		fifo->last = fifo->last->next;
+	}
+/*	iter = fifo->first;
+	while (iter)
+	{
+		ft_printf("%s:%d-", get_node(iter)->name, get_node(iter)->flag);
+		iter = iter->next;
+	}
+	ft_printf("\n");*/
 	return (0);
 }
 
@@ -142,7 +155,7 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 ** the graph accordingly.
 */
 
-void				pathsolver(t_lemin *lem, t_fifo *fifo)
+void		pathsolver(t_lemin *lem, t_fifo *fifo)
 {
 	t_list		*path;
 	t_list		*rev;

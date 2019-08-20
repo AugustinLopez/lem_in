@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/27 20:05:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 11:29:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static inline int	free_fifo(t_fifo *fifo, int ret)
 	return (ret);
 }
 
-t_list		*get_reverse_path(t_rb_node *node, t_list *path)
+t_list				*get_reverse_path(t_rb_node *node, t_list *path)
 {
 	t_list		*tmp;
 	t_rb_node	*rev;
@@ -59,7 +59,8 @@ void				lstoflst(void *pv, size_t zu)
 	(void)zu;
 }
 
-t_list	*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo, t_list **memory)
+t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
+						t_list **memory)
 {
 	t_list		*tmp;
 
@@ -78,7 +79,8 @@ t_list	*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo, t_list **memory
 	return (tmp);
 }
 
-int			loop_pathlist(t_lemin *lem, t_fifo *fifo, t_list **road, t_list **km)
+int					loop_pathlist(t_lemin *lem, t_fifo *fifo, t_list **road,
+						t_list **km)
 {
 	t_list		*tmp;
 	size_t		i;
@@ -103,27 +105,7 @@ int			loop_pathlist(t_lemin *lem, t_fifo *fifo, t_list **road, t_list **km)
 	return (0);
 }
 
-void		print_list(t_solver *sol)
-{
-	t_list	*road;
-	t_list	*km;
-
-	road = sol->path;
-/*	while (tmp)
-	{*/
-		km = road->pv;
-		ft_printf("%zu: ", road->zu);
-		while (km)
-		{
-			ft_printf("%s-", get_node(km)->name);
-			km = km->next;
-		}
-		ft_printf("\n");
-	/*	tmp = tmp->next;
-	}*/
-}
-
-int			feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
+int					feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 {
 	t_list		*path;
 	t_list		*mem;
@@ -151,8 +133,7 @@ int			feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 	return (0);
 }
 
-
-size_t		step_count(size_t ant, t_solver *sol)
+size_t				step_count(size_t ant, t_solver *sol)
 {
 	t_list	*tmp;
 	size_t	a;
@@ -179,7 +160,7 @@ size_t		step_count(size_t ant, t_solver *sol)
 	return (sol->step);
 }
 
-int			bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
+int					bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
 {
 	int			ret;
 	t_list		*tmp;
@@ -204,7 +185,8 @@ int			bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
 	return (1);
 }
 
-int			exploration(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver *new)
+int					exploration(t_lemin *lem, t_fifo *fifo, t_solver *old,
+						t_solver *new)
 {
 	int	ret;
 
@@ -226,13 +208,13 @@ int			exploration(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver *new)
 			ft_memcpy(old, new, sizeof(*new));
 			ret = 0;
 		}
-	//	print_result(lem);
 		ft_bzero(new, sizeof(*new));
 	}
 	return (free_fifo(fifo, ret));
 }
 
-int			initialize_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver *new)
+int					initialize_edmundkarp(t_lemin *lem, t_fifo *fifo,
+						t_solver *old, t_solver *new)
 {
 	size_t	a;
 	size_t	b;
@@ -251,7 +233,7 @@ int			initialize_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old, t_solver 
 	return (0);
 }
 
-int			edmundkarp(t_lemin *lem)
+int					edmundkarp(t_lemin *lem)
 {
 	t_fifo		fifo;
 	int			ret;
