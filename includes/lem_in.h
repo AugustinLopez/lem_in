@@ -6,12 +6,12 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/07/22 14:15:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 11:57:12 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEM_IN_STRUCT_H
-# define LEM_IN_STRUCT_H
+#ifndef LEM_IN_H
+# define LEM_IN_H
 
 /*
 ** stdlib for malloc/free
@@ -75,9 +75,9 @@ typedef struct		s_solver
 ** - room and links are kept in a RB tree.
 */
 
-typedef struct 		s_lemin
+typedef struct		s_lemin
 {
-	size_t 			nbr_ant;
+	size_t			nbr_ant;
 	size_t			nbr_room;
 	size_t			nbr_tube;
 	t_list			*fileline;
@@ -87,13 +87,6 @@ typedef struct 		s_lemin
 	t_rb_node		*tree;
 	t_solver		*sol;
 }					t_lemin;
-
-/*
-** TEMP
-*/
-void				print_result(t_lemin *lem);
-size_t				step_count(size_t ant, t_solver *sol);
-void				lstoflst(void *pv, size_t zu);
 
 /*
 ** PARSER FUNCTION
@@ -106,15 +99,29 @@ int					parser(t_lemin *lem);
 int					is_tube(t_lemin *lem, char *line);
 int					is_comment(char *line);
 int					save_line(t_lemin *lem, char *line);
-int					lem_feed_tree(t_lemin *lem, t_tree_data *room, uint8_t command);
-
+int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
+						uint8_t command);
+size_t				printer(t_lemin *lem, int ac);
 /*
 ** ALGORITHM FUNCTION
 */
 
 t_rb_node			*get_node(t_list *ptr);
 int					edmundkarp(t_lemin *lem);
+t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
+						t_list **memory);
+int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old,
+						t_solver *cur);
 int					pathfinder(t_lemin *lem, t_fifo *fifo);
 void				pathsolver(t_lemin *lem, t_fifo *fifo);
 t_list				*get_reverse_path(t_rb_node *node, t_list *path);
+
+/*
+** UTILITIES
+*/
+
+size_t				step_count(size_t ant, t_solver *sol);
+t_list				*get_reverse_path(t_rb_node *node, t_list *path);
+void				lstoflst(void *pv, size_t zu);
+int					free_fifo(t_fifo *fifo, int ret);
 #endif

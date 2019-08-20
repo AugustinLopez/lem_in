@@ -6,78 +6,12 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:29:53 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 11:53:12 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
-
-static inline int	free_fifo(t_fifo *fifo, int ret)
-{
-	t_list	*tmp;
-
-	while (fifo->first)
-	{
-		tmp = fifo->first->next;
-		free(fifo->first);
-		fifo->first = tmp;
-	}
-	return (ret);
-}
-
-t_list				*get_reverse_path(t_rb_node *node, t_list *path)
-{
-	t_list		*tmp;
-	t_rb_node	*rev;
-
-	rev = get_node(path);
-	tmp = rev->link;
-	while (tmp)
-	{
-		if (get_node(tmp) == node)
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-void				lstoflst(void *pv, size_t zu)
-{
-	t_list	*cur;
-	t_list	*tmp;
-
-	cur = (t_list *)pv;
-	tmp = cur;
-	while (cur)
-	{
-		tmp = tmp->next;
-		free(cur);
-		cur = tmp;
-	}
-	pv = 0;
-	(void)zu;
-}
-
-t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
-						t_list **memory)
-{
-	t_list		*tmp;
-
-	if (!(tmp = ft_lstnew(0, 0)))
-		return (0);
-	if (!(sol->path))
-		sol->path = tmp;
-	else
-		ft_lstadd(&(sol->path), tmp);
-	if (!(tmp->pv = ft_lstnew(0, 0)))
-		return (0);
-	while (get_reverse_path(lem->end, *memory)->zu != fifo->max)
-		*memory = (*memory)->next;
-	tmp = tmp->pv;
-	tmp->pv = lem->end;
-	return (tmp);
-}
 
 int					loop_pathlist(t_lemin *lem, t_fifo *fifo, t_list **road,
 						t_list **km)
@@ -133,33 +67,6 @@ int					feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *fifo)
 	return (0);
 }
 
-size_t				step_count(size_t ant, t_solver *sol)
-{
-	t_list	*tmp;
-	size_t	a;
-
-	a = ant;
-	tmp = sol->path;
-	sol->step = 0;
-	while (tmp)
-	{
-		a -= (sol->max - tmp->zu + 1);
-		if (a > ant)
-		{
-			sol->step = -1;
-			return (-1);
-		}
-		tmp = tmp->next;
-	}
-	sol->step = sol->max;
-	while (a)
-	{
-		a -= (sol->num > a) ? a : sol->num;
-		++(sol->step);
-	}
-	return (sol->step);
-}
-
 int					bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
 {
 	int			ret;
@@ -179,7 +86,6 @@ int					bfs_algorithm(t_lemin *lem, t_fifo *fifo, t_solver *sol)
 		ret = feed_pathlist(sol, lem, fifo);
 		return (ret);
 	}
-	ft_printf("%d\n", fifo->n);
 	if (fifo->n == 1)
 		return (-1);
 	return (1);
@@ -213,33 +119,13 @@ int					exploration(t_lemin *lem, t_fifo *fifo, t_solver *old,
 	return (free_fifo(fifo, ret));
 }
 
-int					initialize_edmundkarp(t_lemin *lem, t_fifo *fifo,
-						t_solver *old, t_solver *new)
-{
-	size_t	a;
-	size_t	b;
-
-	if (!lem->start->nbr_link || !lem->end->nbr_link)
-		return (-1);
-	ft_bzero(fifo, sizeof(*fifo));
-	ft_bzero(old, sizeof(*old));
-	ft_bzero(new, sizeof(*new));
-	a = lem->start->nbr_link;
-	lem->start->flag = 0;
-	b = lem->end->nbr_link;
-	fifo->max = a < b ? b : a;
-	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
-	fifo->n = 0;
-	return (0);
-}
-
 int					edmundkarp(t_lemin *lem)
 {
 	t_fifo		fifo;
 	int			ret;
 	t_solver	new;
 
-	if ((ret = initialize_edmundkarp(lem, &fifo, lem->sol, &new)))
+	if ((ret = init_edmundkarp(lem, &fifo, lem->sol, &new)))
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (free_fifo(&fifo, ret));

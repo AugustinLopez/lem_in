@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/20 11:33:27 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/20 11:58:46 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,9 @@ SRC=main \
 	rb_balance \
 	rb_function \
 	edmundkarp \
+	print \
+	s_utils \
+	init_edmundkarp \
 	ek_pathfinder
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
@@ -42,6 +45,7 @@ PATH_OBJ=./srcs/obj/
 PATH_SRC1=./srcs/
 PATH_SRC2=./srcs/parser/
 PATH_SRC3=./srcs/rb_tree/
+PATH_SRC4=./srcs/algorithm/
 PATH_LIB=./libft/
 
 # --- 3.Rules ------------------------------------------------------------------
@@ -65,6 +69,10 @@ $(PATH_OBJ)%.o:$(PATH_SRC2)%.c $(INCLUDES)
 $(PATH_OBJ)%.o:$(PATH_SRC3)%.c $(INCLUDES)
 	-@printf " >O $(FLAGS) $(@:srcs/obj/%.o=%)\n"
 	@$(CC_O) $< -o $@
+$(PATH_OBJ)%.o:$(PATH_SRC4)%.c $(INCLUDES)
+	-@printf " >O $(FLAGS) $(@:srcs/obj/%.o=%)\n"
+	@$(CC_O) $< -o $@
+
 
 clean:
 	-@printf " ===> Removing object file(s)\n"
