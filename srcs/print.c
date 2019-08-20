@@ -6,12 +6,12 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:37:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 16:38:24 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
+/*
 void	print_length(t_lemin *lem)
 {
 	t_list	*tmp;
@@ -34,7 +34,7 @@ void	print_length(t_lemin *lem)
 	}
 	ft_printf("\n");
 }
-
+*/
 int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 {
 	t_list	*tmp;

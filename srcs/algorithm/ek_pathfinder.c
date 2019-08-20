@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:06:10 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 16:08:34 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 	if (!(tmp = ft_lstnew(0, 0)))
 		return (-1);
 	tmp->pv = node;
-	tmp->zu = (ret == 1) ? 1 : 0;
+	tmp->zu = (ret == 1) ? 1 : 0; //which case ?
 	iter = fifo->first;
 	while (iter->next && get_node(iter->next)->flag <= node->flag)
 		iter = iter->next;

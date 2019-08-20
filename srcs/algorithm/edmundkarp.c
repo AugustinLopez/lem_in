@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 13:17:42 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 16:11:28 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int					explore_node(t_lemin *lem, t_fifo *stack, t_solver *sol)
 	}
 	if (stack->n == 1)
 		return (-1);
-	return (1);
+	return (1); //ret 0 ?
 }
 
 static inline int	new_exploration(t_lemin *lem, t_fifo *stack, t_solver *new)
