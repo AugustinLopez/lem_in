@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:55:31 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 13:46:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,37 @@ t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
 	return (tmp);
 }
 
-int					init_edmundkarp(t_lemin *lem, t_fifo *fifo,
-						t_solver *old, t_solver *cur)
+/*
+** fifo->max is equals to the maximum possible number of path in the solution +1
+** Overflow are technically possible, but memory allocation should have failed
+** at this point.
+*/
+
+int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *cur)
 {
 	size_t	a;
 	size_t	b;
 
-	if (!lem->start->nbr_link || !lem->end->nbr_link)
-		return (-1);
+	ft_printf("%p %p\n", lem->start, lem->end);
+	if (!lem->start->nbr_link)
+	{
+		ft_dprintf(STDERR_FILENO, "ERROR\n");
+		return (free_fifo(fifo, -1));
+	}
+	else if (!lem->end->nbr_link)
+	{
+		ft_dprintf(STDERR_FILENO, "ERROR\n");
+		return (free_fifo(fifo, -1));
+	}
+
 	ft_bzero(fifo, sizeof(*fifo));
-	ft_bzero(old, sizeof(*old));
+	ft_bzero(lem->sol, sizeof(*(lem->sol)));
 	ft_bzero(cur, sizeof(*cur));
 	a = lem->start->nbr_link;
-	lem->start->flag = 0;
 	b = lem->end->nbr_link;
 	fifo->max = a < b ? b : a;
 	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
+	lem->start->flag = 0;
 	fifo->n = 0;
 	return (0);
 }

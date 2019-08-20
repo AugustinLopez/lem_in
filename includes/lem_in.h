@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/20 11:57:12 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/20 12:52:02 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ t_rb_node			*get_node(t_list *ptr);
 int					edmundkarp(t_lemin *lem);
 t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
 						t_list **memory);
-int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *old,
-						t_solver *cur);
+int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *cur);
 int					pathfinder(t_lemin *lem, t_fifo *fifo);
 void				pathsolver(t_lemin *lem, t_fifo *fifo);
 t_list				*get_reverse_path(t_rb_node *node, t_list *path);
