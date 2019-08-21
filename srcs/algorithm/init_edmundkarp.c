@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 15:36:18 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/21 12:21:32 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *cur)
 	size_t	a;
 	size_t	b;
 
+	ft_bzero(fifo, sizeof(*fifo));
+	ft_bzero(lem->sol, sizeof(*(lem->sol)));
+	ft_bzero(cur, sizeof(*cur));
 	if (!lem->start || !lem->end
 		|| !lem->start->nbr_link || !lem->end->nbr_link)
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (free_fifo(fifo, -1));
 	}
-	ft_bzero(fifo, sizeof(*fifo));
-	ft_bzero(lem->sol, sizeof(*(lem->sol)));
-	ft_bzero(cur, sizeof(*cur));
 	a = lem->start->nbr_link;
 	b = lem->end->nbr_link;
 	fifo->max = a < b ? b : a;

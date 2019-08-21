@@ -1,0 +1,50 @@
+1
+##start
+start 0 1
+##end
+end 4 1
+A1 0 0
+A2 1 0
+A3 2 0
+A4 3 0
+B1 1 1
+B2 2 1
+B3 3 1
+C1 1 2
+C2 2 2
+D1 1 3
+E1 1 4
+E2 2 4
+F1 1 5
+F2 2 5
+F3 3 5
+G1 0 6
+G2 1 6
+G3 2 6
+G4 3 6
+start-A1
+start-B1
+start-C1
+start-D1
+start-E1
+start-F1
+start-G1
+A1-A2
+A2-A3
+A3-A4
+A4-end
+B1-B2
+B2-B3
+B3-end
+C1-C2
+C2-end
+D1-end
+E1-E2
+E2-end
+F1-F2
+F2-F3
+F3-end
+G1-G2
+G2-G3
+G3-G4
+G4-end

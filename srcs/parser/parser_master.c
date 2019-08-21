@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/22 14:15:11 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/21 12:35:04 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 int					is_comment(char *line)
 {
-	size_t	i;
-
-	i = 0;
-	if (line[i] == '#' && (line[i + 1] != '#'))
+	if (line[0] == '#')
+	{
+		if (!ft_strcmp(line + 1, "#start\n") || !ft_strcmp(line + 1, "#end\n"))
+			return (0);
 		return (1);
-	else if ((line[i] == '#' && line[i + 1] == '#')
-			&& (!ft_strcmp(line + i + 2, "start\n")
-				&& !ft_strcmp(line + i + 2, "end\n")))
-		return (1);
+	}
 	return (0);
 }
 
