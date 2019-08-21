@@ -58,6 +58,7 @@ int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *cur)
 	fifo->max = a < b ? b : a;
 	fifo->max = fifo->max < lem->nbr_ant ? fifo->max + 1 : lem->nbr_ant + 1;
 	lem->start->flag = 0;
+	lem->end->flag = 1;
 	fifo->n = 0;
 	return (0);
 }

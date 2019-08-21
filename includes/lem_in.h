@@ -123,4 +123,5 @@ size_t				step_count(size_t ant, t_solver *sol);
 t_list				*get_reverse_path(t_rb_node *node, t_list *path);
 void				lstoflst(void *pv, size_t zu);
 int					free_fifo(t_fifo *fifo, int ret);
+void				print_path(t_lemin *lem);
 #endif

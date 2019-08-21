@@ -107,6 +107,7 @@ static inline int	new_exploration(t_lemin *lem, t_fifo *stack, t_solver *new)
 		if ((ret = explore_node(lem, stack, new)))
 			return (free_fifo(stack, ret));
 		ret = 1;
+		ft_printf("%zu %zu %zu %zu\n", new->max, old->max, step_count(lem->nbr_ant, new), step_count(lem->nbr_ant, old));
 		if (step_count(lem->nbr_ant, new) > step_count(lem->nbr_ant, old))
 			ft_lstdel(&(new->path), *lstoflst);
 		else
@@ -130,6 +131,7 @@ int					edmundkarp(t_lemin *lem)
 		return (-1);
 	while (++(stack.n) < stack.max)
 	{
+		ft_printf("x\n");
 		if (ret == 1)
 			break ;
 		else if (ret == -1 || !(stack.first = ft_lstnew(0, 0)))

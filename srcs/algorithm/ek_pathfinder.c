@@ -47,11 +47,14 @@ static inline int	check_for_end(t_lemin *lem, t_fifo *fifo)
 ** solved node will have to reverse a solved path (ret == 1)
 */
 
-static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
+static inline int	check_node_validity(t_lemin *lem, t_fifo *fifo,
 						t_list *link, t_list *rev)
 {
 	t_list	*tmp;
+	t_rb_node *node;
 
+	(void)lem;
+	node = get_node(link);
 	if (link->zu >= fifo->n
 		|| node->visited == fifo->n
 		|| rev->zu == fifo->n
@@ -66,14 +69,15 @@ static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
 				return (-1);
 			tmp = tmp->next;
 		}
+	//	node->visited = fifo->n;
 		return (1);
 	}
 	if (rev->zu == fifo->max)
 	{
 		if (get_node(fifo->first)->flag == 0)
 			return (-1);
-		node->visited = fifo->n;
-		get_node(rev)->visited = fifo->n;
+	//	node->visited = fifo->n;
+	//	get_node(rev)->visited = fifo->n;
 		return (2);
 	}
 	return (0);
@@ -93,7 +97,7 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 	if (!(tmp = ft_lstnew(0, 0)))
 		return (-1);
 	tmp->pv = node;
-	tmp->zu = (ret == 1) ? 1 : 0; //which case ?
+	tmp->zu = (ret == 1) ? 1 : 0;
 	iter = fifo->first;
 	while (iter->next && get_node(iter->next)->flag <= node->flag)
 		iter = iter->next;
@@ -125,13 +129,45 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 	if (check_for_end(lem, fifo))
 		return (1);
 	link = get_node(fifo->first)->link;
+
+	//*1
+	t_list	*tmp;
+	/*tmp = fifo->first;
+	while (tmp)
+	{
+		ft_printf("%s->", get_node(tmp)->name);
+		tmp = tmp->next;
+	}
+	ft_printf("\n");*/
+	//*1
 	while (link)
 	{
 		node = get_node(link);
 		rev = get_reverse_path(get_node(fifo->first), link);
-		if ((ret = check_node_validity(fifo, node, link, rev)) != -1)
+		if ((ret = check_node_validity(lem, fifo, link, rev)) != -1)
+		{
 			if (add_node(fifo, node, link, ret) == -1)
 				return (-1);
+		}
+		else if (node->visited == fifo->n && get_node(rev)->flag + 1 < node->flag)
+		{
+		//3
+			tmp = node->link;
+			while (tmp)
+			{
+				if (get_reverse_path(node, tmp)->zu == fifo->n)
+				{
+					get_reverse_path(node, tmp)->zu = 0;
+					link->zu = fifo->n;
+					node->flag = get_node(rev)->flag + 1;
+					break ;
+				}
+				tmp = tmp->next;
+			}
+			if (add_node(fifo, node, link, ret) == -1)
+				return (-1);
+		//3
+		}
 		link = link->next;
 	}
 	return (0);
@@ -156,6 +192,7 @@ void				pathsolver(t_lemin *lem, t_fifo *fifo)
 		path = path->next;
 	while (node != lem->start)
 	{
+	//	ft_printf("%s", node->name);
 		path = node == lem->end ? path : node->link;
 		rev = get_reverse_path(node, path);
 		while (rev->zu != fifo->n)
@@ -163,9 +200,11 @@ void				pathsolver(t_lemin *lem, t_fifo *fifo)
 			path = path->next;
 			rev = get_reverse_path(node, path);
 		}
+	//	ft_printf("(%zu|%zu|%zu)==>", rev->zu, path->zu, node->visited);
 		rev->zu = (path->zu == fifo->max) ? 0 : fifo->max;
 		path->zu = (path->zu == fifo->max) ? 0 : path->zu;
 		node = get_node(path);
 		node->visited = fifo->max;
 	}
+//	ft_printf("\n");
 }

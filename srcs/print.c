@@ -112,6 +112,26 @@ int		print_fifo(t_fifo *ant, int ac)
 	return (ret);
 }
 
+///////
+void	print_path(t_lemin *lem)
+{
+	t_list	*road;
+	t_list	*km;
+
+	road = lem->sol->path;
+	while (road)
+	{
+		km = road->pv;
+		while (km)
+		{
+			ft_printf("%s->", get_node(km)->name);
+			km = km->next;
+		}
+		road = road->next;
+		ft_printf("\n");
+	}
+}
+/////
 size_t	printer(t_lemin *lem, int ac)
 {
 	t_fifo	ant;
@@ -119,6 +139,7 @@ size_t	printer(t_lemin *lem, int ac)
 	t_list	*tmp;
 	size_t	res;
 
+	print_path(lem);
 	ant.n = 1;
 	ant.max = lem->nbr_ant;
 	ant.first = 0;

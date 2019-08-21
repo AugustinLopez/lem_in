@@ -51,9 +51,7 @@ int					parser_ant(t_lemin *lem)
 {
 	int		ret;
 	char	*line;
-	int		stop;
 
-	stop = 0;
 	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
 	{
 		if (is_ant(lem, line))
