@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 16:08:34 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/21 11:41:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static inline int	check_node_validity(t_fifo *fifo, t_rb_node *node,
 	}
 	if (rev->zu == fifo->max)
 	{
+		if (get_node(fifo->first)->flag == 0)
+			return (-1);
 		node->visited = fifo->n;
 		get_node(rev)->visited = fifo->n;
 		return (2);
@@ -86,7 +88,7 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 	if (node->visited < fifo->n)
 		node->visited = fifo->n;
 	node->flag = get_node(fifo->first)->flag;
-	node->flag += (ret == 0) ? 1 : -1;
+	node->flag += (ret != 2) ? 1 : -1;
 	link->zu = fifo->n;
 	if (!(tmp = ft_lstnew(0, 0)))
 		return (-1);

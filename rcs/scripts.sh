@@ -1,3 +1,14 @@
 ./generator --big-superposition > test.txt
-../lem-in a < test.txt
-#../lem-in < test.txt | grep -E 'L1|L5-|L9-|#Here' | cut -f1 -d- | cat -n
+ARG=$(../lem-in a < test.txt| grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)
+RETURN=$(echo $?)
+GENERATOR=$(echo $ARG | cut -d ' ' -f1)
+SOLUTION=$(echo $ARG | cut -d ' ' -f2)
+echo "Generator:   $GENERATOR" | cat -e
+echo "My solution: $SOLUTION" | cat -e
+DIFF=$(($GENERATOR - $SOLUTION))
+echo "$DIFF"
+echo "$RETURN"
+if [ $RETURN -eq 0 ]
+then
+	echo "Hello"
+fi
