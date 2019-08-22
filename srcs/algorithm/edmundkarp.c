@@ -6,17 +6,17 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 14:47:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:21:25 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-int					loop_pathlist(t_lemin *lem, t_fifo *stack, t_list **road,
-						t_list **km)
+int					loop_pathlink(t_lemin *lem, t_fifo *stack, t_link **road,
+						t_link **km)
 {
-	t_list		*tmp;
+	t_link		*tmp;
 	size_t		i;
 	t_rb_node	*node;
 
@@ -30,20 +30,20 @@ int					loop_pathlist(t_lemin *lem, t_fifo *stack, t_list **road,
 			*road = (*road)->next;
 		if ((node = get_node(*road)) == lem->start)
 			break ;
-		if (!(tmp = ft_lstnew(0, 0)))
+		if (!(tmp = ft_lnknew(0, 0)))
 			return (-1);
 		tmp->pv = node;
-		ft_lstadd(km, tmp);
+		ft_lnkadd(km, tmp);
 	}
 	(*road)->zu = i;
 	return (0);
 }
 
-int					feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *stack)
+int					feed_pathlink(t_solver *sol, t_lemin *lem, t_fifo *stack)
 {
-	t_list		*path;
-	t_list		*mem;
-	t_list		*tmp;
+	t_link		*path;
+	t_link		*mem;
+	t_link		*tmp;
 	size_t		j;
 	size_t		i;
 
@@ -51,11 +51,11 @@ int					feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *stack)
 	mem = lem->end->link;
 	while (++j < stack->n + 1)
 	{
-		if (!(tmp = init_pathlist(lem, sol, stack, &mem)))
+		if (!(tmp = init_pathlink(lem, sol, stack, &mem)))
 			return (-1);
 		path = mem;
 		mem = mem->next;
-		if (loop_pathlist(lem, stack, &path, &tmp) == -1)
+		if (loop_pathlink(lem, stack, &path, &tmp) == -1)
 			return (-1);
 		i = path->zu;
 		sol->path->zu = i;
@@ -69,9 +69,9 @@ int					feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *stack)
 
 void				remove_doublon(t_fifo *fifo)
 {
-	t_list	*origin;
-	t_list	*tmp;
-	t_list	*prev;
+	t_link	*origin;
+	t_link	*tmp;
+	t_link	*prev;
 
 	origin = fifo->first;
 	while (origin)
@@ -101,7 +101,7 @@ void				remove_doublon(t_fifo *fifo)
 int					explore_node(t_lemin *lem, t_fifo *stack, t_solver *sol)
 {
 	int			ret;
-	t_list		*tmp;
+	t_link		*tmp;
 
 	while (stack->first)
 	{
@@ -115,7 +115,7 @@ int					explore_node(t_lemin *lem, t_fifo *stack, t_solver *sol)
 	if (ret == 1)
 	{
 		pathsolver(lem, stack);
-		ret = feed_pathlist(sol, lem, stack);
+		ret = feed_pathlink(sol, lem, stack);
 		return (ret);
 	}
 	if (stack->n == 1)
@@ -141,10 +141,10 @@ static inline int	new_exploration(t_lemin *lem, t_fifo *stack, t_solver *new)
 		ret = 1;
 		print_new_explo(1, new, old, lem);
 		if (step_count(lem->nbr_ant, new) > step_count(lem->nbr_ant, old))
-			ft_lstdel(&(new->path), *lstoflst);
+			ft_lnkdel(&(new->path), *lnkoflnk);
 		else
 		{
-			ft_lstdel(&(old->path), *lstoflst);
+			ft_lnkdel(&(old->path), *lnkoflnk);
 			ft_memcpy(old, new, sizeof(*new));
 			ret = 0;
 		}
@@ -166,7 +166,7 @@ int					edmundkarp(t_lemin *lem)
 		print_new_explo(0, 0, 0, 0);
 		if (ret == 1)
 			break ;
-		else if (ret == -1 || !(stack.first = ft_lstnew(0, 0)))
+		else if (ret == -1 || !(stack.first = ft_lnknew(0, 0)))
 		{
 			ret = -1;
 			break ;

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 14:18:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:55:35 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		free_fifo(t_fifo *fifo, int ret)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 
 	while (fifo->first)
 	{
@@ -26,9 +26,9 @@ int		free_fifo(t_fifo *fifo, int ret)
 	return (ret);
 }
 
-t_list	*get_reverse_path(t_rb_node *node, t_list *path)
+t_link	*get_reverse_path(t_rb_node *node, t_link *path)
 {
-	t_list		*tmp;
+	t_link		*tmp;
 	t_rb_node	*rev;
 
 	rev = get_node(path);
@@ -42,26 +42,9 @@ t_list	*get_reverse_path(t_rb_node *node, t_list *path)
 	return (0);
 }
 
-void	lstoflst(void *pv, size_t zu)
-{
-	t_list	*cur;
-	t_list	*tmp;
-
-	cur = (t_list *)pv;
-	tmp = cur;
-	while (cur)
-	{
-		tmp = tmp->next;
-		free(cur);
-		cur = tmp;
-	}
-	pv = 0;
-	(void)zu;
-}
-
 size_t	step_count(size_t ant, t_solver *sol)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 	size_t	a;
 
 	a = ant;

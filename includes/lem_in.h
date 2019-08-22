@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/22 14:52:22 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:56:02 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,23 @@
 ** need to check if a value is lower, higher or equal to 'n'.
 */
 
-typedef struct		s_fifo
+/*typedef struct		s_fifo
 {
-	t_list			*first;
-	t_list			*last;
+	t_link			*first;
+	t_link			*last;
 	size_t			n;
 	size_t			max;
 }					t_fifo;
 
 typedef struct		s_solver
 {
-	t_list			*path;
-	t_list			*cur;
+	t_link			*path;
+	t_link			*cur;
 	size_t			max;
 	size_t			step;
 	size_t			num;
 }					t_solver;
-
+*/
 /*
 ** LEM_IN:
 ** - fileline is the start of the file
@@ -86,7 +86,7 @@ typedef struct		s_lemin
 	t_rb_node		*start;
 	t_rb_node		*end;
 	t_rb_node		*tree;
-	t_solver		*sol;
+//	t_solver		*sol;
 }					t_lemin;
 
 /*
@@ -102,31 +102,46 @@ int					is_comment(char *line);
 int					save_line(t_lemin *lem, char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 						uint8_t command);
-size_t				printer(t_lemin *lem, int ac);
+
+
+
+
+
+
+//size_t				printer(t_lemin *lem, int ac);
+
 /*
 ** ALGORITHM FUNCTION
 */
-
-t_rb_node			*get_node(t_list *ptr);
+/*
+void				lnkoflnk(void *pv, size_t zu);
+*t_rb_node			*get_node(t_link *ptr);
 int					edmundkarp(t_lemin *lem);
-t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
-						t_list **memory);
+t_link				*init_pathlink(t_lemin *lem, t_solver *sol, t_fifo *fifo,
+						t_link **memory);
 int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *cur);
 int					pathfinder(t_lemin *lem, t_fifo *fifo);
 void				pathsolver(t_lemin *lem, t_fifo *fifo);
-t_list				*get_reverse_path(t_rb_node *node, t_list *path);
-
+t_link				*get_reverse_path(t_rb_node *node, t_link *path);
+*/
 /*
 ** UTILITIES
 */
-
+/*
 size_t				step_count(size_t ant, t_solver *sol);
-t_list				*get_reverse_path(t_rb_node *node, t_list *path);
-void				lstoflst(void *pv, size_t zu);
+t_link				*get_reverse_path(t_rb_node *node, t_link *path);
 int					free_fifo(t_fifo *fifo, int ret);
 void				print_path(t_lemin *lem);
 
 void	print_new_explo(int c, t_solver *new, t_solver *old, t_lemin *lem);
-void	print_explo(char c, t_list *rev, t_list *path, t_rb_node *node);
+void	print_explo(char c, t_link *rev, t_link *path, t_rb_node *node);
 void	print_stack(t_fifo *fifo);
+*/
+/*
+** LINK
+*/
+
+int					ft_lnknew(t_rb_node *origin, t_rb_node *target);
+void				ft_lnkdel(t_rb_node *node);
+
 #endif

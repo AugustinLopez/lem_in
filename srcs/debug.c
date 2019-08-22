@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 14:45:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 14:53:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:22:40 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	print_path(t_lemin *lem)
 {
-	t_list	*road;
-	t_list	*km;
+	t_link	*road;
+	t_link	*km;
 
 	if (DEBUG)
 		return ;
@@ -46,7 +46,7 @@ void	print_new_explo(int c, t_solver *new, t_solver *old, t_lemin *lem)
 
 void	print_stack(t_fifo *fifo)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 
 	if (DEBUG)
 		return ;
@@ -59,7 +59,7 @@ void	print_stack(t_fifo *fifo)
 	ft_printf("\n");
 }
 
-void	print_explo(char c, t_list *rev, t_list *path, t_rb_node *node)
+void	print_explo(char c, t_link *rev, t_link *path, t_rb_node *node)
 {
 	if (DEBUG)
 		return ;

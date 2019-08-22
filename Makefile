@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/22 14:51:34 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/22 16:56:41 by bcarlier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,20 +21,23 @@ OBJ=$(SRC:%=$(PATH_OBJ)%.o)
 
 # --- 1.Source/Header ----------------------------------------------------------
 
-SRC=main \
+SRC1=main \
 	parser_ant \
 	parser_room \
 	parser_tube \
 	parser_master \
 	rb_insert \
 	rb_balance \
-	rb_function \
-	edmundkarp \
-	print \
+	rb_function
+#	print \
 	s_utils \
+	edmundkarp \
 	init_edmundkarp \
-	ek_pathfinder \
+	ek_pathfinder\
 	debug
+_LIST=	ft_lnknew \
+		ft_lnkdel
+SRC=$(SRC1) $(_LIST)
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h
@@ -47,6 +50,7 @@ PATH_SRC1=./srcs/
 PATH_SRC2=./srcs/parser/
 PATH_SRC3=./srcs/rb_tree/
 PATH_SRC4=./srcs/algorithm/
+PATH_SRC5=./srcs/lib/
 PATH_LIB=./libft/
 
 # --- 3.Rules ------------------------------------------------------------------
@@ -73,7 +77,9 @@ $(PATH_OBJ)%.o:$(PATH_SRC3)%.c $(INCLUDES)
 $(PATH_OBJ)%.o:$(PATH_SRC4)%.c $(INCLUDES)
 	-@printf " >O $(FLAGS) $(@:srcs/obj/%.o=%)\n"
 	@$(CC_O) $< -o $@
-
+$(PATH_OBJ)%.o:$(PATH_SRC5)%.c $(INCLUDES)
+	-@printf " >O $(FLAGS) $(@:srcs/obj/%.o=%)\n"
+	@$(CC_O) $< -o $@
 
 clean:
 	-@printf " ===> Removing object file(s)\n"

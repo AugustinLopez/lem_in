@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/17 12:06:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:46:02 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void					lem_free_tree(t_rb_node **root)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 
 	if (!root || !*root)
 		return ;
@@ -89,7 +89,7 @@ int						lem_feed_tree(t_lemin *lem, t_tree_data *room,
 	return (0);
 }
 
-t_rb_node				*get_node(t_list *ptr)
+t_rb_node				*get_node(t_link *ptr)
 {
-	return ((t_rb_node *)(ptr->pv));
+	return ((t_rb_node *)(ptr->origin));
 }

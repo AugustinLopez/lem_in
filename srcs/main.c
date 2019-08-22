@@ -6,16 +6,16 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:39:23 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:32:09 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-void	basic_sort(t_list **array, t_list *origin, size_t size)
+/*void	basic_sort(t_link **array, t_link *origin, size_t size)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 	size_t	i;
 
 	i = 0;
@@ -43,7 +43,7 @@ void	basic_sort(t_list **array, t_list *origin, size_t size)
 
 int		sort_road(t_lemin *lem)
 {
-	t_list	**array;
+	t_link	**array;
 	size_t	i;
 
 	if (!(array = ft_memalloc(sizeof(*array) * lem->sol->num)))
@@ -63,32 +63,53 @@ int		sort_road(t_lemin *lem)
 	free(array);
 	return (0);
 }
+*/
+
+/*void	lnkoflnk(void *pv, size_t zu)
+{
+	t_link	*cur;
+	t_link	*tmp;
+
+	cur = (t_link *)pv;
+	tmp = cur;
+	while (cur)
+	{
+		tmp = tmp->next;
+		free(cur);
+		cur = tmp;
+	}
+	pv = 0;
+	(void)zu;
+}*/
 
 int		main(int ac, char **av)
 {
 	t_lemin		lem;
-	t_solver	path;
+//	t_solver	path;
 	int			ret;
 	size_t		res;
 
 	(void)av;
+	(void)ac;
+	(void)res;
 	ft_bzero(&lem, sizeof(lem));
-	ft_bzero(&path, sizeof(path));
-	lem.sol = &path;
+//	ft_bzero(&path, sizeof(path));
+	//lem.sol = &path;
 	res = 0;
-	if (!(ret = parser(&lem)))
+	ret = parser(&lem);
+/*	if (!(ret = parser(&lem)))
 		if ((ret = edmundkarp(&lem) >= 0))
 			if (!(ret = sort_road(&lem)))
-				res = printer(&lem, ac);
-	ft_lstdel(&((lem.sol)->path), *lstoflst);
+				res = printer(&lem, ac);*/
+	//ft_lnkdel(&((lem.sol)->path), *lnkoflnk);
 	lem_free_tree(&(lem.tree));
 	ft_lstdel(&(lem.fileline), *ft_lstfree);
-	if (ac > 1)
+	/*if (ac > 1)
 	{
 		ft_printf("Step's number: %zu\n", res);
 		ft_printf("Ant's number : %zu\n", lem.nbr_ant);
 		ft_printf("Room's number: %zu\n", lem.nbr_room);
 		ft_printf("Tube's number: %zu\n", lem.nbr_tube);
-	}
+	}*/
 	return (ret);
 }

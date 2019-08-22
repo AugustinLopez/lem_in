@@ -6,25 +6,25 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/21 12:21:32 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/22 15:21:11 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-t_list				*init_pathlist(t_lemin *lem, t_solver *sol, t_fifo *fifo,
-						t_list **memory)
+t_link				*init_pathlink(t_lemin *lem, t_solver *sol, t_fifo *fifo,
+						t_link **memory)
 {
-	t_list		*tmp;
+	t_link		*tmp;
 
-	if (!(tmp = ft_lstnew(0, 0)))
+	if (!(tmp = ft_lnknew(0, 0)))
 		return (0);
 	if (!(sol->path))
 		sol->path = tmp;
 	else
-		ft_lstadd(&(sol->path), tmp);
-	if (!(tmp->pv = ft_lstnew(0, 0)))
+		ft_lnkadd(&(sol->path), tmp);
+	if (!(tmp->pv = ft_lnknew(0, 0)))
 		return (0);
 	while (get_reverse_path(lem->end, *memory)->zu != fifo->max)
 		*memory = (*memory)->next;

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/27 20:04:47 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 16:56:18 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 ** stddef for size_t
 */
 
-# include "rb_tree.h"
 # include "libft.h"
 # include <stdlib.h>
 # include <stddef.h>
@@ -28,6 +27,23 @@
 ** The 2nd bit indicates the starting room.
 ** The 3rd bit indicates the final room.
 */
+
+typedef struct		s_link
+{
+	void			*origin;
+	void			*target;
+	int				solution;
+	int				etape;
+	struct s_link	*reverse;
+	struct s_link	*next;
+}					t_link;
+
+typedef struct		s_road
+{
+	t_link			*km;
+	size_t			length;
+	struct s_road	*next;
+}					t_road;
 
 # define RB_RED 1
 
@@ -48,7 +64,7 @@ typedef struct			s_rb_node
 	long long			y;
 	size_t				nbr_link;
 	size_t				visited;
-	t_list				*link;
+	t_link				*link;
 	char				*name;
 	size_t				flag;
 }						t_rb_node;

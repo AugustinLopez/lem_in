@@ -6,15 +6,15 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 14:53:26 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:22:46 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		feed_ant(t_list *road, t_fifo *ant, size_t step)
+int		feed_ant(t_link *road, t_fifo *ant, size_t step)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 
 	if (!(road->zu && road->zu <= step && ant->n <= ant->max))
 	{
@@ -22,7 +22,7 @@ int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 		return (0);
 	}
 	++road->zu;
-	if (!(tmp = ft_lstnew(0, 0)))
+	if (!(tmp = ft_lnknew(0, 0)))
 		return (-1);
 	if (!(ant->first))
 	{
@@ -39,7 +39,7 @@ int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 	return (0);
 }
 
-int		print_fifo_loop(t_fifo *ant, t_list *tmp, t_list **prev, t_list **cur)
+int		print_fifo_loop(t_fifo *ant, t_link *tmp, t_link **prev, t_link **cur)
 {
 	if (!(tmp))
 	{
@@ -65,9 +65,9 @@ int		print_fifo_loop(t_fifo *ant, t_list *tmp, t_list **prev, t_list **cur)
 
 int		print_fifo(t_fifo *ant, int ac)
 {
-	t_list	*cur;
-	t_list	*prev;
-	t_list	*tmp;
+	t_link	*cur;
+	t_link	*prev;
+	t_link	*tmp;
 	int		ret;
 	int		first;
 
@@ -81,7 +81,7 @@ int		print_fifo(t_fifo *ant, int ac)
 			ft_printf("L%zu-%s", cur->zu, get_node(cur->pv)->name);
 		else if (ac < 2)
 			ft_printf(" L%zu-%s", cur->zu, get_node(cur->pv)->name);
-		tmp = ((t_list *)(cur->pv))->next;
+		tmp = ((t_link *)(cur->pv))->next;
 		ret = print_fifo_loop(ant, tmp, &prev, &cur) ? 1 : ret;
 	}
 	if (ac < 2)
@@ -93,7 +93,7 @@ size_t	printer(t_lemin *lem, int ac)
 {
 	t_fifo	ant;
 	size_t	step;
-	t_list	*tmp;
+	t_link	*tmp;
 	size_t	res;
 
 	print_path(lem);

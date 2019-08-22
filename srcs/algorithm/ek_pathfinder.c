@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 14:51:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 15:22:22 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static inline int	check_for_end(t_lemin *lem, t_fifo *fifo)
 {
 	t_rb_node	*node;
-	t_list		*tmp;
+	t_link		*tmp;
 
 	tmp = get_node(fifo->first)->link;
 	while (tmp)
@@ -48,9 +48,9 @@ static inline int	check_for_end(t_lemin *lem, t_fifo *fifo)
 */
 
 static inline int	check_node_validity(t_lemin *lem, t_fifo *fifo,
-						t_list *link, t_list *rev)
+						t_link *link, t_link *rev)
 {
-	t_list	*tmp;
+	t_link	*tmp;
 	t_rb_node *node;
 
 	(void)lem;
@@ -76,18 +76,18 @@ static inline int	check_node_validity(t_lemin *lem, t_fifo *fifo,
 	return (0);
 }
 
-static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
+static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_link *link,
 						int ret)
 {
-	t_list	*tmp;
-	t_list	*iter;
+	t_link	*tmp;
+	t_link	*iter;
 
 	if (node->visited < fifo->n)
 		node->visited = fifo->n;
 	node->flag = get_node(fifo->first)->flag;
 	node->flag += (ret == 2) ? -1 : 1;
 	link->zu = fifo->n;
-	if (!(tmp = ft_lstnew(0, 0)))
+	if (!(tmp = ft_lnknew(0, 0)))
 		return (-1);
 	tmp->pv = node;
 	tmp->zu = (ret == 1) ? 1 : 0;
@@ -115,8 +115,8 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 int					pathfinder(t_lemin *lem, t_fifo *fifo)
 {
 	t_rb_node	*node;
-	t_list		*link;
-	t_list		*rev;
+	t_link		*link;
+	t_link		*rev;
 	int			ret;
 
 	if (check_for_end(lem, fifo))
@@ -171,8 +171,8 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 
 void				pathsolver(t_lemin *lem, t_fifo *fifo)
 {
-	t_list		*path;
-	t_list		*rev;
+	t_link		*path;
+	t_link		*rev;
 	t_rb_node	*node;
 
 	node = lem->end;
