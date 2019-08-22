@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 14:20:12 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 14:51:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,8 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 	tmp->pv = node;
 	tmp->zu = (ret == 1) ? 1 : 0;
 	iter = fifo->first;
-	if (ret == 1)
-	{
-		while (iter->next && get_node(iter->next)->flag < node->flag)
-			iter = iter->next;
-	}
-	else
-	{
-		while (iter->next && get_node(iter->next)->flag <= node->flag)
-			iter = iter->next;
-	}
+	while (iter->next && get_node(iter->next)->flag <= node->flag)
+		iter = iter->next;
 	if (iter->next)
 	{
 		tmp->next = iter->next;
@@ -126,21 +118,13 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 	t_list		*link;
 	t_list		*rev;
 	int			ret;
-//	t_list	*tmp;
 
 	if (check_for_end(lem, fifo))
 		return (1);
 	link = get_node(fifo->first)->link;
 
 	//*1
-
-	/*tmp = fifo->first;
-	while (tmp)
-	{
-		ft_printf("%s|%zu->", get_node(tmp)->name, get_node(tmp)->flag);
-		tmp = tmp->next;
-	}
-	ft_printf("\n");*/
+	print_stack(fifo);
 	//*1
 	while (link)
 	{
@@ -197,7 +181,6 @@ void				pathsolver(t_lemin *lem, t_fifo *fifo)
 		path = path->next;
 	while (node != lem->start)
 	{
-	//	ft_printf("%s", node->name);
 		path = node == lem->end ? path : node->link;
 		rev = get_reverse_path(node, path);
 		while (rev->zu != fifo->n)
@@ -205,11 +188,11 @@ void				pathsolver(t_lemin *lem, t_fifo *fifo)
 			path = path->next;
 			rev = get_reverse_path(node, path);
 		}
-	//	ft_printf("(%zu|%zu|%zu)==>", rev->zu, path->zu, node->visited);
+		print_explo(0, rev, path, node);
 		rev->zu = (path->zu == fifo->max) ? 0 : fifo->max;
 		path->zu = (path->zu == fifo->max) ? 0 : path->zu;
 		node = get_node(path);
 		node->visited = fifo->max;
 	}
-//	ft_printf("\n");
+	print_explo('\n', rev, path, node);
 }

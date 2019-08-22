@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/20 13:43:31 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/22 14:51:34 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ SRC=main \
 	print \
 	s_utils \
 	init_edmundkarp \
-	ek_pathfinder
+	ek_pathfinder \
+	debug
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h

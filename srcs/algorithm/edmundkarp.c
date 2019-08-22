@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 11:38:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 14:47:40 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ static inline int	new_exploration(t_lemin *lem, t_fifo *stack, t_solver *new)
 		if ((ret = explore_node(lem, stack, new)))
 			return (free_fifo(stack, ret));
 		ret = 1;
-		ft_printf("%zu %zu %zu %zu\n", new->max, old->max, step_count(lem->nbr_ant, new), step_count(lem->nbr_ant, old));
+		print_new_explo(1, new, old, lem);
 		if (step_count(lem->nbr_ant, new) > step_count(lem->nbr_ant, old))
 			ft_lstdel(&(new->path), *lstoflst);
 		else
@@ -163,7 +163,7 @@ int					edmundkarp(t_lemin *lem)
 		return (-1);
 	while (++(stack.n) < stack.max)
 	{
-		ft_printf("x\n");
+		print_new_explo(0, 0, 0, 0);
 		if (ret == 1)
 			break ;
 		else if (ret == -1 || !(stack.first = ft_lstnew(0, 0)))

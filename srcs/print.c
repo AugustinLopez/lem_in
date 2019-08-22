@@ -6,35 +6,12 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 16:38:24 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/22 14:53:26 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-/*
-void	print_length(t_lemin *lem)
-{
-	t_list	*tmp;
-	t_list	*tmp2;
 
-	ft_printf("%zu %zu %zu\n", step_count(lem->nbr_ant, lem->sol),
-		lem->sol->num, lem->sol->max);
-	tmp = lem->sol->path;
-	while (tmp)
-	{
-		ft_printf("%zu ", tmp->zu);
-		tmp2 = (t_list *)(tmp->pv);
-		while (tmp2)
-		{
-			ft_printf("%s->", get_node(tmp2)->name);
-			tmp2 = tmp2->next;
-		}
-		ft_printf("\n");
-		tmp = tmp->next;
-	}
-	ft_printf("\n");
-}
-*/
 int		feed_ant(t_list *road, t_fifo *ant, size_t step)
 {
 	t_list	*tmp;
@@ -112,26 +89,6 @@ int		print_fifo(t_fifo *ant, int ac)
 	return (ret);
 }
 
-///////
-void	print_path(t_lemin *lem)
-{
-	t_list	*road;
-	t_list	*km;
-
-	road = lem->sol->path;
-	while (road)
-	{
-		km = road->pv;
-		while (km)
-		{
-			ft_printf("%s->", get_node(km)->name);
-			km = km->next;
-		}
-		road = road->next;
-		ft_printf("\n");
-	}
-}
-/////
 size_t	printer(t_lemin *lem, int ac)
 {
 	t_fifo	ant;

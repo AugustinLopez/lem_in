@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/20 12:52:02 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 14:52:22 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 ** flags for '##start' and '##end' command.
 */
 
+# define DEBUG 1
 # define LEM_END 1
 # define LEM_START 2
 # define LEM_COMMAND 4
@@ -124,4 +125,8 @@ t_list				*get_reverse_path(t_rb_node *node, t_list *path);
 void				lstoflst(void *pv, size_t zu);
 int					free_fifo(t_fifo *fifo, int ret);
 void				print_path(t_lemin *lem);
+
+void	print_new_explo(int c, t_solver *new, t_solver *old, t_lemin *lem);
+void	print_explo(char c, t_list *rev, t_list *path, t_rb_node *node);
+void	print_stack(t_fifo *fifo);
 #endif
