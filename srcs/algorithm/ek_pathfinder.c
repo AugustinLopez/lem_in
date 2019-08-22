@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/21 11:41:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 14:20:12 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,10 @@ static inline int	check_node_validity(t_lemin *lem, t_fifo *fifo,
 				return (-1);
 			tmp = tmp->next;
 		}
-	//	node->visited = fifo->n;
 		return (1);
 	}
 	if (rev->zu == fifo->max)
-	{
-		if (get_node(fifo->first)->flag == 0)
-			return (-1);
-	//	node->visited = fifo->n;
-	//	get_node(rev)->visited = fifo->n;
 		return (2);
-	}
 	return (0);
 }
 
@@ -92,15 +85,23 @@ static inline int	add_node(t_fifo *fifo, t_rb_node *node, t_list *link,
 	if (node->visited < fifo->n)
 		node->visited = fifo->n;
 	node->flag = get_node(fifo->first)->flag;
-	node->flag += (ret != 2) ? 1 : -1;
+	node->flag += (ret == 2) ? -1 : 1;
 	link->zu = fifo->n;
 	if (!(tmp = ft_lstnew(0, 0)))
 		return (-1);
 	tmp->pv = node;
 	tmp->zu = (ret == 1) ? 1 : 0;
 	iter = fifo->first;
-	while (iter->next && get_node(iter->next)->flag <= node->flag)
-		iter = iter->next;
+	if (ret == 1)
+	{
+		while (iter->next && get_node(iter->next)->flag < node->flag)
+			iter = iter->next;
+	}
+	else
+	{
+		while (iter->next && get_node(iter->next)->flag <= node->flag)
+			iter = iter->next;
+	}
 	if (iter->next)
 	{
 		tmp->next = iter->next;
@@ -125,17 +126,18 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 	t_list		*link;
 	t_list		*rev;
 	int			ret;
+//	t_list	*tmp;
 
 	if (check_for_end(lem, fifo))
 		return (1);
 	link = get_node(fifo->first)->link;
 
 	//*1
-	t_list	*tmp;
+
 	/*tmp = fifo->first;
 	while (tmp)
 	{
-		ft_printf("%s->", get_node(tmp)->name);
+		ft_printf("%s|%zu->", get_node(tmp)->name, get_node(tmp)->flag);
 		tmp = tmp->next;
 	}
 	ft_printf("\n");*/
@@ -149,7 +151,8 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 			if (add_node(fifo, node, link, ret) == -1)
 				return (-1);
 		}
-		else if (node->visited == fifo->n && get_node(rev)->flag + 1 < node->flag)
+		//102else if (node->visited <= fifo->n && get_node(rev)->flag < node->flag)
+	/*	else if (node->visited == fifo->n && get_node(rev)->flag + 1 < node->flag)
 		{
 		//3
 			tmp = node->link;
@@ -164,10 +167,12 @@ int					pathfinder(t_lemin *lem, t_fifo *fifo)
 				}
 				tmp = tmp->next;
 			}
+			//ret ? Le reequilibrage des poids ne se fait que en + alors 
+			//que si je remonte, jke dois faire -
 			if (add_node(fifo, node, link, ret) == -1)
 				return (-1);
 		//3
-		}
+		}*/
 		link = link->next;
 	}
 	return (0);

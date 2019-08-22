@@ -50,4 +50,4 @@ A3-A4
 B3-B4
 A4-A5
 B4-A5
-# 9 possible
+# 10 possible

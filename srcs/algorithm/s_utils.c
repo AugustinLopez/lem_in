@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 11:45:49 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 14:18:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,13 @@ size_t	step_count(size_t ant, t_solver *sol)
 		tmp = tmp->next;
 	}
 	sol->step = sol->max;
-	while (a)
+	sol->step += a / sol->num;
+	if (a % sol->num)
+		++(sol->step);
+/*	while (a)
 	{
 		a -= (sol->num > a) ? a : sol->num;
 		++(sol->step);
-	}
+	}*/
 	return (sol->step);
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/21 11:41:21 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/22 11:38:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,37 @@ int					feed_pathlist(t_solver *sol, t_lemin *lem, t_fifo *stack)
 	return (0);
 }
 
+void				remove_doublon(t_fifo *fifo)
+{
+	t_list	*origin;
+	t_list	*tmp;
+	t_list	*prev;
+
+	origin = fifo->first;
+	while (origin)
+	{
+		tmp = origin->next;
+		prev = origin;
+		while (tmp)
+		{
+			if (!ft_strcmp(get_node(tmp)->name, get_node(origin)->name))
+			{
+				prev->next = tmp->next;
+				free(tmp);
+				tmp = prev->next;
+				if (tmp == NULL)
+					fifo->last = prev;
+			}
+			else
+			{
+				tmp = tmp->next;
+				prev = prev->next;
+			}
+		}
+		origin = origin->next;
+	}
+}
+
 int					explore_node(t_lemin *lem, t_fifo *stack, t_solver *sol)
 {
 	int			ret;
@@ -74,6 +105,7 @@ int					explore_node(t_lemin *lem, t_fifo *stack, t_solver *sol)
 
 	while (stack->first)
 	{
+		remove_doublon(stack);
 		if ((ret = pathfinder(lem, stack)))
 			break ;
 		tmp = stack->first;

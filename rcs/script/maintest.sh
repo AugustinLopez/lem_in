@@ -5,14 +5,20 @@ MIN=0
 ITERATIONS=0
 FILE=worst.txt
 SUM=0
-i=1
-MEM=0
-while [ $i -lt 100 ]
+i=0
+TEST=$1
+BAD=0
+if [ !$1 ]
+then
+	echo hi
+fi
+while [ $i -lt $1 ]
 do
 	sleep 1
-	./generator --big-superposition > test.txt
-	ARG=$(../lem-in a < test.txt| grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)
+	./generator --big-superposition > iter.txt
+	./symlemin a < iter.txt > /dev/null
 	RETURN=$(echo $?)
+	ARG=$(./symlemin a < iter.txt | grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)
 	GENERATOR=$(echo $ARG | cut -d ' ' -f1)
 	SOLUTION=$(echo $ARG | cut -d ' ' -f2)
 	if [ $RETURN -ne 0 ]
@@ -28,13 +34,19 @@ do
 			MAX=$DIFF;
 			cat test.txt > $FILE
 		fi
+		BAD=$(($BAD + 1))
 	else
 		if [ $MIN -gt $DIFF ]
 		then
 			MIN=$DIFF
 		fi
 	fi
-	echo $i ":" $DIFF "-" $MAX "(" $GENERATOR":" $SOLUTION ")"
+	if [ 0 -gt $DIFF ]
+	then
+		echo $i ":" $DIFF "-" $MAX "(" $GENERATOR":" $SOLUTION ")"
+	else	
+		echo  $i ": " $DIFF "-" $MAX "(" $GENERATOR":" $SOLUTION ")"
+	fi
 	SUM=$(($SUM + $DIFF))
 	ITERATIONS=$(($ITERATIONS + 1))
 	i=$((i + 1))
@@ -43,3 +55,4 @@ done
 echo "AVG: " $(($SUM / $ITERATIONS))
 echo "MAX: " $MAX
 echo "MIN: " $MIN
+echo "BAD: " $BAD
