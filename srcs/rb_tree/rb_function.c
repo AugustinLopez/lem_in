@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 16:46:02 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/22 17:02:00 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void					lem_free_tree(t_rb_node **root)
 {
-	t_link	*tmp;
-
 	if (!root || !*root)
 		return ;
 	if ((*root)->left)
@@ -24,15 +22,7 @@ void					lem_free_tree(t_rb_node **root)
 		lem_free_tree(&((*root)->right));
 	if ((*root)->name)
 		free((*root)->name);
-	if ((tmp = (*root)->link))
-	{
-		while (tmp)
-		{
-			(*root)->link = (*root)->link->next;
-			free(tmp);
-			tmp = (*root)->link;
-		}
-	}
+	ft_lnkdel(*root);
 	free(*root);
 	*root = 0;
 }
