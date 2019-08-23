@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/22 16:56:41 by bcarlier         ###   ########.fr        #
+#    Updated: 2019/08/23 13:03:28 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC1=main \
 	parser_master \
 	rb_insert \
 	rb_balance \
-	rb_function
+	rb_function \
+	new_algo
 #	print \
 	s_utils \
 	edmundkarp \

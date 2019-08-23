@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 11:43:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 12:23:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 13:04:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_lnkdel(t_rb_node *node)
 	}
 }
 
-void	ft_roadlistdel(t_roadlist *roads)
+/*void	ft_roadlistdel(t_roadlist *roads)
 {
 	t_link	*tmp;
 
@@ -49,4 +49,4 @@ void	ft_roadlistdel(t_roadlist *roads)
 		roads->current = roads->first->next;
 		free(roads->first);
 	}
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/23 12:23:42 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 13:04:18 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef struct		s_lnode
 {
 	t_rb_node		*node;
 	size_t			depth;
-	struct s_lnode	next;
-	struct s_lnode	prev;
+	struct s_lnode	*next;
+	struct s_lnode	*prev;
 }					t_lnode;
 
 /*
@@ -94,6 +94,11 @@ int					is_comment(char *line);
 int					save_line(t_lemin *lem, char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 						uint8_t command);
+
+
+
+
+int	benjaug(t_lemin *lem);
 
 //size_t				printer(t_lemin *lem, int ac);
 
