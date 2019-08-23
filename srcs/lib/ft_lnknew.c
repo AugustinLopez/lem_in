@@ -6,14 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 11:10:25 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 16:42:08 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/23 13:52:39 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include <stdlib.h>
 
-static inline void	ft_lnkadd(t_rb_node *origin, t_link *new)
+static inline void	ft_lnkappend(t_rb_node *origin, t_link *new)
 {
 	if (origin->link == NULL)
 			origin->link = new;
@@ -45,7 +45,7 @@ int					ft_lnknew(t_rb_node *origin, t_rb_node *target)
 	reverse->origin = target;
 	reverse->target = origin;
 	reverse->reverse = normal;
-	ft_lnkadd(origin, normal);
-	ft_lnkadd(target, reverse);
+	ft_lnkappend(origin, normal);
+	ft_lnkappend(target, reverse);
 	return (0);
 }

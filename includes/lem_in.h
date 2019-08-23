@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/23 13:04:18 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 14:12:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 
 
 int	benjaug(t_lemin *lem);
+t_rb_node *get_origin(t_link *link);
+t_rb_node *get_target(t_link *link);
 
+void					ft_nodadd(t_lnode **lnode, t_lnode *new);
 //size_t				printer(t_lemin *lem, int ac);
 
 /*

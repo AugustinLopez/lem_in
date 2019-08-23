@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 13:05:02 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 13:41:31 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int		main(int ac, char **av)
 	(void)av;
 	ft_bzero(&lem, sizeof(lem));
 	ret = parser(&lem);
-	lem_free_tree(&(lem.tree));
 	if (!ret && ac > 1)
 	{
 		//ft_printf("Step's number: %zu\n", res);
@@ -100,6 +99,7 @@ int		main(int ac, char **av)
 		ft_printf("Room's number: %zu\n", lem.nbr_room);
 		ft_printf("Tube's number: %zu\n", lem.nbr_tube);
 	}
+	lem_free_tree(&(lem.tree));
 	return (ret);
 //	ft_bzero(&path, sizeof(path));
 	//lem.sol = &path;

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 12:23:42 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 14:41:14 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct			s_rb_node
 	long long			y;
 	char				*name;
 	t_link				*link;
+	t_link				*origin;
 	size_t				nbr_link;
 	size_t				depth;
 	size_t				exploration;
@@ -64,5 +65,4 @@ void					lem_free_tree(t_rb_node **node);
 t_rb_node				*lem_find_node(t_rb_node *root, const char *name);
 int						ft_lnknew(t_rb_node *origin, t_rb_node *target);
 void					ft_lnkdel(t_rb_node *node);
-
 #endif

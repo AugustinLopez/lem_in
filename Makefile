@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/23 13:03:28 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/23 14:09:21 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ SRC1=main \
 	ek_pathfinder\
 	debug
 _LIST=	ft_lnknew \
-		ft_lnkdel
+		ft_lnkdel \
+		ft_getfromlink \
+		ft_nodadd
 SRC=$(SRC1) $(_LIST)
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
