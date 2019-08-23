@@ -6,40 +6,11 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 16:43:44 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/23 11:33:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lem_in.h>
-
-/*static inline int	create_link(t_rb_node *origin, t_rb_node *target)
-{
-	t_link	*node;
-
-	if (!(node = ft_lnknew(0, 0)))
-		return (-1);
-	node->pv = target;
-	if (!(origin->link))
-	{
-		origin->link = node;
-		origin->flag = 0;
-	}
-	else
-		ft_lnkadd(&(origin->link), node);
-	if (!(node = ft_lnknew(0, 0)))
-		return (-1);
-	node->pv = origin;
-	if (!(target->link))
-	{
-		target->link = node;
-		target->flag = 0;
-	}
-	else
-		ft_lnkadd(&(target->link), node);
-	origin->nbr_link += 1;
-	target->nbr_link += 1;
-	return (0)
-}*/
 
 static inline int	check_duplicate(t_rb_node *origin, t_rb_node *target)
 {
@@ -101,21 +72,30 @@ int					is_tube(t_lemin *lem, char *line)
 	return (proceed_with_tube(lem, line, i, j));
 }
 
-int					parser_tube(t_lemin *lem)
+int					parser_tube(t_lemin *lem, char **line)
 {
 	int		ret;
-	char	*line;
 
-	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
+	if (!(ret = is_comment(*line)))
+		ret = is_tube(lem, *line);
+	if (ret < 0)
 	{
-		if (!(ret = is_comment(line)))
-			ret = is_tube(lem, line);
-		if (ret < 0 || save_line(lem, line) == -1)
+		free(*line);
+		return (0);
+	}
+	ft_printf("%s", *line);
+	free(*line);
+	while ((ret = ft_gnl(STDIN_FILENO, line, 1) > 0))
+	{
+		if (!(ret = is_comment(*line)))
+			ret = is_tube(lem, *line);
+		if (ret < 0)
 		{
-			free(line);
+			free(*line);
 			return (0);
 		}
-		free(line);
+		ft_printf("%s", *line);
+		free(*line);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 14:36:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 11:45:11 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ int					rb_insert(t_rb_node **root, t_rb_node *node)
 	while (node->parent != NULL)
 		node = node->parent;
 	*root = node;
-	(*root)->flag &= ~RB_RED;
+	(*root)->color &= ~RB_RED;
 	return (0);
 }

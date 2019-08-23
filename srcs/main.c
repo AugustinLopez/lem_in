@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 16:32:09 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/23 11:39:11 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,29 +87,24 @@ int		main(int ac, char **av)
 	t_lemin		lem;
 //	t_solver	path;
 	int			ret;
-	size_t		res;
 
 	(void)av;
-	(void)ac;
-	(void)res;
 	ft_bzero(&lem, sizeof(lem));
+	ret = parser(&lem);
+	lem_free_tree(&(lem.tree));
+	if (!ret && ac > 1)
+	{
+		//ft_printf("Step's number: %zu\n", res);
+		ft_printf("Ant's number : %zu\n", lem.nbr_ant);
+		ft_printf("Room's number: %zu\n", lem.nbr_room);
+		ft_printf("Tube's number: %zu\n", lem.nbr_tube);
+	}
+	return (ret);
 //	ft_bzero(&path, sizeof(path));
 	//lem.sol = &path;
-	res = 0;
-	ret = parser(&lem);
 /*	if (!(ret = parser(&lem)))
 		if ((ret = edmundkarp(&lem) >= 0))
 			if (!(ret = sort_road(&lem)))
 				res = printer(&lem, ac);*/
 	//ft_lnkdel(&((lem.sol)->path), *lnkoflnk);
-	lem_free_tree(&(lem.tree));
-	ft_lstdel(&(lem.fileline), *ft_lstfree);
-	/*if (ac > 1)
-	{
-		ft_printf("Step's number: %zu\n", res);
-		ft_printf("Ant's number : %zu\n", lem.nbr_ant);
-		ft_printf("Room's number: %zu\n", lem.nbr_room);
-		ft_printf("Tube's number: %zu\n", lem.nbr_tube);
-	}*/
-	return (ret);
 }

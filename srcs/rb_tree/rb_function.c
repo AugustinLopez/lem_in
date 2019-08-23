@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/22 17:02:00 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/23 11:45:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static inline t_rb_node	*lem_rb_create(t_tree_data *data)
 	}
 	tmp->x = data->x;
 	tmp->y = data->y;
-	tmp->flag = RB_RED;
+	tmp->color = RB_RED;
 	return (tmp);
 }
 

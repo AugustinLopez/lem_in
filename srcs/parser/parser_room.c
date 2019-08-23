@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/20 14:20:55 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/23 11:33:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,30 +114,29 @@ static inline int	is_command(char *line, uint8_t *command)
 	return (0);
 }
 
-int					parser_room(t_lemin *lem)
+int					parser_room(t_lemin *lem, char **line)
 {
 	int		ret;
-	char	*line;
 	uint8_t	command;
 
 	command = 0;
-	while ((ret = ft_gnl(STDIN_FILENO, &line, 1) > 0))
+	while ((ret = ft_gnl(STDIN_FILENO, line, 1) > 0))
 	{
-		if (is_comment(line))
+		if (is_comment(*line))
 			ret = 1;
-		else if (!(ret = is_command(line, &command)))
-			ret = is_room(lem, line, &command);
-		if (ret <= 0)
+		else if (!(ret = is_command(*line, &command)))
+			ret = is_room(lem, *line, &command);
+		if (ret == 1)
+			ft_printf("%s", *line);
+		else
 		{
-			ret = command != (LEM_END | LEM_START) ? -1 : ret;
-			ret = ret == 0 ? save_line(lem, line) : -1;
-			free(line);
+			if (command != (LEM_END | LEM_START))
+				ret = -1;
+			if (ret == -1)
+				free(*line);
 			return (ret);
 		}
-		ret = save_line(lem, line);
-		free(line);
-		if (ret)
-			return (ret);
+		free(*line);
 	}
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/22 16:56:02 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/23 12:23:42 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,37 +38,30 @@
 # define LEM_START 2
 # define LEM_COMMAND 4
 
-/*
-** FIFO:
-** - The FIFO approach is well adapted for exploration algorithm.
-** - With Edmund Karp, the graph will be explored several time. Each time,
-** lots of values will be modified and it would be inefficient to kept track
-** of all those modification.
-** - We keep track of the number of exploration with 'n'. 'max' is higher than
-** the maximum possible value of 'n'.
-** - Path and node that are being explored are given the current value of 'n'.
-** - Path and node that link to the end are given the value 'max'.
-** - Thus we don't have to reinitialize our graph at each iteration: we only
-** need to check if a value is lower, higher or equal to 'n'.
-*/
-
-/*typedef struct		s_fifo
+typedef struct		s_road
 {
-	t_link			*first;
-	t_link			*last;
-	size_t			n;
-	size_t			max;
-}					t_fifo;
+	t_link			*km;
+	size_t			length;
+	struct s_road	*next;
+}					t_road;
 
-typedef struct		s_solver
+typedef struct		s_roadlist
 {
-	t_link			*path;
-	t_link			*cur;
-	size_t			max;
+	t_road			*first;
+	t_road			*current;
+	size_t			longest;
+	size_t			amount;
 	size_t			step;
-	size_t			num;
-}					t_solver;
-*/
+}					t_roadlist;
+
+typedef struct		s_lnode
+{
+	t_rb_node		*node;
+	size_t			depth;
+	struct s_lnode	next;
+	struct s_lnode	prev;
+}					t_lnode;
+
 /*
 ** LEM_IN:
 ** - fileline is the start of the file
@@ -81,12 +74,11 @@ typedef struct		s_lemin
 	size_t			nbr_ant;
 	size_t			nbr_room;
 	size_t			nbr_tube;
-	t_list			*fileline;
-	t_list			*curline;
 	t_rb_node		*start;
 	t_rb_node		*end;
 	t_rb_node		*tree;
-//	t_solver		*sol;
+	size_t			max_road_num;
+	t_roadlist		*roadlist;
 }					t_lemin;
 
 /*
@@ -94,19 +86,14 @@ typedef struct		s_lemin
 */
 
 int					parser_ant(t_lemin *lem);
-int					parser_room(t_lemin *lem);
-int					parser_tube(t_lemin *lem);
+int					parser_room(t_lemin *lem, char **line);
+int					parser_tube(t_lemin *lem, char **line);
 int					parser(t_lemin *lem);
 int					is_tube(t_lemin *lem, char *line);
 int					is_comment(char *line);
 int					save_line(t_lemin *lem, char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 						uint8_t command);
-
-
-
-
-
 
 //size_t				printer(t_lemin *lem, int ac);
 
@@ -137,11 +124,5 @@ void	print_new_explo(int c, t_solver *new, t_solver *old, t_lemin *lem);
 void	print_explo(char c, t_link *rev, t_link *path, t_rb_node *node);
 void	print_stack(t_fifo *fifo);
 */
-/*
-** LINK
-*/
-
-int					ft_lnknew(t_rb_node *origin, t_rb_node *target);
-void				ft_lnkdel(t_rb_node *node);
 
 #endif

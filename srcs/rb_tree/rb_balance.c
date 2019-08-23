@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 14:37:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 11:44:59 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static inline void	balance_black_uncle_right(t_rb_node **node, int am_i_left)
 	if (am_i_left)
 		simplify_to_right(node);
 	*node = am_i_left ? *node : (*node)->parent;
-	(*node)->flag &= ~RB_RED;
-	(*node)->parent->flag |= RB_RED;
+	(*node)->color &= ~RB_RED;
+	(*node)->parent->color |= RB_RED;
 	if ((tmp = (*node)->left))
 		tmp->parent = (*node)->parent;
 	(*node)->left = (*node)->parent;
@@ -71,8 +71,8 @@ static inline void	balance_black_uncle_left(t_rb_node **node, int am_i_left)
 	if (!am_i_left)
 		simplify_to_left(node);
 	*node = !am_i_left ? *node : (*node)->parent;
-	(*node)->flag &= ~RB_RED;
-	(*node)->parent->flag |= RB_RED;
+	(*node)->color &= ~RB_RED;
+	(*node)->parent->color |= RB_RED;
 	if ((tmp = (*node)->right))
 		tmp->parent = (*node)->parent;
 	(*node)->right = (*node)->parent;
@@ -95,16 +95,16 @@ void				rb_balance(t_rb_node **node, int am_i_left)
 
 	parent = (*node)->parent;
 	if (!parent)
-		(*node)->flag &= ~RB_RED;
-	if (!parent || !(parent->flag & RB_RED))
+		(*node)->color &= ~RB_RED;
+	if (!parent || !(parent->color & RB_RED))
 		return ;
 	is_parent_left = parent->parent && parent->parent->left == parent ? 1 : 0;
 	uncle = is_parent_left ? parent->parent->right : parent->parent->left;
-	if (uncle && uncle->flag & RB_RED)
+	if (uncle && uncle->color & RB_RED)
 	{
-		parent->flag &= ~RB_RED;
-		uncle->flag &= ~RB_RED;
-		parent->parent->flag |= RB_RED;
+		parent->color &= ~RB_RED;
+		uncle->color &= ~RB_RED;
+		parent->parent->color |= RB_RED;
 		parent = parent->parent;
 		is_parent_left = (parent->parent && parent->parent->left == parent)
 			? 1 : 0;

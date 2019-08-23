@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:26:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/07/16 14:44:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/23 11:24:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,20 @@ int					parser_ant(t_lemin *lem)
 	{
 		if (is_ant(lem, line))
 		{
-			ret = save_line(lem, line);
+			ft_printf("%s", line);
 			free(line);
-			return (ret);
+			return (0);
 		}
 		else if (is_comment(line))
-			ret = save_line(lem, line);
+		{
+			ft_printf("%s", line);
+			free(line);
+		}
 		else
-			ret = -1;
-		free(line);
-		if (ret)
-			return (ret);
+		{
+			free(line);
+			break ;
+		}
 	}
 	return (-1);
 }
