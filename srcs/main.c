@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 16:15:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:54:03 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,16 @@ int		sort_roadlist(t_roadlist *roadlist)
 	}
 	array[i]->next = NULL;
 	free(array);
+
+	t_road	*test;
+	test = roadlist->first;
+	while (test)
+	{
+		ft_printf("%d %d\n", test->length, test->ant_to_launch);
+		test = test->next;
+	}
+
+
 	return (0);
 }
 

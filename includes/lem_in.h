@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/26 15:40:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:51:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct		s_road
 {
 	t_list			*km;
 	size_t			length;
+	size_t			ant_to_launch;
 	struct s_road	*next;
 }					t_road;
 

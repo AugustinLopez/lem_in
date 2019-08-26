@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 16:16:45 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 17:09:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,35 @@ int	step_count(t_lemin *lem, t_roadlist *roadlist)
 	step = 0;
 	while (road)
 	{
-		ant -= (roadlist->longest - road->length + 1);
+		road->ant_to_launch = roadlist->longest - road->length + 1;
+		ant -= road->ant_to_launch;
 		if (ant > lem->nbr_ant)
 			return (-1);
 		road = road->next;
 	}
 	step = roadlist->longest;
 	step += ant / lem->exploration;
+	road = roadlist->first;
+	while (road)
+	{
+		road->ant_to_launch += step - roadlist->longest;
+		road = road->next;
+	}
 	if (ant % lem->exploration)
 		++step;
+	/*road = roadlist->first; //TO DO AFTER SORTING !!!! TODO: STEP_COUNT_AFTER_SORT
+	while (road)
+	{
+		if (ant % lem->exploration)
+		{
+			road->ant_to_launch += 1;
+			ant -= 1;
+		}
+		else
+			break ;
+		road = road->next;
+	}*/
+
 	roadlist->step = step;
 	return (0);
 }
