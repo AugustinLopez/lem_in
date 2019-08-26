@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 14:31:50 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 14:57:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int			explore_link(t_lemin *lem, t_lnode *stack, t_link **link)
 	if (get_target(*link)->exploration < lem->exploration
 		&& get_target(*link)->solution == 0)
 	{
-		if (DEBUG)
+		if (0)
 			ft_printf("%s->%s\n", get_origin_node(*link)->name,
 				get_target(*link)->name);
 		get_target(*link)->exploration = lem->exploration;
@@ -59,6 +59,7 @@ int			dijkstra(t_lemin *lem)
 	}
 	ret = stack ? 0 : -1;
 	ft_stackdel(stack);
-	pathsolver(lem);
+	if (ret == 0)
+		pathsolver(lem);
 	return (ret);
 }

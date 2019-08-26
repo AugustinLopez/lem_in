@@ -6,20 +6,20 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 14:40:05 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:15:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-/*void	basic_sort(t_link **array, t_link *origin, size_t size)
+void	basic_sort(t_road **array, t_road *first, size_t size)
 {
-	t_link	*tmp;
+	t_road	*tmp;
 	size_t	i;
 
 	i = 0;
-	tmp = origin;
+	tmp = first;
 	while (tmp)
 	{
 		array[i++] = tmp;
@@ -28,7 +28,7 @@
 	i = 0;
 	while (i < size - 1)
 	{
-		if (array[i]->zu > array[i + 1]->zu)
+		if (array[i]->length > array[i + 1]->length)
 		{
 			tmp = array[i];
 			array[i] = array[i + 1];
@@ -41,20 +41,20 @@
 	}
 }
 
-int		sort_road(t_lemin *lem)
+int		sort_roadlist(t_roadlist *roadlist)
 {
-	t_link	**array;
+	t_road	**array;
 	size_t	i;
 
-	if (!(array = ft_memalloc(sizeof(*array) * lem->sol->num)))
+	if (!(array = ft_memalloc(sizeof(*array) * roadlist->exploration)))
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (-1);
 	}
-	basic_sort(array, lem->sol->path, lem->sol->num);
-	lem->sol->path = array[0];
+	basic_sort(array, roadlist->first, roadlist->exploration);
+	roadlist->first = array[0];
 	i = 0;
-	while (i < lem->sol->num - 1)
+	while (i < roadlist->exploration - 1)
 	{
 		array[i]->next = array[i + 1];
 		++i;
@@ -63,24 +63,7 @@ int		sort_road(t_lemin *lem)
 	free(array);
 	return (0);
 }
-*/
 
-/*void	lnkoflnk(void *pv, size_t zu)
-{
-	t_link	*cur;
-	t_link	*tmp;
-
-	cur = (t_link *)pv;
-	tmp = cur;
-	while (cur)
-	{
-		tmp = tmp->next;
-		free(cur);
-		cur = tmp;
-	}
-	pv = 0;
-	(void)zu;
-}*/
 
 int		main(int ac, char **av)
 {
@@ -91,21 +74,30 @@ int		main(int ac, char **av)
 	(void)av;
 	ft_bzero(&lem, sizeof(lem));
 	ret = parser(&lem);
-	if (!ret && ac > 1)
+	if (!ret)
 	{
 		if ((ret = dijkstra(&lem)) == -1 || create_roadlist(&lem) != 0)
 			ft_dprintf(STDERR_FILENO, "ERROR\n");
 		else
 		{
-			dijkstra(&lem);
-			create_roadlist(&lem);
-			ft_printf("Step's number: %zu\n", lem.roadlist->step);
-			ft_printf("Ant's number : %zu\n", lem.nbr_ant);
-			ft_printf("Room's number: %zu\n", lem.nbr_room);
-			ft_printf("Tube's number: %zu\n", lem.nbr_tube);
+			while (ret == 0)
+			{
+				ret = dijkstra(&lem);
+				if (ret == -1)
+					continue ;
+				ret = create_roadlist(&lem);
+			}
+			if (ac > 1)
+			{
+				ft_printf("Step's number: %zu\n", lem.roadlist->step);
+				ft_printf("Ant's number : %zu\n", lem.nbr_ant);
+				ft_printf("Room's number: %zu\n", lem.nbr_room);
+				ft_printf("Tube's number: %zu\n", lem.nbr_tube);
+			}
+			sort_roadlist(lem.roadlist);
+			free_roadlist(&(lem.roadlist));
 		}
 	}
-	free_roadlist(&(lem.roadlist));
 	lem_free_tree(&(lem.tree));
 	return (ret);
 //	ft_bzero(&path, sizeof(path));

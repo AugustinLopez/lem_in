@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/26 13:15:22 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/26 15:41:13 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC1=main \
 	rb_function \
 	new_dijkstra \
 	new_utils \
-	new_roadlist
+	new_roadlist \
+	print
 #	print \
 	s_utils \
 	edmundkarp \

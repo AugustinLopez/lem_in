@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/26 14:28:27 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 15:40:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct		s_roadlist
 {
 	t_road			*first;
 	size_t			longest;
+	size_t			exploration;
 	size_t			step;
 }					t_roadlist;
 
@@ -59,6 +60,14 @@ typedef struct		s_lnode
 	struct s_lnode	*next;
 	struct s_lnode	*prev;
 }					t_lnode;
+
+typedef struct		s_fifo
+{
+	size_t			index;
+	size_t			index_max;
+	t_list			*first;
+	t_list			*last;
+}					t_fifo;
 
 /*
 ** LEM_IN:
@@ -109,7 +118,7 @@ void				pathsolver(t_lemin *lem);
 t_lnode				*stack_initialize(t_lemin *lem);
 int					create_roadlist(t_lemin *lem);
 void				free_roadlist(t_roadlist **roadlist);
-
+int					print(t_lemin *lem, int ac);
 
 
 //size_t				printer(t_lemin *lem, int ac);

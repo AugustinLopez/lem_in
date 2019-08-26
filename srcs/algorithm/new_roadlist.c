@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 14:38:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:16:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ int	feed_roadlist(t_link *first_link, t_roadlist *new)
 	if (new->longest < new->first->length)
 		new->longest = new->first->length;
 	if (DEBUG)
+	{
+		ft_printf("%zu:", new->first->length);
 		print_path(new->first->km);
+	}
 	return (0);
 }
 
@@ -162,6 +165,7 @@ int	create_roadlist(t_lemin *lem)
 		return (-1);
 	ft_bzero(new, sizeof(*new));
 	link = lem->end->link;
+	new->exploration = lem->exploration;
 	if (DEBUG)
 		ft_printf("\n");
 	while (link)
