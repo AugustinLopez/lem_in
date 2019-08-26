@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 12:02:50 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 14:40:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,19 @@ int		main(int ac, char **av)
 	ret = parser(&lem);
 	if (!ret && ac > 1)
 	{
-		if ((ret = dijkstra(&lem)) == -1)
-		{
+		if ((ret = dijkstra(&lem)) == -1 || create_roadlist(&lem) != 0)
 			ft_dprintf(STDERR_FILENO, "ERROR\n");
-			break ;
+		else
+		{
+			dijkstra(&lem);
+			create_roadlist(&lem);
+			ft_printf("Step's number: %zu\n", lem.roadlist->step);
+			ft_printf("Ant's number : %zu\n", lem.nbr_ant);
+			ft_printf("Room's number: %zu\n", lem.nbr_room);
+			ft_printf("Tube's number: %zu\n", lem.nbr_tube);
 		}
-		//create_roadlist(&lem);
-		//ft_printf("Step's number: %zu\n", res);
-		ft_printf("Ant's number : %zu\n", lem.nbr_ant);
-		ft_printf("Room's number: %zu\n", lem.nbr_room);
-		ft_printf("Tube's number: %zu\n", lem.nbr_tube);
 	}
+	free_roadlist(&(lem.roadlist));
 	lem_free_tree(&(lem.tree));
 	return (ret);
 //	ft_bzero(&path, sizeof(path));

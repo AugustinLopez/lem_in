@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/26 11:47:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 14:28:27 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@
 ** flags for '##start' and '##end' command.
 */
 
-# define DEBUG 0
+# define DEBUG 1
 # define LEM_END 1
 # define LEM_START 2
 # define LEM_COMMAND 4
 
 typedef struct		s_road
 {
-	t_link			*km;
+	t_list			*km;
 	size_t			length;
 	struct s_road	*next;
 }					t_road;
@@ -48,9 +48,7 @@ typedef struct		s_road
 typedef struct		s_roadlist
 {
 	t_road			*first;
-	t_road			*current;
 	size_t			longest;
-	size_t			amount;
 	size_t			step;
 }					t_roadlist;
 
@@ -109,7 +107,8 @@ void				ft_stackdel(t_lnode *stack);
 void				ft_stackdelfirst(t_lnode **stack);
 void				pathsolver(t_lemin *lem);
 t_lnode				*stack_initialize(t_lemin *lem);
-
+int					create_roadlist(t_lemin *lem);
+void				free_roadlist(t_roadlist **roadlist);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 11:53:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 14:36:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		pathsolver(t_lemin *lem)
 	while (node->origin_link)
 	{
 		if (DEBUG)
-			ft_printf("%s<=", node->name);
+			ft_printf("%s<<<", node->name);
 		if (node->origin_link->reverse->solution == 1)
 		{
 			node->origin_link->reverse->solution = 0;
