@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/23 14:12:05 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/26 11:47:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 ** flags for '##start' and '##end' command.
 */
 
-# define DEBUG 1
+# define DEBUG 0
 # define LEM_END 1
 # define LEM_START 2
 # define LEM_COMMAND 4
@@ -79,6 +79,7 @@ typedef struct		s_lemin
 	t_rb_node		*tree;
 	size_t			max_road_num;
 	t_roadlist		*roadlist;
+	size_t			exploration;
 }					t_lemin;
 
 /*
@@ -91,18 +92,27 @@ int					parser_tube(t_lemin *lem, char **line);
 int					parser(t_lemin *lem);
 int					is_tube(t_lemin *lem, char *line);
 int					is_comment(char *line);
-int					save_line(t_lemin *lem, char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 						uint8_t command);
 
 
+/*
+** ALGORITHM
+*/
+
+int					dijkstra(t_lemin *lem);
+t_rb_node			*get_origin_node(t_link *link);
+t_rb_node 			*get_target(t_link *link);
+void				ft_nodadd(t_lnode **lnode, t_lnode *new);
+t_lnode*			create_node(t_lnode *stack);
+void				ft_stackdel(t_lnode *stack);
+void				ft_stackdelfirst(t_lnode **stack);
+void				pathsolver(t_lemin *lem);
+t_lnode				*stack_initialize(t_lemin *lem);
 
 
-int	benjaug(t_lemin *lem);
-t_rb_node *get_origin(t_link *link);
-t_rb_node *get_target(t_link *link);
 
-void					ft_nodadd(t_lnode **lnode, t_lnode *new);
+
 //size_t				printer(t_lemin *lem, int ac);
 
 /*

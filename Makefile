@@ -6,7 +6,7 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/23 14:09:21 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/26 11:33:55 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRC1=main \
 	rb_insert \
 	rb_balance \
 	rb_function \
-	new_algo
+	new_dijkstra \
+	new_utils
 #	print \
 	s_utils \
 	edmundkarp \
