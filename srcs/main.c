@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 16:54:03 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 13:08:01 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,86 @@ int		sort_roadlist(t_roadlist *roadlist)
 	}
 	array[i]->next = NULL;
 	free(array);
-
-	t_road	*test;
-	test = roadlist->first;
-	while (test)
-	{
-		ft_printf("%d %d\n", test->length, test->ant_to_launch);
-		test = test->next;
-	}
-
-
 	return (0);
 }
 
+int	calculate_ant_to_launch(t_lemin *lem, t_roadlist *roadlist)
+{
+	size_t	ant;
+	t_road	*road;
+	size_t	step;
+
+	ant = lem->nbr_ant;
+	road = roadlist->first;
+	step = 0;
+	while (road)
+	{
+		road->ant_to_launch = roadlist->longest - road->length + 1;
+		ant -= roadlist->longest - road->length + 1;
+		road = road->next;
+	}
+	road = roadlist->first;
+	step = roadlist->longest + ant / roadlist->exploration;
+	while (road)
+	{
+		road->ant_to_launch += step - roadlist->longest;
+		if (ant % lem->exploration)
+		{
+			road->ant_to_launch += 1;
+			ant -= 1;
+		}
+		road = road->next;
+	}
+	return (0);
+}
+
+int		printer(t_lemin *lem)
+{
+	t_road	*road;
+	t_list	*iter;
+	size_t	ant;
+	size_t	step;
+	size_t	x1;
+	size_t	x2;
+
+	ant = 1;
+	step = 0;
+	while (step <= lem->roadlist->step)
+	{
+		road = lem->roadlist->first;
+		while (road)
+		{
+			iter = road->km;
+			x1 = iter->zu;
+			while (iter->next)
+			{
+				x2 = iter->next->zu;
+				iter->next->zu = x1;
+				x1 = x2;
+				iter = iter->next;
+			}
+			if (road->ant_to_launch)
+			{
+				road->km->zu = ant;
+				ant += 1;
+				road->ant_to_launch -= 1;
+			}
+			else
+				road->km->zu = 0;
+			iter = road->km;
+			while (iter)
+			{
+				if (iter->zu != 0)
+					ft_printf("L%zu-%s ", iter->zu, get_target((t_link *)(iter->pv))->name);
+				iter = iter->next;
+			}
+			road = road->next;
+		}
+		ft_printf("\n");
+		step += 1;
+	}
+	return (0);
+}
 
 int		main(int ac, char **av)
 {
@@ -94,9 +161,12 @@ int		main(int ac, char **av)
 			{
 				ret = dijkstra(&lem);
 				if (ret == -1)
-					continue ;
+					break ;
 				ret = create_roadlist(&lem);
 			}
+			ret = 0;
+			sort_roadlist(lem.roadlist);
+			calculate_ant_to_launch(&lem, lem.roadlist);
 			if (ac > 1)
 			{
 				ft_printf("Step's number: %zu\n", lem.roadlist->step);
@@ -104,7 +174,8 @@ int		main(int ac, char **av)
 				ft_printf("Room's number: %zu\n", lem.nbr_room);
 				ft_printf("Tube's number: %zu\n", lem.nbr_tube);
 			}
-			sort_roadlist(lem.roadlist);
+			else
+				printer(&lem);
 			free_roadlist(&(lem.roadlist));
 		}
 	}

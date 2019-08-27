@@ -10,12 +10,12 @@ TEST=$1
 BAD=0
 if [ !$1 ]
 then
-	echo hi
+	TEST=100
 fi
-while [ $i -lt $1 ]
+while [ $i -lt $TEST ]
 do
 	sleep 1
-	./generator --big-superposition > iter.txt
+	./generator --big > iter.txt
 	./symlemin a < iter.txt > /dev/null
 	RETURN=$(echo $?)
 	ARG=$(./symlemin a < iter.txt | grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)
@@ -24,6 +24,7 @@ do
 	if [ $RETURN -ne 0 ]
 	then
 		echo "Error!"
+		echo $RETURN
 		break
 	fi
 	DIFF=$(($SOLUTION - $GENERATOR))
