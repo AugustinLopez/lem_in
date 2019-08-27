@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 12:13:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 17:07:24 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	feed_roadlist(t_link *first_link, t_roadlist *new)
 		if (ft_kmadd(new->first, link) == -1)
 			return (-1);
 		node = get_target(link);
-		link = get_origin_node(link)->origin_link;
+		link = get_origin_node(link)->origin_solution;
 	}
 	if (new->longest < new->first->length)
 		new->longest = new->first->length;

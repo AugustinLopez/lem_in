@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 15:08:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 17:34:42 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 				tmp->node = get_target(*link);
 				ft_nodadd(&stack, tmp);
 			}
-		}*/
-		if (get_target(*link)->solution == 0)
+		}
+		else*/ if (get_target(*link)->solution == 0)
 		{
 			get_target(*link)->exploration = lem->exploration;
 			get_target(*link)->origin_link = *link;
@@ -63,41 +63,29 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 		}
 		else if ((*link)->solution == 0)
 		{
-			km = get_target(*link)->link;
-			while (km)
+			km = get_target(*link)->origin_solution;
+			if (get_origin_node(*link)->origin_link->reverse->solution == 0)
 			{
-				if (get_target(km)->solution == 1)
+				if (get_origin_node(km) != lem->start
+					&& get_origin_node(km)->exploration < lem->exploration)
 				{
-					if (get_target(km) != lem->start
-						&& get_target(km) != lem->end
-						&& get_target(km)->exploration < lem->exploration)
-					{
-						get_target(*link)->exploration = lem->exploration;
-						get_target(*link)->origin_link = *link;
-						get_target(*link)->depth = get_origin_node(*link)->depth + 1;
-						(*link)->depth = get_origin_node(*link)->depth + 1;
-						(*link)->exploration = lem->exploration;
-						get_target(km)->exploration = lem->exploration;
-						get_target(km)->origin_link = km;
-						get_target(km)->depth = get_origin_node(km)->depth - 1;
-						(km)->depth = get_origin_node(km)->depth - 1;
-						(km)->exploration = lem->exploration;
-						if (!(tmp = create_node(stack)))
-							return (-1);
-						tmp->node = get_target(km);
-						ft_nodadd(&stack, tmp);
-					}
-
-					break ;
+					get_target(km)->exploration = lem->exploration;
+					get_target(km)->origin_link = *link;
+					get_target(km)->depth = get_origin_node(*link)->depth + 1;
+					(*link)->depth = get_origin_node(*link)->depth + 1;
+					(*link)->exploration = lem->exploration;
+					get_origin_node(km)->exploration = lem->exploration;
+					get_origin_node(km)->origin_link = km->reverse;
+					get_origin_node(km)->depth = get_origin_node(*link)->depth;
+					km->reverse->depth = get_origin_node(*link)->depth;
+					km->reverse->exploration = lem->exploration;
+					if (!(tmp = create_node(stack)))
+						return (-1);
+					tmp->node = get_origin_node(km);
+					ft_nodadd(&stack, tmp);
 				}
-				km = km->next;
 			}
 		}
-/*			if (km)
-				ft_printf("%s:%s\n", get_target(*link)->name, get_target(km)->name);
-			else
-				ft_printf("%s\n", get_target(*link)->name);
-*/
 	}
 	*link = (*link)->next;
 	if (*link == NULL)
@@ -112,21 +100,21 @@ int			benjaug(t_lemin *lem)
 	int		ret;
 
 	lem->exploration += 1;
-	lem->start->solution = 0;
-	lem->end->solution = 0;
-	ft_printf("%zu\n", lem->exploration);
 	if (!(stack = stack_initialize(lem)))
 		return (-1);
 	while (stack)
 	{
 		link = stack->node->link;
 		t_lnode *tmp = stack;
-		while (tmp)
+		if (0)
 		{
-			ft_printf("%s->-", tmp->node->name);
-			tmp = tmp->next;
+			while (tmp)
+			{
+				ft_printf("%s:%zu->-", tmp->node->name, tmp->node->depth);
+				tmp = tmp->next;
+			}
+			ft_printf("\n");
 		}
-		ft_printf("\n");
 		while ((ret = explore_link_base(lem, stack, &link)) <= 0)
 			if (ret == -1)
 				return (-1);

@@ -15,7 +15,7 @@ fi
 while [ $i -lt $TEST ]
 do
 	sleep 1
-	./generator --big > iter.txt
+	./generator --big-superposition > iter.txt
 	./symlemin a < iter.txt > /dev/null
 	RETURN=$(echo $?)
 	ARG=$(./symlemin a < iter.txt | grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)

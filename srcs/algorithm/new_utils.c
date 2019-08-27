@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 14:36:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 17:21:42 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,19 @@ void		pathsolver(t_lemin *lem)
 			ft_printf("%s<<<", node->name);
 		if (node->origin_link->reverse->solution == 1)
 		{
-			node->origin_link->reverse->solution = 0;
 			node->origin_link->solution = 0;
-			node = get_origin_node(node->origin_link);
-			if (node && node->origin_link->reverse->solution == 1)
+			if (node && node->origin_link->reverse->solution == 1
+				&& get_origin_node(node->origin_solution) != lem->start)
 				node->solution = 0;
+			node->origin_link->reverse->solution = 0;
+			node = get_origin_node(node->origin_link);
 		}
 		else
 		{
 			node->origin_link->solution = 1;
-			node = get_origin_node(node->origin_link);
 			node->solution = 1;
+			node->origin_solution = node->origin_link;
+			node = get_origin_node(node->origin_link);
 		}
 	}
 	if (DEBUG)

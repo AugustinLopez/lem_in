@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/26 11:48:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 15:47:35 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct			s_rb_node
 	char				*name;
 	t_link				*link;
 	t_link				*origin_link;
+	t_link				*origin_solution;
 	size_t				nbr_link;
 	size_t				depth;
 	size_t				exploration;

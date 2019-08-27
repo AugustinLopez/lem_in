@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 13:08:01 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 15:50:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int		main(int ac, char **av)
 		{
 			while (ret == 0)
 			{
-				ret = dijkstra(&lem);
+				ret = benjaug(&lem);
 				if (ret == -1)
 					break ;
 				ret = create_roadlist(&lem);

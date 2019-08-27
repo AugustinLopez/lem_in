@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/26 16:51:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 17:09:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 ** ALGORITHM
 */
 
+int					benjaug(t_lemin *lem);
 int					dijkstra(t_lemin *lem);
 t_rb_node			*get_origin_node(t_link *link);
 t_rb_node 			*get_target(t_link *link);
