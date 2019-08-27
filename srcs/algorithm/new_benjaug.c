@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 18:29:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 23:39:40 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,41 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 	t_link	*km;
 
 	km = 0;
-	if (get_target(*link)->exploration < lem->exploration)
+	if (get_target(*link)->exploration == lem->exploration && get_target(*link) != lem->start)
+	{
+		/*if (get_origin_node(*link)->solution == 1
+				&& get_target(*link)->solution == 1
+				&& get_origin_node(*link)->origin_solution == (*link)->reverse
+				&& get_origin_node(*link)->depth <= get_target(*link)->depth)
+		{
+			get_target(*link)->origin_link->exploration = 0;
+			get_target(*link)->origin_link = *link;
+			get_target(*link)->depth = get_origin_node(*link)->depth - 1;
+			(*link)->depth = get_origin_node(*link)->depth - 1;
+			(*link)->exploration = lem->exploration;
+			if (!(tmp = create_node(stack)))
+				return (-1);
+			tmp->node = get_target(*link);
+			ft_nodadd(&stack, tmp);
+		}
+		else */if (get_origin_node(*link)->depth < get_target(*link)->depth - 1)
+		{
+			get_target(*link)->origin_link->exploration = 0;
+			get_target(*link)->origin_link = *link;
+			get_target(*link)->depth = get_origin_node(*link)->depth + 1;
+			(*link)->depth = get_origin_node(*link)->depth + 1;
+			(*link)->exploration = lem->exploration;
+			/*if (!(tmp = create_node(stack)))
+				return (-1);
+			tmp->node = get_target(*link);
+			ft_nodadd(&stack, tmp);*/
+		}
+	}
+	else if (get_target(*link)->exploration < lem->exploration)
 	{
 		if (get_origin_node(*link)->solution == 1)
 		{
-			
-			ft_printf("%s-", get_origin_node(*link)->name);
-			if ((get_target(*link)->solution == 1 && (*link)->solution == 0))
+			if ((get_target(*link)->solution == 1 && (*link)->reverse->solution == 0)) //it was link->solution instead of link->reverse->solution
 			{
 				km = get_target(*link)->origin_solution;
 				if (get_origin_node(*link)->origin_link->reverse->solution == 0)
@@ -133,7 +161,7 @@ int			benjaug(t_lemin *lem)
 	{
 		link = stack->node->link;
 		t_lnode *tmp = stack;
-		if (0)
+		if (DEBUG)
 		{
 			while (tmp)
 			{

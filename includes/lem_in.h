@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/27 17:09:45 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/27 23:38:35 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 ** flags for '##start' and '##end' command.
 */
 
-# define DEBUG 1
+# define DEBUG 0
 # define LEM_END 1
 # define LEM_START 2
 # define LEM_COMMAND 4

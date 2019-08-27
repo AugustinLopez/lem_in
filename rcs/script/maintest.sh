@@ -33,7 +33,8 @@ do
 		if [ $DIFF -gt $MAX ]
 		then
 			MAX=$DIFF;
-			cat test.txt > $FILE
+			echo 'hello'
+			cat iter.txt > $FILE
 		fi
 		BAD=$(($BAD + 1))
 	else
