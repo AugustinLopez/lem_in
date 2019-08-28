@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 17:21:42 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/28 12:00:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ void		ft_stackdelfirst(t_lnode **stack)
 void		pathsolver(t_lemin *lem)
 {
 	t_rb_node	*node;
+	int			tmp;
 
+	tmp = 0;
 	node = lem->end;
 	while (node->origin_link)
 	{
@@ -76,14 +78,15 @@ void		pathsolver(t_lemin *lem)
 		if (node->origin_link->reverse->solution == 1)
 		{
 			node->origin_link->solution = 0;
-			if (node && node->origin_link->reverse->solution == 1
-				&& get_origin_node(node->origin_solution) != lem->start)
+			if (tmp && get_origin_node(node->origin_solution) != lem->start)
 				node->solution = 0;
+			tmp = 1;
 			node->origin_link->reverse->solution = 0;
 			node = get_origin_node(node->origin_link);
 		}
 		else
 		{
+			tmp = 0;
 			node->origin_link->solution = 1;
 			node->solution = 1;
 			node->origin_solution = node->origin_link;

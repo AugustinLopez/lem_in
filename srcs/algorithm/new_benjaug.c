@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 23:39:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/28 13:02:46 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 	km = 0;
 	if (get_target(*link)->exploration == lem->exploration && get_target(*link) != lem->start)
 	{
-		/*if (get_origin_node(*link)->solution == 1
+		if (get_origin_node(*link)->solution == 1
 				&& get_target(*link)->solution == 1
 				&& get_origin_node(*link)->origin_solution == (*link)->reverse
 				&& get_origin_node(*link)->depth <= get_target(*link)->depth)
@@ -35,17 +35,17 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 			tmp->node = get_target(*link);
 			ft_nodadd(&stack, tmp);
 		}
-		else */if (get_origin_node(*link)->depth < get_target(*link)->depth - 1)
+		else if (get_origin_node(*link)->depth < get_target(*link)->depth - 1)
 		{
 			get_target(*link)->origin_link->exploration = 0;
 			get_target(*link)->origin_link = *link;
 			get_target(*link)->depth = get_origin_node(*link)->depth + 1;
 			(*link)->depth = get_origin_node(*link)->depth + 1;
 			(*link)->exploration = lem->exploration;
-			/*if (!(tmp = create_node(stack)))
+			if (!(tmp = create_node(stack)))
 				return (-1);
 			tmp->node = get_target(*link);
-			ft_nodadd(&stack, tmp);*/
+			ft_nodadd(&stack, tmp);
 		}
 	}
 	else if (get_target(*link)->exploration < lem->exploration)
@@ -77,7 +77,7 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 					}
 				}
 			}
-			else if ((*link)->reverse->solution == 1 && (*link)->target != lem->start)
+			else if (get_target(*link)->solution == 1 && (*link)->reverse->solution == 1 && (*link)->target != lem->start)
 			{
 				get_target(*link)->exploration = lem->exploration;
 				get_target(*link)->origin_link = *link;
@@ -89,13 +89,15 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 				tmp->node = get_target(*link);
 				ft_nodadd(&stack, tmp);
 			}
-			else if ((*link)->reverse->solution == 0)
+			else if (get_target(*link)->solution == 0)
 			{
 				get_target(*link)->exploration = lem->exploration;
 				get_target(*link)->origin_link = *link;
 				get_target(*link)->depth = get_origin_node(*link)->depth + 1;
 				(*link)->depth = get_origin_node(*link)->depth + 1;
 				(*link)->exploration = lem->exploration;
+				if (get_target(*link) == lem->end)
+					return (1);
 				if (!(tmp = create_node(stack)))
 					return (-1);
 				tmp->node = get_target(*link);
@@ -160,15 +162,18 @@ int			benjaug(t_lemin *lem)
 	while (stack)
 	{
 		link = stack->node->link;
-		t_lnode *tmp = stack;
-		if (DEBUG)
+		if (0)
 		{
+			t_lnode *tmp = stack;
+			if (tmp->node->depth < 50)
+			{
 			while (tmp)
 			{
 				ft_printf("%s:%zu->-", tmp->node->name, tmp->node->depth);
 				tmp = tmp->next;
 			}
 			ft_printf("\n");
+			}
 		}
 		while ((ret = explore_link_base(lem, stack, &link)) <= 0)
 			if (ret == -1)

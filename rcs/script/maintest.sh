@@ -10,9 +10,9 @@ TEST=$1
 BAD=0
 if [ !$1 ]
 then
-	TEST=100
+	TEST=60
 fi
-while [ $i -lt $TEST ]
+while [ $i -lt $(($TEST)) ]
 do
 	sleep 1
 	./generator --big-superposition > iter.txt
@@ -33,7 +33,6 @@ do
 		if [ $DIFF -gt $MAX ]
 		then
 			MAX=$DIFF;
-			echo 'hello'
 			cat iter.txt > $FILE
 		fi
 		BAD=$(($BAD + 1))
@@ -45,16 +44,17 @@ do
 	fi
 	if [ 0 -gt $DIFF ]
 	then
-		echo $i ":" $DIFF "-" $MAX "(" $GENERATOR":" $SOLUTION ")"
+		echo $(($i + 1)) ":" $DIFF "-" $MAX "(" $SOLUTION":" $GENERATOR ")"
 	else	
-		echo  $i ": " $DIFF "-" $MAX "(" $GENERATOR":" $SOLUTION ")"
+		echo  $(($i + 1)) ": " $DIFF "-" $MAX "(" $SOLUTION":" $GENERATOR ")"
 	fi
 	SUM=$(($SUM + $DIFF))
 	ITERATIONS=$(($ITERATIONS + 1))
 	i=$((i + 1))
 done
 
-echo "AVG: " $(($SUM / $ITERATIONS))
+HELLO=$(bc -l <<< "$SUM / $ITERATIONS")
+printf "AVG: %d/%d =  %f\n" $SUM $ITERATIONS $HELLO
 echo "MAX: " $MAX
 echo "MIN: " $MIN
 echo "BAD: " $BAD

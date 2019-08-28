@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 17:07:24 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/28 12:40:35 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	print_path(t_list *km)
 	t_list	*tmp;
 
 	tmp = km;
-	ft_printf("%s", get_origin_node((t_link *)(tmp->pv))->name);
 	while (tmp)
 	{
 		ft_printf("=>%s", get_target((t_link *)(tmp->pv))->name);
@@ -104,7 +103,7 @@ int	feed_roadlist(t_link *first_link, t_roadlist *new)
 		new->longest = new->first->length;
 	if (DEBUG)
 	{
-		ft_printf("%zu:", new->first->length);
+		ft_printf("%zu:   ", new->first->length);
 		print_path(new->first->km);
 	}
 	return (0);
