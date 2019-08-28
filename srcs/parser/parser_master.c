@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 11:20:24 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/28 16:48:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ int					parser(t_lemin *lem)
 	if (parser_ant(lem) == -1
 			|| lem->nbr_ant == 0
 			|| parser_room(lem, &line) == -1
-			|| parser_tube(lem, &line) == -1)
+			|| parser_tube(lem, &line) == -1
+			|| lem->nbr_tube == 0
+			|| lem->nbr_room == 0
+			|| lem->start->nbr_link == 0
+			|| lem->end->nbr_link == 0)
 	{
 		ret = -1;
 		ft_dprintf(STDERR_FILENO, "ERROR\n");

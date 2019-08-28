@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/28 12:40:35 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/28 18:02:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,12 @@ void	print_path(t_list *km)
 	t_list	*tmp;
 
 	tmp = km;
-	while (tmp)
+	ft_printf("=>%s", get_target((t_link *)(tmp->pv))->name);
+	/*while (tmp)
 	{
 		ft_printf("=>%s", get_target((t_link *)(tmp->pv))->name);
 		tmp = tmp->next;
-	}
+	}*/
 	ft_printf("\n");
 }
 
@@ -165,18 +166,21 @@ int	create_roadlist(t_lemin *lem)
 	new->exploration = lem->exploration;
 	if (DEBUG)
 		ft_printf("\n");
+	lem->start->solution = 1;
 	while (link)
 	{
 		if (get_target(link)->solution == 1)
 		{
 			if (feed_roadlist(link, new) == -1)
 			{
+				lem->start->solution = 0;
 				free_roadlist(&new);
 				return (-1);
 			}
 		}
 		link = link->next;
 	}
+	lem->start->solution = 0;
 	if (step_count(lem, new) == -1)
 	{
 		free_roadlist(&new);

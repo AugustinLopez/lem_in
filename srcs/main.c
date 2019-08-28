@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/27 15:50:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/28 17:57:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int		sort_roadlist(t_roadlist *roadlist)
 	t_road	**array;
 	size_t	i;
 
+	if (roadlist->exploration <= 1)
+		return (0);
 	if (!(array = ft_memalloc(sizeof(*array) * roadlist->exploration)))
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
@@ -79,8 +81,9 @@ int	calculate_ant_to_launch(t_lemin *lem, t_roadlist *roadlist)
 		ant -= roadlist->longest - road->length + 1;
 		road = road->next;
 	}
-	road = roadlist->first;
 	step = roadlist->longest + ant / roadlist->exploration;
+	ant %= roadlist->exploration;
+	road = roadlist->first;
 	while (road)
 	{
 		road->ant_to_launch += step - roadlist->longest;
@@ -102,9 +105,11 @@ int		printer(t_lemin *lem)
 	size_t	step;
 	size_t	x1;
 	size_t	x2;
+	int		tmp;
 
 	ant = 1;
 	step = 0;
+	ft_printf("\n");
 	while (step <= lem->roadlist->step)
 	{
 		road = lem->roadlist->first;
@@ -131,12 +136,17 @@ int		printer(t_lemin *lem)
 			while (iter)
 			{
 				if (iter->zu != 0)
+				{
 					ft_printf("L%zu-%s ", iter->zu, get_target((t_link *)(iter->pv))->name);
+					tmp = 1;
+				}
 				iter = iter->next;
 			}
 			road = road->next;
 		}
-		ft_printf("\n");
+		if (tmp)
+			ft_printf("\n");
+		tmp = 0;
 		step += 1;
 	}
 	return (0);

@@ -10,7 +10,7 @@ TEST=$1
 BAD=0
 if [ !$1 ]
 then
-	TEST=60
+	TEST=100
 fi
 while [ $i -lt $(($TEST)) ]
 do
