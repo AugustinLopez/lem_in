@@ -21,6 +21,8 @@ do
 	ARG=$(./symlemin a < iter.txt | grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)
 	GENERATOR=$(echo $ARG | cut -d ' ' -f1)
 	SOLUTION=$(echo $ARG | cut -d ' ' -f2)
+	ARG2=$(../../lem-in_new_path a < iter.txt | grep -E "#Here is|Step's"| rev | cut -d ' ' -f1| rev | tail -2)
+	SOLUTION2=$(echo $ARG | cut -d ' ' -f2)
 	if [ $RETURN -ne 0 ]
 	then
 		echo "Error!"
@@ -28,6 +30,7 @@ do
 		break
 	fi
 	DIFF=$(($SOLUTION - $GENERATOR))
+	DIFF2=$(($SOLUTION2 - $GENERATOR))
 	if [ $DIFF -gt 0 ]
 	then
 		if [ $DIFF -gt $MAX ]
@@ -44,9 +47,9 @@ do
 	fi
 	if [ 0 -gt $DIFF ]
 	then
-		echo $(($i + 1)) ":" $DIFF "-" $MAX "(" $SOLUTION":" $GENERATOR ")"
+		echo $(($i + 1)) ":" $DIFF "-" $MAX "(" $SOLUTION":" $GENERATOR ") --> " $DIFF2
 	else	
-		echo  $(($i + 1)) ": " $DIFF "-" $MAX "(" $SOLUTION":" $GENERATOR ")"
+		echo  $(($i + 1)) ": " $DIFF "-" $MAX "(" $SOLUTION":" $GENERATOR ") -->" $DIFF2
 	fi
 	SUM=$(($SUM + $DIFF))
 	ITERATIONS=$(($ITERATIONS + 1))

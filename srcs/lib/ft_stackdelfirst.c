@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lnkdel.c                                        :+:      :+:    :+:   */
+/*   ft_stackdelfirst.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/19 11:43:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/29 11:39:29 by aulopez          ###   ########.fr       */
+/*   Created: 2019/08/29 11:44:12 by aulopez           #+#    #+#             */
+/*   Updated: 2019/08/29 11:44:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdlib.h>
 
-void	ft_lnkdel(t_rb_node *node)
+void		ft_stackdelfirst(t_lnode **stack)
 {
-	t_link *tmp;
+	t_lnode *tmp;
 
-	if (!(node->link))
-		return ;
-	tmp = node->link->next;
-	free(node->link);
-	while (tmp)
-	{
-		node->link = tmp;
-		tmp = node->link->next;
-		free(node->link);
-	}
+	tmp = *stack;
+	*stack = (*stack)->next;
+	free(tmp);
+	if (*stack)
+		(*stack)->prev = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/28 17:17:02 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 17:22:40 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 */
 
 # define DEBUG 0
+# define PRINT_SOLVER 1
+# define PRINT_FILE 1
 # define LEM_END 1
 # define LEM_START 2
 # define LEM_COMMAND 4
@@ -51,6 +53,7 @@ typedef struct		s_roadlist
 	t_road			*first;
 	size_t			longest;
 	size_t			exploration;
+	size_t			nbr_road;
 	size_t			step;
 }					t_roadlist;
 
@@ -110,19 +113,20 @@ int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 
 int					benjaug(t_lemin *lem);
 int					dijkstra(t_lemin *lem);
-t_rb_node			*get_origin_node(t_link *link);
-t_rb_node 			*get_target(t_link *link);
-void				ft_nodadd(t_lnode **lnode, t_lnode *new);
-t_lnode*			create_node(t_lnode *stack);
-void				ft_stackdel(t_lnode *stack);
-void				ft_stackdelfirst(t_lnode **stack);
+
 void				pathsolver(t_lemin *lem);
-t_lnode				*stack_initialize(t_lemin *lem);
 int					create_roadlist(t_lemin *lem);
 void				free_roadlist(t_roadlist **roadlist);
 int					print(t_lemin *lem, int ac);
 
-
+void				ft_lnodadd(t_lnode **lnode, t_lnode *new);
+t_lnode				*ft_lnodnew(t_lnode *stack);
+t_lnode				*ft_stackinit(t_lemin *lem);
+void				ft_stackdel(t_lnode *stack);
+void				ft_stackdelfirst(t_lnode **stack);
+void				ft_lnkdel(t_rb_node *node);
+t_rb_node			*get_origin_node(t_link *link);
+t_rb_node 			*get_target(t_link *link);
 //size_t				printer(t_lemin *lem, int ac);
 
 /*

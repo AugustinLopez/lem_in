@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/28 17:57:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 15:10:15 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ int		sort_roadlist(t_roadlist *roadlist)
 	t_road	**array;
 	size_t	i;
 
-	if (roadlist->exploration <= 1)
+	if (roadlist->nbr_road <= 1)
 		return (0);
-	if (!(array = ft_memalloc(sizeof(*array) * roadlist->exploration)))
+	if (!(array = ft_memalloc(sizeof(*array) * roadlist->nbr_road)))
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (-1);
 	}
-	basic_sort(array, roadlist->first, roadlist->exploration);
+	basic_sort(array, roadlist->first, roadlist->nbr_road);
 	roadlist->first = array[0];
 	i = 0;
-	while (i < roadlist->exploration - 1)
+	while (i < roadlist->nbr_road - 1)
 	{
 		array[i]->next = array[i + 1];
 		++i;
@@ -81,13 +81,13 @@ int	calculate_ant_to_launch(t_lemin *lem, t_roadlist *roadlist)
 		ant -= roadlist->longest - road->length + 1;
 		road = road->next;
 	}
-	step = roadlist->longest + ant / roadlist->exploration;
-	ant %= roadlist->exploration;
+	step = roadlist->longest + ant / roadlist->nbr_road;
+	ant %= roadlist->nbr_road;
 	road = roadlist->first;
 	while (road)
 	{
 		road->ant_to_launch += step - roadlist->longest;
-		if (ant % lem->exploration)
+		if (ant % roadlist->nbr_road)
 		{
 			road->ant_to_launch += 1;
 			ant -= 1;

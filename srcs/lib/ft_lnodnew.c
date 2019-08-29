@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lnkdel.c                                        :+:      :+:    :+:   */
+/*   ft_lnodnew.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/19 11:43:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/29 11:39:29 by aulopez          ###   ########.fr       */
+/*   Created: 2019/08/29 11:46:01 by aulopez           #+#    #+#             */
+/*   Updated: 2019/08/29 11:46:10 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdlib.h>
 
-void	ft_lnkdel(t_rb_node *node)
+t_lnode*	ft_lnodnew(t_lnode *stack)
 {
-	t_link *tmp;
+	t_lnode	*tmp;
+	t_lnode	*iter;
 
-	if (!(node->link))
-		return ;
-	tmp = node->link->next;
-	free(node->link);
-	while (tmp)
+	tmp = (t_lnode *)malloc(sizeof(*tmp));
+	if (!tmp)
 	{
-		node->link = tmp;
-		tmp = node->link->next;
-		free(node->link);
+		if (stack != NULL)
+		{
+			iter = stack;
+			while (iter)
+			{
+				tmp = iter;
+				iter = iter->next;
+				free(tmp);
+			}
+			tmp = NULL;
+		}
 	}
+	else
+		ft_bzero(tmp, sizeof(*tmp));
+	return (tmp);
 }

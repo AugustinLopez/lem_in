@@ -1,67 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_utils.c                                        :+:      :+:    :+:   */
+/*   new_pathsolver.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/28 12:00:28 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 12:34:24 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_lnode*	create_node(t_lnode *stack)
-{
-	t_lnode	*tmp;
-	t_lnode	*iter;
 
-	tmp = (t_lnode *)malloc(sizeof(*tmp));
-	if (!tmp)
+static inline void	print_path(t_lemin *lem, t_rb_node *node)
+{
+	if (PRINT_SOLVER)
 	{
-		if (stack != NULL)
+		if (node == lem->end)
+			ft_printf("\n%zu: %s%s%s%s%s<==%s", lem->exploration, FT_YELLOW,
+				FT_REV, node->name, FT_EOC, FT_LGREEN,  FT_EOC);
+		else if (node == lem->start)
+			ft_printf("%s%s%s%s: New edge(s) = %zu\n", FT_LYELLOW, FT_REV,
+				node->name, FT_EOC, lem->end->origin_link->depth);
+		else if (node->solution == 1)
 		{
-			iter = stack;
-			while (iter)
-			{
-				tmp = iter;
-				iter = iter->next;
-				free(tmp);
-			}
-			tmp = NULL;
+			if (node->origin_link == node->origin_solution)
+				ft_printf("%s%s%s<==%s", FT_LRED, FT_REV, node->name, FT_EOC);
+			else if (node->origin_link->reverse->solution == 1)
+				ft_printf("%s%s<==%s", FT_LRED, node->name, FT_EOC);
+			else
+				ft_printf("%s%s%s<==%s", FT_LRED, node->name, FT_LGREEN, FT_EOC);
 		}
+		else
+			ft_printf("%s%s<==%s", FT_LGREEN, node->name, FT_EOC);
 	}
-	else
-		ft_bzero(tmp, sizeof(*tmp));
-	return (tmp);
-}
-
-void		ft_stackdel(t_lnode *stack)
-{
-	t_lnode	*iter;
-
-	if (stack)
-	{
-		iter = stack;
-		while (iter)
-		{
-			stack = iter;
-			iter = iter->next;
-			free(stack);
-		}
-	}
-}
-
-void		ft_stackdelfirst(t_lnode **stack)
-{
-	t_lnode *tmp;
-
-	tmp = *stack;
-	*stack = (*stack)->next;
-	free(tmp);
-	if (*stack)
-		(*stack)->prev = 0;
 }
 
 void		pathsolver(t_lemin *lem)
@@ -73,8 +46,7 @@ void		pathsolver(t_lemin *lem)
 	node = lem->end;
 	while (node->origin_link)
 	{
-		if (DEBUG)
-			ft_printf("%s<<<", node->name);
+		print_path(lem, node);
 		if (node->origin_link->reverse->solution == 1)
 		{
 			node->origin_link->solution = 0;
@@ -93,21 +65,7 @@ void		pathsolver(t_lemin *lem)
 			node = get_origin_node(node->origin_link);
 		}
 	}
-	if (DEBUG)
-		ft_printf("%s\n", lem->start->name);
+	print_path(lem, lem->start);
 	lem->end->solution = 0;
 	lem->start->solution = 0;
-}
-
-t_lnode			*stack_initialize(t_lemin *lem)
-{
-	t_lnode *tmp;
-
-	if (!(tmp = create_node(0)))
-		return (NULL);
-	tmp->node = lem->start;
-	tmp->node->exploration = lem->exploration;
-	if (DEBUG)
-		ft_printf("\n");
-	return (tmp);
 }

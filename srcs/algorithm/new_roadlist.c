@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/28 18:02:45 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 17:43:16 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ void	print_path(t_list *km)
 	t_list	*tmp;
 
 	tmp = km;
-	ft_printf("=>%s", get_target((t_link *)(tmp->pv))->name);
-	/*while (tmp)
+	//ft_printf("=>%s", get_target((t_link *)(tmp->pv))->name);
+	while (tmp)
 	{
 		ft_printf("=>%s", get_target((t_link *)(tmp->pv))->name);
 		tmp = tmp->next;
-	}*/
+	}
 	ft_printf("\n");
 }
 
@@ -102,11 +102,12 @@ int	feed_roadlist(t_link *first_link, t_roadlist *new)
 	}
 	if (new->longest < new->first->length)
 		new->longest = new->first->length;
-	if (DEBUG)
+	if (1)
 	{
 		ft_printf("%zu:   ", new->first->length);
 		print_path(new->first->km);
 	}
+	new->nbr_road += 1;
 	return (0);
 }
 
@@ -127,19 +128,103 @@ int	step_count(t_lemin *lem, t_roadlist *roadlist)
 		road = road->next;
 	}
 	step = roadlist->longest;
-	step += ant / lem->exploration;
-	if (ant % lem->exploration)
+	step += ant / roadlist->nbr_road;
+	if (ant % roadlist->nbr_road)
 		++step;
 	roadlist->step = step;
 	return (0);
 }
 
+t_road	*longest_road(t_roadlist *roadlist)
+{
+	t_road	*road;
+	t_road	*prev;
+
+	prev = 0;
+	road = roadlist->first;
+	while (road)
+	{
+		if (road->length == roadlist->longest)
+		{
+			if (prev)
+				prev->next = road->next;
+			else
+				roadlist->first = roadlist->first->next;
+			break ;
+		}
+		prev = road;
+		road = road->next;
+	}
+	return (road);
+}
+
+int		step_count_bis(t_lemin *lem, t_roadlist *roadlist)
+{
+	t_road	*analysis;
+	t_road	*road;
+	int		ret;
+	size_t	step;
+	t_list	*km;
+	t_link	*link;
+
+	if (roadlist->nbr_road <= 2)
+		return (0);
+	analysis = longest_road(roadlist);
+	roadlist->longest = 0;
+	road = roadlist->first;
+	while (road)
+	{
+		if (road->length > roadlist->longest)
+			roadlist->longest = road->length;
+		road = road->next;
+	}
+	step = roadlist->step;
+	roadlist->nbr_road -= 1;
+	ret = step_count(lem, roadlist);
+	if (ret == -1 || roadlist->step >= step)
+	{
+		roadlist->longest = analysis->length;
+		analysis->next = roadlist->first;
+		roadlist->first = analysis;
+		roadlist->step = step;
+		roadlist->nbr_road += 1;
+	}
+	else
+	{
+		km = analysis->km;
+		while (km)
+		{
+			link = (t_link *)(km->pv);
+			if (link)
+			{
+				link->solution = 0;
+				get_target(link)->solution = 0;
+				get_target(link)->origin_solution = 0;
+			}
+			km = km->next;
+		}
+		km = analysis->km;
+		while (km)
+		{
+			analysis->km = km;
+			km = km->next;
+			free(analysis->km);
+		}
+		free(analysis);
+	}
+	return (ret);
+}
+
 int	choose_roadlist(t_lemin *lem, t_roadlist **new)
 {
+	int	tmp;
+
+	tmp = 0;
 	if (lem->roadlist == NULL)
 		lem->roadlist = *new;
 	else
 	{
+			
 		if ((*new)->step > lem->roadlist->step)
 		{
 			free_roadlist(new);
@@ -147,8 +232,12 @@ int	choose_roadlist(t_lemin *lem, t_roadlist **new)
 		}
 		else
 		{
+			if ((*new)->nbr_road == lem->roadlist->nbr_road
+				&& (*new)->step == lem->roadlist->step)
+				tmp = 1;
 			free_roadlist(&(lem->roadlist));
 			lem->roadlist = *new;
+			return (tmp);
 		}
 	}
 	return (0);
@@ -158,14 +247,13 @@ int	create_roadlist(t_lemin *lem)
 {
 	t_roadlist	*new;
 	t_link		*link;
+	int			ret;
 
 	if (!(new = (t_roadlist *)malloc(sizeof(*new))))
 		return (-1);
 	ft_bzero(new, sizeof(*new));
 	link = lem->end->link;
 	new->exploration = lem->exploration;
-	if (DEBUG)
-		ft_printf("\n");
 	lem->start->solution = 1;
 	while (link)
 	{
@@ -181,7 +269,10 @@ int	create_roadlist(t_lemin *lem)
 		link = link->next;
 	}
 	lem->start->solution = 0;
-	if (step_count(lem, new) == -1)
+	ret = step_count(lem, new);
+	if (ret == -1)
+		new->step = -1;
+	if (step_count_bis(lem, new) == -1 && ret == -1)
 	{
 		free_roadlist(&new);
 		return (1);

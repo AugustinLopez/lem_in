@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lnkdel.c                                        :+:      :+:    :+:   */
+/*   ft_lnodadd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/19 11:43:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/29 11:39:29 by aulopez          ###   ########.fr       */
+/*   Created: 2018/11/19 11:10:25 by aulopez           #+#    #+#             */
+/*   Updated: 2019/08/29 11:48:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include <stdlib.h>
 
-void	ft_lnkdel(t_rb_node *node)
+void	ft_lnodadd(t_lnode **lnode, t_lnode *new)
 {
-	t_link *tmp;
+	t_lnode	*tmp;
 
-	if (!(node->link))
-		return ;
-	tmp = node->link->next;
-	free(node->link);
-	while (tmp)
+	tmp = *lnode;
+	while (tmp->next)
 	{
-		node->link = tmp;
-		tmp = node->link->next;
-		free(node->link);
+		if (tmp->next->node->depth > new->node->depth)
+		{
+			new->next = tmp->next;
+			tmp->next->prev = new;
+			new->prev = tmp;
+			tmp->next = new;
+			return ;
+		}
+		tmp = tmp->next;
 	}
+	tmp->next = new;
+	new->prev = tmp;
 }

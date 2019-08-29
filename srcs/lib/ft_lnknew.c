@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 11:10:25 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 13:52:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 11:39:46 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static inline void	ft_lnkappend(t_rb_node *origin, t_link *new)
 {
 	if (origin->link == NULL)
-			origin->link = new;
+		origin->link = new;
 	else
 	{
 		new->next = origin->link;

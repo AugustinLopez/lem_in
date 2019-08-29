@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 11:33:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 13:24:00 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int					parser_tube(t_lemin *lem, char **line)
 		free(*line);
 		return (0);
 	}
-	ft_printf("%s", *line);
+	if (PRINT_FILE)
+		ft_printf("%s", *line);
 	free(*line);
 	while ((ret = ft_gnl(STDIN_FILENO, line, 1) > 0))
 	{
@@ -94,7 +95,8 @@ int					parser_tube(t_lemin *lem, char **line)
 			free(*line);
 			return (0);
 		}
-		ft_printf("%s", *line);
+		if (PRINT_FILE)
+			ft_printf("%s", *line);
 		free(*line);
 	}
 	return (0);

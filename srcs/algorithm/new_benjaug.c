@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/29 11:12:33 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/08/29 16:53:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int			incr_stack(t_lemin *lem, t_lnode *stack, t_link **link, int opt)
 	(*link)->exploration = lem->exploration;
 	if ((opt & CASE_END) && get_target(*link) == lem->end)
 		return (1);
-	if (!(tmp = create_node(stack)))
+	if (!(tmp = ft_lnodnew(stack)))
 		return (-1);
 	tmp->node = get_target(*link);
-	ft_nodadd(&stack, tmp);
+	ft_lnodadd(&stack, tmp);
 	return (0);
 }
 
@@ -63,10 +63,10 @@ int			special_incr(t_lemin *lem, t_lnode *stack, t_link **link, int opt)
 	get_origin_node(km)->depth = get_origin_node(*link)->depth;
 	km->reverse->depth = get_origin_node(*link)->depth;
 	km->reverse->exploration = lem->exploration;
-	if (!(tmp = create_node(stack)))
+	if (!(tmp = ft_lnodnew(stack)))
 		return (-1);
 	tmp->node = get_origin_node(km);
-	ft_nodadd(&stack, tmp);
+	ft_lnodadd(&stack, tmp);
 	return (0);
 }
 
@@ -74,6 +74,7 @@ int			first_case(t_lemin *lem, t_lnode *stack, t_link **link)
 {
 	if (get_origin_node(*link)->solution == 1
 			&& get_target(*link)->solution == 1
+			&& (*link)->solution == 1
 			&& get_origin_node(*link)->origin_solution == (*link)->reverse
 			&& get_origin_node(*link)->depth <= get_target(*link)->depth)
 	{
@@ -159,13 +160,13 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 	int		ret;
 
 	lem->end->exploration = 0;
-	/*if (get_target(*link)->exploration == lem->exploration
+	if (get_target(*link)->exploration == lem->exploration
 		&& get_target(*link) != lem->start)
 	{
 		if (first_case(lem, stack, link))
 			return (-1);
 	}
-	else */if (get_target(*link)->exploration < lem->exploration)
+	else if (get_target(*link)->exploration < lem->exploration)
 	{
 		if (get_origin_node(*link)->solution == 1)
 		{
@@ -191,12 +192,12 @@ int			benjaug(t_lemin *lem)
 	int		ret;
 
 	lem->exploration += 1;
-	if (!(stack = stack_initialize(lem)))
+	if (!(stack = ft_stackinit(lem)))
 		return (-1);
 	while (stack)
 	{
 		link = stack->node->link;
-		if (DEBUG)
+		if (0)
 		{
 			t_lnode *tmp = stack;
 			while (tmp)

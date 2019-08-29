@@ -6,14 +6,14 @@
 #    By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/08/27 15:50:23 by aulopez          ###   ########.fr        #
+#    Updated: 2019/08/29 17:04:48 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=lem-in
 LIBFT=$(PATH_LIB)libft.a
 
-FLAGS=-g3 -Wall -Wextra -Werror
+FLAGS=-g3 -Werror -Wall -Wextra
 LIB_RULE=
 CC_O=gcc $(FLAGS) -c -I$(PATH_HDR)
 CC_C=gcc $(FLAGS) -o $(NAME) $(OBJ) -I$(PATH_HDR) -L$(PATH_LIB) -lft
@@ -30,7 +30,7 @@ SRC1=main \
 	rb_balance \
 	rb_function \
 	new_dijkstra \
-	new_utils \
+	new_pathsolver \
 	new_roadlist \
 	new_benjaug
 #	print \
@@ -39,11 +39,15 @@ SRC1=main \
 	init_edmundkarp \
 	ek_pathfinder\
 	debug
-_LIST=	ft_lnknew \
+SRCLIB=	ft_lnknew \
 		ft_lnkdel \
-		ft_getfromlink \
-		ft_nodadd
-SRC=$(SRC1) $(_LIST)
+		get_ \
+		ft_lnodadd \
+		ft_lnodnew \
+		ft_stackdel \
+		ft_stackdelfirst \
+		ft_stackinit
+SRC=$(SRC1) $(SRCLIB)
 INCLUDES=	$(PATH_HDR)libft.h \
 			$(PATH_HDR)lem_in.h \
 			$(PATH_HDR)rb_tree.h
