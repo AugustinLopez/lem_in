@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/28 17:47:22 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/08/29 11:12:33 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ int			explore_link_base(t_lemin *lem, t_lnode *stack, t_link **link)
 {
 	int		ret;
 
+	lem->end->exploration = 0;
 	/*if (get_target(*link)->exploration == lem->exploration
 		&& get_target(*link) != lem->start)
 	{
@@ -195,7 +196,7 @@ int			benjaug(t_lemin *lem)
 	while (stack)
 	{
 		link = stack->node->link;
-		if (0)
+		if (DEBUG)
 		{
 			t_lnode *tmp = stack;
 			while (tmp)
