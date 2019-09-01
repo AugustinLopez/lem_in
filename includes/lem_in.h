@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarlier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/08/29 17:22:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/01 23:28:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,35 @@
 # include <stddef.h>
 
 /*
+** See lem-in -h
+*/
+
+# define F_FLAG "hFAispnce"
+# define F_HELP 1
+# define F_NOFILE 2
+# define F_NOANT 4
+# define F_INFO 8
+# define F_SOLVER 16
+# define F_PATH 32
+# define F_NUMBER 64
+# define F_COLOR 128
+# define F_EXPLO 256
+
+/*
 ** flags for '##start' and '##end' command.
 */
 
-# define DEBUG 0
-# define PRINT_SOLVER 1
-# define PRINT_FILE 1
 # define LEM_END 1
 # define LEM_START 2
 # define LEM_COMMAND 4
+
+/*
+** flags for algorithm
+*/
+
+# define CASE_EXPLO 1
+# define CASE_END 2
+# define CASE_MINUS 4
 
 typedef struct		s_road
 {
@@ -68,29 +88,21 @@ typedef struct		s_lnode
 typedef struct		s_fifo
 {
 	size_t			index;
-	size_t			index_max;
 	t_list			*first;
 	t_list			*last;
 }					t_fifo;
 
-/*
-** LEM_IN:
-** - fileline is the start of the file
-** - curline is the line of the file that is being processed.
-** - room and links are kept in a RB tree.
-*/
-
 typedef struct		s_lemin
 {
-	size_t			nbr_ant;
 	size_t			nbr_room;
 	size_t			nbr_tube;
-	t_rb_node		*start;
-	t_rb_node		*end;
-	t_rb_node		*tree;
-	size_t			max_road_num;
-	t_roadlist		*roadlist;
+	size_t			nbr_ant;
 	size_t			exploration;
+	t_roadlist		*roadlist;
+	t_rb_node		*start;
+	t_rb_node		*tree;
+	t_rb_node		*end;
+	uint32_t		flags;
 }					t_lemin;
 
 /*
@@ -101,24 +113,47 @@ int					parser_ant(t_lemin *lem);
 int					parser_room(t_lemin *lem, char **line);
 int					parser_tube(t_lemin *lem, char **line);
 int					parser(t_lemin *lem);
-int					is_tube(t_lemin *lem, char *line);
 int					is_comment(char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 						uint8_t command);
 
+/*
+** ALGO FIRST STEP
+*/
+
+int					dijkstra(t_lemin *lem);
+void				print_stack(t_lemin *lem, t_lnode *stack);
+int					conclude_exploration(t_lemin *lem, t_lnode *stack);
 
 /*
-** ALGORITHM
+** ALGO ALL OTHER STEPS
 */
 
 int					benjaug(t_lemin *lem);
-int					dijkstra(t_lemin *lem);
+int					case_basic(t_lemin *lem, t_lnode *stack, t_link **link);
+int					case_upstream(t_lemin *lem, t_lnode *stack, t_link **link);
+int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link);
+int					try_without_longest_path(t_lemin *lem,
+						t_roadlist *roadlist);
 
-void				pathsolver(t_lemin *lem);
+/*
+** ROADLIST
+*/
+
 int					create_roadlist(t_lemin *lem);
 void				free_roadlist(t_roadlist **roadlist);
-int					print(t_lemin *lem, int ac);
+int					ft_newroad(t_road **road);
+int					ft_kmadd(t_road *road, t_link *km);
+void				print_path(t_list *km);
+int					step_count(t_lemin *lem, t_roadlist *roadlist);
+int					sort_roadlist(t_roadlist *roadlist);
 
+/*
+** OTHERS
+*/
+
+void				pathsolver(t_lemin *lem);
+void				printer(t_lemin *lem);
 void				ft_lnodadd(t_lnode **lnode, t_lnode *new);
 t_lnode				*ft_lnodnew(t_lnode *stack);
 t_lnode				*ft_stackinit(t_lemin *lem);
@@ -127,34 +162,4 @@ void				ft_stackdelfirst(t_lnode **stack);
 void				ft_lnkdel(t_rb_node *node);
 t_rb_node			*get_origin_node(t_link *link);
 t_rb_node 			*get_target(t_link *link);
-//size_t				printer(t_lemin *lem, int ac);
-
-/*
-** ALGORITHM FUNCTION
-*/
-/*
-void				lnkoflnk(void *pv, size_t zu);
-*t_rb_node			*get_node(t_link *ptr);
-int					edmundkarp(t_lemin *lem);
-t_link				*init_pathlink(t_lemin *lem, t_solver *sol, t_fifo *fifo,
-						t_link **memory);
-int					init_edmundkarp(t_lemin *lem, t_fifo *fifo, t_solver *cur);
-int					pathfinder(t_lemin *lem, t_fifo *fifo);
-void				pathsolver(t_lemin *lem, t_fifo *fifo);
-t_link				*get_reverse_path(t_rb_node *node, t_link *path);
-*/
-/*
-** UTILITIES
-*/
-/*
-size_t				step_count(size_t ant, t_solver *sol);
-t_link				*get_reverse_path(t_rb_node *node, t_link *path);
-int					free_fifo(t_fifo *fifo, int ret);
-void				print_path(t_lemin *lem);
-
-void	print_new_explo(int c, t_solver *new, t_solver *old, t_lemin *lem);
-void	print_explo(char c, t_link *rev, t_link *path, t_rb_node *node);
-void	print_stack(t_fifo *fifo);
-*/
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/29 13:24:06 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/01 22:57:27 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static inline int	lem_atoll_minus(const char *src, long long *result,
 	return (0);
 }
 
-int					lem_atoll(const char *src, long long *result, size_t *index)
+static inline int	lem_atoll(const char *src, long long *result, size_t *index)
 {
 	long long	limit;
 
@@ -128,7 +128,7 @@ int					parser_room(t_lemin *lem, char **line)
 			ret = is_room(lem, *line, &command);
 		if (ret == 1)
 		{
-			if (PRINT_FILE)
+			if (!(lem->flags & F_NOFILE))
 				ft_printf("%s", *line);
 		}
 		else
