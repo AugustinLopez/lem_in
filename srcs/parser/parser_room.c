@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:57:27 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 00:15:27 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ static inline int	is_room(t_lemin *lem, char *line, uint8_t *command)
 	*command &= ~LEM_COMMAND;
 	if (lem_feed_tree(lem, &room, *command) == -1)
 		return (0);
+	if (lem->flags & F_COORDINATE && lem_feed_xy(lem, &room, *command) == -1)
+		return (0);
 	++(lem->nbr_room);
 	return (1);
 }
@@ -126,12 +128,9 @@ int					parser_room(t_lemin *lem, char **line)
 			ret = 1;
 		else if (!(ret = is_command(*line, &command)))
 			ret = is_room(lem, *line, &command);
-		if (ret == 1)
-		{
-			if (!(lem->flags & F_NOFILE))
+		if (ret == 1 && !(lem->flags & F_NOFILE))
 				ft_printf("%s", *line);
-		}
-		else
+		else if (!(ret == 1))
 		{
 			if (command != (LEM_END | LEM_START))
 				ret = -1;

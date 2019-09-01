@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:26:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 15:51:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/01 23:40:32 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static inline int	is_ant(t_lemin *lem, char *line)
 
 	i = 0;
 	if (lem_atozu(line, &(lem->nbr_ant), &i) == -1)
+		return (0);
+	if (lem->flags & F_LIMIT && lem->nbr_ant > INT_MAX)
 		return (0);
 	if (!line[i] || line[i] != '\n')
 		return (0);

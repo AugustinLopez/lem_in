@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:18:43 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 00:34:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	print_help(void)
 	ft_printf("\t%s-c%s\tAdd color to ants' path\n", FT_BOLD, FT_EOC);
 	ft_printf("\t%s-e%s\tPrint state of the exploration stack\n",
 			FT_BOLD, FT_EOC);
+	ft_printf("\t%s-l%s\tSet max ant number to INT_MAX\n", FT_BOLD, FT_EOC);
+	ft_printf("\t%s-x%s\tError if duplicated coordinates\n", FT_BOLD, FT_EOC);
 }
 
 int		main(int ac, char **av)
@@ -43,10 +45,12 @@ int		main(int ac, char **av)
 	}
 	if (parser(&lem) == -1 || dijkstra(&lem) == -1)
 	{
+		lem_free_tree(&(lem.coordinate));
 		lem_free_tree(&(lem.tree));
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
 		return (-1);
 	}
+	lem_free_tree(&(lem.coordinate));
 	while (benjaug(&lem) == 0)
 		continue ;
 	printer(&lem);

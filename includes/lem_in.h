@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/01 23:28:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 00:12:52 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 ** See lem-in -h
 */
 
-# define F_FLAG "hFAispnce"
+# define F_FLAG "hFAispncelx"
 # define F_HELP 1
 # define F_NOFILE 2
 # define F_NOANT 4
@@ -43,6 +43,8 @@
 # define F_NUMBER 64
 # define F_COLOR 128
 # define F_EXPLO 256
+# define F_LIMIT 512
+# define F_COORDINATE 1024
 
 /*
 ** flags for '##start' and '##end' command.
@@ -102,6 +104,7 @@ typedef struct		s_lemin
 	t_rb_node		*start;
 	t_rb_node		*tree;
 	t_rb_node		*end;
+	t_rb_node		*coordinate;
 	uint32_t		flags;
 }					t_lemin;
 
@@ -116,7 +119,8 @@ int					parser(t_lemin *lem);
 int					is_comment(char *line);
 int					lem_feed_tree(t_lemin *lem, t_tree_data *room,
 						uint8_t command);
-
+int					lem_feed_xy(t_lemin *lem, t_tree_data *room,
+						uint8_t command);
 /*
 ** ALGO FIRST STEP
 */

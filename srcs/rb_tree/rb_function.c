@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/08/23 11:45:05 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 00:33:24 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,20 @@ t_rb_node				*lem_find_node(t_rb_node *root, const char *name)
 	return (NULL);
 }
 
-static inline t_rb_node	*lem_rb_create(t_tree_data *data)
+static inline t_rb_node	*lem_rb_create(t_tree_data *data, int option)
 {
 	t_rb_node	*tmp;
 
 	if (!(tmp = (t_rb_node *)malloc(sizeof(*tmp))))
 		return (NULL);
 	ft_bzero(tmp, sizeof(*tmp));
-	if (!(tmp->name = ft_strsub(data->line, 0, data->fin)))
+	if (option == 0)
 	{
-		free(tmp);
-		return (NULL);
+		if (!(tmp->name = ft_strsub(data->line, 0, data->fin)))
+		{
+			free(tmp);
+			return (NULL);
+		}
 	}
 	tmp->x = data->x;
 	tmp->y = data->y;
@@ -68,7 +71,7 @@ int						lem_feed_tree(t_lemin *lem, t_tree_data *room,
 {
 	t_rb_node	*tmp;
 
-	if (!(tmp = lem_rb_create(room)))
+	if (!(tmp = lem_rb_create(room, 0)))
 		return (-1);
 	if (!(lem->end) && (command & LEM_END))
 		lem->end = tmp;
@@ -79,7 +82,19 @@ int						lem_feed_tree(t_lemin *lem, t_tree_data *room,
 	return (0);
 }
 
-t_rb_node				*get_node(t_link *ptr)
+int						lem_feed_xy(t_lemin *lem, t_tree_data *room,
+							uint8_t command)
 {
-	return ((t_rb_node *)(ptr->origin));
+	t_rb_node	*tmp;
+
+	if (!(tmp = lem_rb_create(room, 1)))
+		return (-1);
+	if (!(lem->end) && (command & LEM_END))
+		lem->end = tmp;
+	else if (!(lem->start) && (command & LEM_START))
+		lem->start = tmp;
+	if (rb_coordinate(&(lem->coordinate), tmp) == -1)
+		return (-1);
+	return (0);
 }
+

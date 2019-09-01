@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:35:56 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:57:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 00:20:36 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static inline int	is_tube(t_lemin *lem, char *line)
 	return (proceed_with_tube(lem, line, i, j));
 }
 
-int					parser_tube(t_lemin *lem, char **line)
+static inline int	first_case(t_lemin *lem, char **line)
 {
 	int		ret;
 
@@ -86,6 +86,16 @@ int					parser_tube(t_lemin *lem, char **line)
 	if (!(lem->flags & F_NOFILE))
 		ft_printf("%s", *line);
 	free(*line);
+	return (1);
+}
+
+int					parser_tube(t_lemin *lem, char **line)
+{
+	int		ret;
+
+	lem_free_tree(&(lem->coordinate));
+	if (first_case(lem, line) == 0)
+		return (0);
 	while ((ret = ft_gnl(STDIN_FILENO, line, 1) > 0))
 	{
 		if (!(ret = is_comment(*line)))
