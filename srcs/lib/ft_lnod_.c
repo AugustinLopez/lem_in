@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lnodadd.c                                       :+:      :+:    :+:   */
+/*   ft_lnod_.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 11:10:25 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 23:05:23 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:02:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include <stdlib.h>
 
-t_lnode*	ft_lnodnew(t_lnode *stack)
+t_lnode	*ft_lnodnew(t_lnode *stack)
 {
 	t_lnode	*tmp;
 	t_lnode	*iter;

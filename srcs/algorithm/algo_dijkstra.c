@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:35:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:04:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void				print_stack(t_lemin *lem, t_lnode *stack)
 {
-	t_lnode *tmp = stack;
+	t_lnode *tmp;
 
+	tmp = stack;
 	while (tmp)
 	{
 		if (tmp->node != lem->start)

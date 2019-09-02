@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 10:29:12 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 00:15:27 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 10:57:27 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int					parser_room(t_lemin *lem, char **line)
 		else if (!(ret = is_command(*line, &command)))
 			ret = is_room(lem, *line, &command);
 		if (ret == 1 && !(lem->flags & F_NOFILE))
-				ft_printf("%s", *line);
+			ft_printf("%s", *line);
 		else if (!(ret == 1))
 		{
 			if (command != (LEM_END | LEM_START))

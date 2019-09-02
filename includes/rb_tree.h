@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:56:35 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 00:07:59 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 10:55:13 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@
 
 # define RB_RED 1
 
-typedef struct		s_link
+typedef struct			s_link
 {
-	void			*origin;
-	void			*target;
-	struct s_link	*reverse;
-	struct s_link	*next;
-	size_t			depth;
-	size_t			exploration;
-	uint8_t			solution;
-}					t_link;
+	void				*origin;
+	void				*target;
+	struct s_link		*reverse;
+	struct s_link		*next;
+	size_t				depth;
+	size_t				exploration;
+	uint8_t				solution;
+}						t_link;
 
 typedef struct			s_tree_data
 {

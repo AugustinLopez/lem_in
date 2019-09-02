@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:06:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 00:30:54 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 10:57:06 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static inline int	launch_coordinate(t_rb_node **root, t_rb_node **node)
 		return (launch_coordinate(&((*root)->left), node));
 	else if (val == 1)
 		(*root)->left = *node;
-	else if ( val == -1 && (*root)->right)
+	else if (val == -1 && (*root)->right)
 		return (launch_coordinate(&((*root)->right), node));
 	else
 		(*root)->right = *node;
@@ -46,7 +46,10 @@ int					rb_coordinate(t_rb_node **root, t_rb_node *node)
 	if (!root || !node)
 		return (-1);
 	if (launch_coordinate(root, &node) == -1)
+	{
+		lem_free_tree(&node);
 		return (-1);
+	}
 	rb_balance(&node, node->parent && node->parent->left == node ? 1 : 0);
 	while (node->parent != NULL)
 		node = node->parent;
@@ -83,7 +86,10 @@ int					rb_insert(t_rb_node **root, t_rb_node *node)
 	if (!root || !node)
 		return (-1);
 	if (launch_recursive(root, &node) == -1)
+	{
+		lem_free_tree(&node);
 		return (-1);
+	}
 	rb_balance(&node, node->parent && node->parent->left == node ? 1 : 0);
 	while (node->parent != NULL)
 		node = node->parent;

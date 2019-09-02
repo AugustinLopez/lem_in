@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:38:01 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:01:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static inline int	start_upstream(t_lemin *lem, t_lnode *stack, t_link **link,
 {
 	t_lnode	*tmp;
 	t_link	*km;
-	
+
 	km = get_target(*link)->origin_solution;
 	get_target(km)->exploration = lem->exploration;
 	get_target(km)->origin_link = *link;
@@ -86,7 +86,7 @@ int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link)
 
 int					case_upstream(t_lemin *lem, t_lnode *stack, t_link **link)
 {
-	t_link *km;
+	t_link	*km;
 	int		ret;
 
 	ret = 0;
@@ -108,7 +108,7 @@ int					case_upstream(t_lemin *lem, t_lnode *stack, t_link **link)
 
 int					case_basic(t_lemin *lem, t_lnode *stack, t_link **link)
 {
-	t_link *km;
+	t_link	*km;
 	int		ret;
 
 	ret = 0;

@@ -6,14 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:52:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:03:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-int	ft_newroad(t_road **road)
+int		ft_newroad(t_road **road)
 {
 	t_road	*new;
 
@@ -30,7 +30,7 @@ int	ft_newroad(t_road **road)
 	return (0);
 }
 
-int	ft_kmadd(t_road *road, t_link *km)
+int		ft_kmadd(t_road *road, t_link *km)
 {
 	t_list	*tmp;
 
@@ -84,7 +84,7 @@ void	print_path(t_list *km)
 	ft_printf("\n");
 }
 
-int	step_count(t_lemin *lem, t_roadlist *roadlist)
+int		step_count(t_lemin *lem, t_roadlist *roadlist)
 {
 	size_t	ant;
 	t_road	*road;

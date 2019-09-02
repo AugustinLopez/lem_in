@@ -6,14 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 09:58:09 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 23:15:04 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 10:58:20 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "rb_tree.h"
 
-int	calculate_ant_to_launch(t_lemin *lem, t_roadlist *roadlist)
+static inline int	calculate_ant_to_launch(t_lemin *lem, t_roadlist *roadlist)
 {
 	size_t	ant;
 	t_road	*road;
@@ -41,7 +41,7 @@ int	calculate_ant_to_launch(t_lemin *lem, t_roadlist *roadlist)
 	return (0);
 }
 
-void	print_info(t_lemin *lem, t_road *road)
+static inline void	print_info(t_lemin *lem, t_road *road)
 {
 	t_list	*iter;
 
@@ -66,7 +66,7 @@ void	print_info(t_lemin *lem, t_road *road)
 	}
 }
 
-void	print_loop(t_lemin *lem, size_t *ant, t_road *road)
+static inline void	print_loop(t_lemin *lem, size_t *ant, t_road *road)
 {
 	t_list	*iter;
 	size_t	prev_value;
@@ -92,7 +92,7 @@ void	print_loop(t_lemin *lem, size_t *ant, t_road *road)
 	print_info(lem, road);
 }
 
-int		print_ant_path(t_lemin *lem)
+static inline int	print_ant_path(t_lemin *lem)
 {
 	t_road	*road;
 	size_t	step;
@@ -115,7 +115,7 @@ int		print_ant_path(t_lemin *lem)
 	return (0);
 }
 
-void	printer(t_lemin *lem)
+void				printer(t_lemin *lem)
 {
 	sort_roadlist(lem->roadlist);
 	calculate_ant_to_launch(lem, lem->roadlist);

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stackdel.c                                      :+:      :+:    :+:   */
+/*   ft_stack_.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 11:42:58 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 23:03:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:01:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_lnode			*ft_stackinit(t_lemin *lem)
+t_lnode	*ft_stackinit(t_lemin *lem)
 {
 	t_lnode *tmp;
 
@@ -23,7 +23,7 @@ t_lnode			*ft_stackinit(t_lemin *lem)
 	return (tmp);
 }
 
-void		ft_stackdelfirst(t_lnode **stack)
+void	ft_stackdelfirst(t_lnode **stack)
 {
 	t_lnode *tmp;
 
@@ -34,7 +34,7 @@ void		ft_stackdelfirst(t_lnode **stack)
 		(*stack)->prev = 0;
 }
 
-void		ft_stackdel(t_lnode *stack)
+void	ft_stackdel(t_lnode *stack)
 {
 	t_lnode	*iter;
 

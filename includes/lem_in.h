@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/02 00:12:52 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 10:54:47 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,5 @@ void				ft_stackdel(t_lnode *stack);
 void				ft_stackdelfirst(t_lnode **stack);
 void				ft_lnkdel(t_rb_node *node);
 t_rb_node			*get_origin_node(t_link *link);
-t_rb_node 			*get_target(t_link *link);
+t_rb_node			*get_target(t_link *link);
 #endif

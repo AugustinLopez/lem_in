@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:54:49 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:03:59 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static inline void	print_solving_path(t_lemin *lem, t_rb_node *node)
 	{
 		if (node == lem->end)
 			ft_printf("%zu: %s%s%s%s%s<==%s", lem->exploration, FT_YELLOW,
-				FT_REV, node->name, FT_EOC, FT_LGREEN,  FT_EOC);
+				FT_REV, node->name, FT_EOC, FT_LGREEN, FT_EOC);
 		else if (node == lem->start && !(lem->flags & F_PATH))
 			ft_printf("%s%s%s%s: New edge(s) = %zu\n\n", FT_LYELLOW, FT_REV,
 				node->name, FT_EOC, lem->end->origin_link->depth);
@@ -32,7 +32,8 @@ static inline void	print_solving_path(t_lemin *lem, t_rb_node *node)
 			else if (node->origin_link->reverse->solution == 1)
 				ft_printf("%s%s<==%s", FT_LRED, node->name, FT_EOC);
 			else
-				ft_printf("%s%s%s<==%s", FT_LRED, node->name, FT_LGREEN, FT_EOC);
+				ft_printf("%s%s%s<==%s", FT_LRED, node->name, FT_LGREEN,
+						FT_EOC);
 		}
 		else
 			ft_printf("%s%s<==%s", FT_LGREEN, node->name, FT_EOC);

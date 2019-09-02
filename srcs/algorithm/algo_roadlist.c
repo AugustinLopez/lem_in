@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:17:18 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:56:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 11:00:42 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static inline int	choose_roadlist(t_lemin *lem, t_roadlist **new)
 		lem->roadlist = *new;
 	else
 	{
-			
 		if ((*new)->step > lem->roadlist->step)
 		{
 			free_roadlist(new);
@@ -44,7 +43,7 @@ static inline int	choose_roadlist(t_lemin *lem, t_roadlist **new)
 static inline int	feed_roadlist(t_lemin *lem, t_link *first_link,
 						t_roadlist *new)
 {
-	t_link	*link;
+	t_link		*link;
 	t_rb_node	*node;
 
 	if (ft_newroad(&(new->first)) == -1)

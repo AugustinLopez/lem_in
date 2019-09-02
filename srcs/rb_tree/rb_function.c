@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 15:31:17 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 00:33:24 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 10:57:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,3 @@ int						lem_feed_xy(t_lemin *lem, t_tree_data *room,
 		return (-1);
 	return (0);
 }
-
