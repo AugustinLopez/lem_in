@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 13:34:54 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/02 15:10:13 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link)
 			&& get_origin_node(*link)->depth < get_target(*link)->depth - 1)
 		ret = explore(lem, stack, link, 0);
 	else if (get_origin_node(*link)->solution == 0
-			&& get_target(*link)->nbr_link == 3
+			&& get_target(*link)->origin_link->reverse->solution != 1
 			&& get_origin_node(*link)->depth < get_target(*link)->depth - 1)
 	{
 		t_rb_node	*tmp;
@@ -107,7 +107,6 @@ int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link)
 		tmp3->node = get_origin_node(tmp->origin_solution);
 		ft_lnodadd(&stack, tmp3);
 	}
-
 	return (ret);
 }
 
