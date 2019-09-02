@@ -6,11 +6,41 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/01 22:48:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 15:28:20 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+int					explore(t_lemin *lem, t_lnode *stack, t_link **link,
+						int option)
+{
+	t_lnode	*tmp;
+
+	if (option & CASE_EXPLO)
+		get_target(*link)->exploration = lem->exploration;
+	else
+		get_target(*link)->origin_link->exploration = 0;
+	get_target(*link)->origin_link = *link;
+	if (option & CASE_MINUS)
+	{
+		get_target(*link)->depth = get_origin_node(*link)->depth - 1;
+		(*link)->depth = get_origin_node(*link)->depth - 1;
+	}
+	else
+	{
+		get_target(*link)->depth = get_origin_node(*link)->depth + 1;
+		(*link)->depth = get_origin_node(*link)->depth + 1;
+	}
+	(*link)->exploration = lem->exploration;
+	if ((option & CASE_END) && get_target(*link) == lem->end)
+		return (1);
+	if (!(tmp = ft_lnodnew(stack)))
+		return (-1);
+	tmp->node = get_target(*link);
+	ft_lnodadd(&stack, tmp);
+	return (0);
+}
 
 static inline int	explore_link_benjaug(t_lemin *lem, t_lnode *stack,
 						t_link **link)

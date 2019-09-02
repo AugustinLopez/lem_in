@@ -6,41 +6,11 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 15:10:13 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/02 15:29:03 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-static inline int	explore(t_lemin *lem, t_lnode *stack, t_link **link,
-						int option)
-{
-	t_lnode	*tmp;
-
-	if (option & CASE_EXPLO)
-		get_target(*link)->exploration = lem->exploration;
-	else
-		get_target(*link)->origin_link->exploration = 0;
-	get_target(*link)->origin_link = *link;
-	if (option & CASE_MINUS)
-	{
-		get_target(*link)->depth = get_origin_node(*link)->depth - 1;
-		(*link)->depth = get_origin_node(*link)->depth - 1;
-	}
-	else
-	{
-		get_target(*link)->depth = get_origin_node(*link)->depth + 1;
-		(*link)->depth = get_origin_node(*link)->depth + 1;
-	}
-	(*link)->exploration = lem->exploration;
-	if ((option & CASE_END) && get_target(*link) == lem->end)
-		return (1);
-	if (!(tmp = ft_lnodnew(stack)))
-		return (-1);
-	tmp->node = get_target(*link);
-	ft_lnodadd(&stack, tmp);
-	return (0);
-}
 
 static inline int	start_upstream(t_lemin *lem, t_lnode *stack, t_link **link,
 				int option)
@@ -68,6 +38,26 @@ static inline int	start_upstream(t_lemin *lem, t_lnode *stack, t_link **link,
 	return (0);
 }
 
+static inline int	case_reexplore_upstream(t_lemin *lem, t_lnode *stack,
+						t_link **link)
+{
+	t_rb_node	*nd;
+	t_lnode		*lnode;
+
+	get_target(*link)->origin_link = *link;
+	(*link)->exploration = lem->exploration;
+	(*link)->depth = get_origin_node(*link)->depth + 1;
+	get_target(*link)->depth = get_origin_node(*link)->depth + 1;
+	nd = get_target(*link);
+	nd->origin_solution->depth = get_origin_node(*link)->depth;
+	get_origin_node(nd->origin_solution)->depth = get_origin_node(*link)->depth;
+	if (!(lnode = ft_lnodnew(stack)))
+		return (-1);
+	lnode->node = get_origin_node(nd->origin_solution);
+	ft_lnodadd(&stack, lnode);
+	return (0);
+}
+
 int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link)
 {
 	int	ret;
@@ -91,22 +81,7 @@ int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link)
 	else if (get_origin_node(*link)->solution == 0
 			&& get_target(*link)->origin_link->reverse->solution != 1
 			&& get_origin_node(*link)->depth < get_target(*link)->depth - 1)
-	{
-		t_rb_node	*tmp;
-		t_lnode		*tmp3;
-
-		get_target(*link)->origin_link = *link;
-		(*link)->exploration = lem->exploration;
-		(*link)->depth = get_origin_node(*link)->depth + 1;
-		get_target(*link)->depth = get_origin_node(*link)->depth + 1;
-		tmp = get_target(*link);
-		tmp->origin_solution->depth = get_origin_node(*link)->depth;
-		get_origin_node(tmp->origin_solution)->depth = get_origin_node(*link)->depth;
-		if (!(tmp3 = ft_lnodnew(stack)))
-			return (-1);
-		tmp3->node = get_origin_node(tmp->origin_solution);
-		ft_lnodadd(&stack, tmp3);
-	}
+		ret = case_reexplore_upstream(lem, stack, link);
 	return (ret);
 }
 
@@ -127,7 +102,8 @@ int					case_upstream(t_lemin *lem, t_lnode *stack, t_link **link)
 			&& (*link)->reverse->solution == 1
 			&& (*link)->target != lem->start)
 		ret = explore(lem, stack, link, CASE_EXPLO | CASE_MINUS);
-	else if (get_target(*link)->solution == 0 && get_origin_node(*link)->origin_link->reverse->solution == 1)
+	else if (get_target(*link)->solution == 0
+			&& get_origin_node(*link)->origin_link->reverse->solution == 1)
 		ret = explore(lem, stack, link, CASE_EXPLO | CASE_END);
 	return (ret);
 }
