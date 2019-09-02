@@ -6,14 +6,14 @@
 #    By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/16 11:34:20 by bcarlier          #+#    #+#              #
-#    Updated: 2019/09/01 23:09:20 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/02 13:35:11 by bcarlier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=lem-in
 LIBFT=$(PATH_LIB)libft.a
 
-FLAGS=-Werror -Wall -Wextra
+FLAGS=-O3 -fno-builtin -Werror -Wall -Wextra
 LIB_RULE=
 CC_O=gcc $(FLAGS) -c -I$(PATH_HDR)
 CC_C=gcc $(FLAGS) -o $(NAME) $(OBJ) -I$(PATH_HDR) -L$(PATH_LIB) -lft
