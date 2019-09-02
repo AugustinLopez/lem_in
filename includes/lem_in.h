@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 11:40:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/02 10:54:47 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 16:17:55 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ int					case_upstream(t_lemin *lem, t_lnode *stack, t_link **link);
 int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link);
 int					try_without_longest_path(t_lemin *lem,
 						t_roadlist *roadlist);
-
+int					explore(t_lemin *lem, t_lnode *stack, t_link **link,
+						int option);
 /*
 ** ROADLIST
 */
