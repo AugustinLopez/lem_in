@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 11:01:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/02 13:34:54 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,39 @@ int					case_reexplore(t_lemin *lem, t_lnode *stack, t_link **link)
 	ret = 0;
 	if (get_origin_node(*link)->solution == 1
 			&& get_target(*link)->solution == 1
-			&& (*link)->solution == 1
+			&& (*link)->reverse->solution == 1
 			&& get_origin_node(*link)->origin_solution == (*link)->reverse
 			&& get_origin_node(*link)->depth <= get_target(*link)->depth)
 		ret = explore(lem, stack, link, CASE_MINUS);
-	else if (get_origin_node(*link)->depth < get_target(*link)->depth - 1)
+	else if (get_origin_node(*link)->solution == 0
+			&& get_target(*link)->solution == 0
+			&& get_origin_node(*link)->depth < get_target(*link)->depth - 1)
 		ret = explore(lem, stack, link, 0);
+	else if (get_origin_node(*link)->solution == 1
+			&& get_target(*link)->solution == 0
+			&& get_origin_node(*link)->origin_solution
+			&& get_origin_node(*link)->depth < get_target(*link)->depth - 1)
+		ret = explore(lem, stack, link, 0);
+	else if (get_origin_node(*link)->solution == 0
+			&& get_target(*link)->nbr_link == 3
+			&& get_origin_node(*link)->depth < get_target(*link)->depth - 1)
+	{
+		t_rb_node	*tmp;
+		t_lnode		*tmp3;
+
+		get_target(*link)->origin_link = *link;
+		(*link)->exploration = lem->exploration;
+		(*link)->depth = get_origin_node(*link)->depth + 1;
+		get_target(*link)->depth = get_origin_node(*link)->depth + 1;
+		tmp = get_target(*link);
+		tmp->origin_solution->depth = get_origin_node(*link)->depth;
+		get_origin_node(tmp->origin_solution)->depth = get_origin_node(*link)->depth;
+		if (!(tmp3 = ft_lnodnew(stack)))
+			return (-1);
+		tmp3->node = get_origin_node(tmp->origin_solution);
+		ft_lnodadd(&stack, tmp3);
+	}
+
 	return (ret);
 }
 
@@ -101,7 +128,7 @@ int					case_upstream(t_lemin *lem, t_lnode *stack, t_link **link)
 			&& (*link)->reverse->solution == 1
 			&& (*link)->target != lem->start)
 		ret = explore(lem, stack, link, CASE_EXPLO | CASE_MINUS);
-	else if (get_target(*link)->solution == 0)
+	else if (get_target(*link)->solution == 0 && get_origin_node(*link)->origin_link->reverse->solution == 1)
 		ret = explore(lem, stack, link, CASE_EXPLO | CASE_END);
 	return (ret);
 }
