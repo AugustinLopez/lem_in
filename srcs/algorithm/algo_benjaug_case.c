@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 15:29:03 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/03 00:05:14 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static inline int	start_upstream(t_lemin *lem, t_lnode *stack, t_link **link,
 	if (!(tmp = ft_lnodnew(stack)))
 		return (-1);
 	tmp->node = get_origin_node(km);
-	ft_lnodadd(&stack, tmp);
+	tmp->next = stack->next;
+	stack->next = tmp;
 	return (0);
 }
 

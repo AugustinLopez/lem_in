@@ -6,14 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/02 15:28:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/03 00:44:44 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int					explore(t_lemin *lem, t_lnode *stack, t_link **link,
-						int option)
+int						explore(t_lemin *lem, t_lnode *stack, t_link **link,
+							int option)
 {
 	t_lnode	*tmp;
 
@@ -42,7 +42,7 @@ int					explore(t_lemin *lem, t_lnode *stack, t_link **link,
 	return (0);
 }
 
-static inline int	explore_link_benjaug(t_lemin *lem, t_lnode *stack,
+static inline int		explore_link_benjaug(t_lemin *lem, t_lnode *stack,
 						t_link **link)
 {
 	int		ret;
@@ -65,17 +65,96 @@ static inline int	explore_link_benjaug(t_lemin *lem, t_lnode *stack,
 	return (*link == NULL ? 1 : 0);
 }
 
-int					benjaug(t_lemin *lem)
+static inline size_t	stacksize(t_lnode *stack)
+{
+	t_lnode	*tmp;
+	size_t	zu;
+
+	zu = 0;
+	tmp = stack;
+	while (tmp)
+	{
+		++zu;
+		tmp = tmp->next;
+	}
+	return (zu);
+}
+
+static inline void		correct_path(t_rb_node *node)
+{
+	t_rb_node	*tmp;
+	t_link		*link;
+
+	tmp = node;
+	link = 0;
+	while (tmp)
+	{
+		if (!(get_origin_node(tmp->origin_link)->solution == 1) || link)
+			break ;
+		tmp = get_origin_node(tmp->origin_link);
+		link = tmp->link;
+		while (link)
+		{
+			if (link->reverse->exploration == tmp->exploration
+					&& tmp->origin_link == link->reverse)
+				break ;
+			link = link->next;
+		}
+	}
+	if (tmp)
+	{
+		tmp->origin_link->exploration = 0;
+		tmp->exploration = 0;
+	}
+}
+
+/*
+void				correct_path(t_rb_node *node)
+{
+	t_rb_node	*tmp;
+	t_link		*link;
+
+	tmp = node;
+	while (tmp)
+	{
+		if (get_origin_node(tmp->origin_link)->solution == 1)
+		{
+			tmp = get_origin_node(tmp->origin_link);
+			link = tmp->link;
+			while (link)
+			{
+				if (link->reverse->exploration == tmp->exploration && tmp->origin_link == link->reverse)
+				{
+					tmp->origin_link->exploration = 0;
+					tmp->exploration = 0;
+					return ;
+				}
+				link = link->next;
+			}
+		}
+		else
+		{
+			tmp->origin_link->exploration = 0;
+			tmp->exploration = 0;
+			break ;
+		}
+	}
+}*/
+
+int						benjaug(t_lemin *lem)
 {
 	t_lnode	*stack;
 	t_link	*link;
 	int		ret;
+	size_t	correction;
 
 	lem->exploration += 1;
 	if (!(stack = ft_stackinit(lem)))
 		return (-1);
 	while (stack)
 	{
+		correction = (stack->node->solution == 1
+				&& !(stack->node == lem->start)) ? stacksize(stack) : 0;
 		link = stack->node->link;
 		while ((ret = explore_link_benjaug(lem, stack, &link)) <= 0)
 			if (ret == -1)
@@ -84,6 +163,8 @@ int					benjaug(t_lemin *lem)
 			break ;
 		if (lem->flags & F_EXPLO)
 			print_stack(lem, stack);
+		if (correction && stacksize(stack) - 1 < correction)
+			correct_path(stack->node);
 		ft_stackdelfirst(&stack);
 	}
 	return (conclude_exploration(lem, stack));
