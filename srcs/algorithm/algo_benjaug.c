@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:52:50 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/03 00:44:44 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/03 10:51:29 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,39 +107,6 @@ static inline void		correct_path(t_rb_node *node)
 		tmp->exploration = 0;
 	}
 }
-
-/*
-void				correct_path(t_rb_node *node)
-{
-	t_rb_node	*tmp;
-	t_link		*link;
-
-	tmp = node;
-	while (tmp)
-	{
-		if (get_origin_node(tmp->origin_link)->solution == 1)
-		{
-			tmp = get_origin_node(tmp->origin_link);
-			link = tmp->link;
-			while (link)
-			{
-				if (link->reverse->exploration == tmp->exploration && tmp->origin_link == link->reverse)
-				{
-					tmp->origin_link->exploration = 0;
-					tmp->exploration = 0;
-					return ;
-				}
-				link = link->next;
-			}
-		}
-		else
-		{
-			tmp->origin_link->exploration = 0;
-			tmp->exploration = 0;
-			break ;
-		}
-	}
-}*/
 
 int						benjaug(t_lemin *lem)
 {
