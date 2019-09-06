@@ -30,17 +30,17 @@ make
 
 The *lem-in* program is designed to work with a file descriptor. While you can feed it information through the standard input, the best solution is usually to use a redirection.
 
--h: show a summary of the usage.
--F: The program will not print the *file* content. This option is recommended when using the standard input.
--A: The program will not print the path taken by the ant in the end. This option is recommended when using other options with large maps.
--i: The program will show the number of ants, rooms and steps, as well as the final number of steps it calculated.
--s: the program will show the augmenting path found at the end of each exploration. A red color means that the augmenting path is going up a path that is part of the previous set of solution.
--p: the program will show the list of path found at the end of each exploration.
--n: the program will show the index of each step.
--c: At each step, the program will color ants have reached the end or that are being launched from the start.
--e: The program will show the state of the exploration stack. Not recommended with large maps.
--l: The program will only accept up to INT_MAX ants (instead of LONG_MAX).
--x: The program will return an error if at least 2 rooms share the same XY coordinates.
+- h: show a summary of the usage.
+- F: The program will not print the *file* content. This option is recommended when using the standard input.
+- A: The program will not print the path taken by the ant in the end. This option is recommended when using other options with large maps.
+- i: The program will show the number of ants, rooms and steps, as well as the final number of steps it calculated.
+- s: the program will show the augmenting path found at the end of each exploration. A red color means that the augmenting path is going up a path that is part of the previous set of solution.
+- p: the program will show the list of path found at the end of each exploration.
+- n: the program will show the index of each step.
+- c: At each step, the program will color ants have reached the end or that are being launched from the start.
+- e: The program will show the state of the exploration stack. Not recommended with large maps.
+- l: The program will only accept up to INT_MAX ants (instead of LONG_MAX).
+- x: The program will return an error if at least 2 rooms share the same XY coordinates.
 
 Recommended options: **-Aisp** ; this will show the augmenting path, the list of path and relevant summary information.
 
